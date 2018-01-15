@@ -1,6 +1,7 @@
 // Also template for tokens
 
 let Token = require("../game_engine/Token.js");
+let GameObject = require("../game_engine/GameObject.js");
 
 class Game extends Token {
 	constructor(props){
@@ -43,7 +44,7 @@ class Game extends Token {
 		"use strict";
 		super.onAdd();
 
-		this.testSprite = new PIXI.Sprite(test_sprite);
+		this.testSprite = new GameObject(test_sprite);
 		this.testSprite.x = application.renderer.width / 2;
 		this.testSprite.y = application.renderer.height / 2;
 		this.scene.addChild(this.testSprite);
