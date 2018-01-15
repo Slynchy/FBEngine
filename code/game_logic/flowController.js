@@ -75,20 +75,28 @@ FlowController.prototype.waitForLoading = function(){
 FlowController.prototype.showSplashScreen = function(){
 	"use strict";
 	console.log("showSplashScreen");
+	// TODO: splash screen
 	this.currentAction = this.showMainMenu;
 };
 
 FlowController.prototype.showMainMenu = function(){
 	"use strict";
 	console.log("showMainMenu");
-	this.currentAction = this.enterGame;
+
+	let self = this;
+	this.mainMenu = AddToken(new Settings.flowSettings.mainMenu());
+	this.mainMenu.onPlay = function(){
+		self.currentAction = self.enterGame;
+	};
+	this.currentAction = this.onMainMenu;
 };
+
+FlowController.prototype.onMainMenu = function(){};
 
 FlowController.prototype.enterGame = function(){
 	"use strict";
 	console.log("enterGame");
-	this.game = new Settings.flowSettings.inGame();
-	AddToken(this.game);
+	this.game = AddToken(new Settings.flowSettings.inGame());
 	this.currentAction = this.inGame;
 };
 

@@ -50,12 +50,15 @@ function SetRendererProperties(rendererView){
 function AddToken(token){
 	tokens.push(token);
 	if(token.onAdd) token.onAdd();
+	return tokens[tokens.length-1];
 }
 
 function RemoveToken(token){
 	for(let i = 0; i < tokens.length; i++){
 		if(tokens[i].uid === token.uid){
 			tokens[i]._queuedForDestruction = true;
+			if(tokens[i].onRemove)
+				tokens[i].onRemove();
 			return;
 		}
 	}

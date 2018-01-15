@@ -1,6 +1,6 @@
 // Also template for tokens
 
-var Token = require("../game_engine/Token.js");
+let Token = require("../game_engine/Token.js");
 
 class Game extends Token {
 	constructor(props){
@@ -9,9 +9,11 @@ class Game extends Token {
 		/*
 			Game variables go here
 		 */
+		this.name = "Game";
 		this._difficulty = 0;
 		this.scene = new PIXI.Container();
 		this.counter = 0;
+		this.testSprite = null;
 
 		Object.assign(this, props);
 	}
@@ -24,22 +26,13 @@ class Game extends Token {
 		this._difficulty = val;
 	}
 
-	startStep(delta){
-		"use strict";
-		super.startStep(delta);
-	};
-
 	endStep(delta){
 		"use strict";
 		super.endStep(delta);
 		this.testSprite.rotation += (0.004);
 	};
 
-	destroy() {
-		"use strict";
-		super.destroy();
-	};
-
+	// THIS IS CALLED 1 FRAME BEFORE "ON DESTROY"
 	onDestroy(){
 		"use strict";
 		super.onDestroy();
