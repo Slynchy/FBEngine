@@ -1,0 +1,15 @@
+{
+  "name": "fbengine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "TotallyNotAPseudonym",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "browserify": "^15.1.0",
+    "pixi.js": "^4.6.2"
+  }
+}
