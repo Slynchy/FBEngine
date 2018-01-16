@@ -9,12 +9,12 @@ Settings.prototype.init = function(){
 	this.PIXI = {};
 
 	this.PIXI.applicationSettings = {
-		width: 768,
-		height: 1366,
-		antialias: true,
+		width: 384,
+		height: 683,
+		antialias: false,
 		sharedTicker: true,
 		autoStart: false,
-		//roundPixels: true
+		roundPixels: true
 	};
 
 	this.PIXI.styleSettings = {
@@ -24,7 +24,17 @@ Settings.prototype.init = function(){
 		left: '50%',
 		top: '50%',
 		transform: 'translate3d( -50%, -50%, 0 )',
-		SCALE_MODE: null,
+		//SCALE_MODE: PIXI.SCALE_MODES.NEAREST,
+	};
+
+	this.GameSettings = {
+		birdJumpPower: 10,
+		gravity: 9.81,
+		moveSpeed: 1.75, // move speed of the level
+		pipes: {
+			offset: 40, // The base amount to offset the pipes on the Y axis
+			chanceOffset: 50 // The amount that it COULD offset (i.e. if it's 50, then the offset can be 0 to 50)
+		}
 	};
 
 	this.Graphics = {
@@ -34,7 +44,14 @@ Settings.prototype.init = function(){
 	};
 
 	this.resources = {
-		'test_sprite': 'test_sprite.png'
+		'yellowbird_downflap': 'yellowbird_downflap.png',
+		'yellowbird_midflap': 'yellowbird_midflap.png',
+		'yellowbird_upflap': 'yellowbird_upflap.png',
+		'pipe_green': 'pipe_green.png',
+		'pipe_green_flipped': 'pipe_green_flipped.png',
+		'background_day': 'background_day.png',
+		'test_sprite': 'test_sprite.png',
+		'ground_floor': 'ground_floor.png'
 	};
 
 	this.flowSettings = {

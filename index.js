@@ -26,7 +26,7 @@ global.application = application;
 application.renderer.backgroundColor = 0xEEEEEE;
 document.body.appendChild(application.view);
 SetRendererProperties(application.renderer.view);
-if(Settings.PIXI.styleSettings.SCALE_MODE) PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 application.ticker.add(MainLoop);
 
 const flowController = require("./code/game_logic/flowController.js");
@@ -97,20 +97,24 @@ function MainLoop (delta) {
 	if(flowController.currentAction)
 		flowController.currentAction();
 
+	if(flowController && flowController.game)
+		flowController.game.physicsStep(delta);
+
 	for(let i = 0; i < tokens.length; i++){
 		if(!tokens[i]._queuedForDestruction && tokens[i].startStep){
-			tokens[i].startStep();
+			tokens[i].startStep(delta);
 		}
 	}
 	for(let i = 0; i < tokens.length; i++){
 		if(!tokens[i]._queuedForDestruction && tokens[i].endStep){
-			tokens[i].endStep();
+			tokens[i].endStep(delta);
 		}
 	}
 	for(let i = (tokens.length-1); i >= 0; i--){
 		if(tokens[i]._queuedForDestruction){
 			tokens[i].onDestroy();
-			tokens.slice(i,1);
+			tokens[i] = null;
+			tokens.splice(i,1);
 		}
 	}
 }

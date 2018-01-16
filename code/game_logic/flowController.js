@@ -46,7 +46,7 @@ FlowController.prototype.startLoading = function(){
 			continue;
 		}
 
-		currPromise = currPromise.add(k, Settings.resources[k]);
+		currPromise = currPromise.add(k, "assets/" + Settings.resources[k]);
 	}
 
 	PIXI.loader.load(function(loader, resources){
@@ -86,6 +86,8 @@ FlowController.prototype.showMainMenu = function(){
 	let self = this;
 	this.mainMenu = AddToken(new Settings.flowSettings.mainMenu());
 	this.mainMenu.onPlay = function(){
+		self.mainMenu.destroy();
+		self.mainMenu = null;
 		self.currentAction = self.enterGame;
 	};
 	this.currentAction = this.onMainMenu;
@@ -103,6 +105,9 @@ FlowController.prototype.enterGame = function(){
 FlowController.prototype.inGame = function(){
 	"use strict";
 	// woop
+	if(!this.game) {
+		this.currentAction = this.showMainMenu;
+	}
 };
 
 module.exports = new FlowController();
