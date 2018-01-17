@@ -53,7 +53,7 @@ class Pipe extends PIXI.Container {
 		this.x -= Settings.GameSettings.moveSpeed;
 
 		if(this.x < 0-pipe_green.width){
-			this.x += Settings.PIXI.applicationSettings.width + pipe_green.width + 20;
+			this.x += (Settings.PIXI.applicationSettings.width * 2) + pipe_green.width + 20;
 			this.randomisePos();
 		}
 	}

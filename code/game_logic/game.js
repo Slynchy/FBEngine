@@ -46,7 +46,7 @@ class Game extends Token {
 		super.endStep(delta);
 
 		for(let i=0; i < this.sceneGraph.length; i++){
-			this.sceneGraph[i].endStep();
+			this.sceneGraph[i].endStep(delta);
 		}
 		//this.player.rotation += (0.004);
 	};
@@ -76,12 +76,12 @@ class Game extends Token {
 		this.addObjectToScene(this.bg2);
 
 		this.object = new Pipe();
-		this.object.x = application.renderer.width / 2;
+		this.object.x = application.renderer.width / 2 * 2;
 		this.object.y = 0;
 		this.addObjectToScene(this.object);
 
 		this.object2 = new Pipe();
-		this.object2.x = application.renderer.width;
+		this.object2.x = application.renderer.width * 2;
 		this.object2.y = 0;
 		this.addObjectToScene(this.object2);
 

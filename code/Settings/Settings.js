@@ -30,6 +30,8 @@ Settings.prototype.init = function(){
 	this.GameSettings = {
 		birdJumpPower: 10,
 		gravity: 9.81,
+		gravityStrength: 1,
+		birdAnimSpeed: 30, // in milliseconds, how often to change sprite of anim
 		moveSpeed: 1.75, // move speed of the level
 		pipes: {
 			offset: 40, // The base amount to offset the pipes on the Y axis
