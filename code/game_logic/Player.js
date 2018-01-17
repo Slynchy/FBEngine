@@ -69,6 +69,11 @@ class Player extends GameObject {
 			let obj = this.collisions[i];
 
 			switch(obj.tag){
+				case "AddScoreTrigger":
+					if(obj.hasBeenTouched) return;
+					obj.hasBeenTouched = true;
+					flowController.game.ui.updateScore(++flowController.game.score);
+					break;
 				case "Ground":
 				case "Pipe":
 				default:

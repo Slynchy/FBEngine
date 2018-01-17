@@ -11,15 +11,24 @@ class Pipe extends PIXI.Container {
 		this.pipe1 = new GameObject(pipe_green_flipped, {tag:"Pipe"});
 		this.pipe2 = new GameObject(pipe_green, {tag:"Pipe"});
 
+		this.scoreCollider = new GameObject(null, {tag:"AddScoreTrigger"});
+		this.scoreCollider.width = pipe_green.width;
+		this.scoreCollider.height = this.pipe2.y - (this.pipe1.y + pipe_green_flipped.height);
+		this.scoreCollider.x = this.pipe1.x;
+		this.scoreCollider.y = this.pipe1.y + pipe_green_flipped.height;
+		this.scoreCollider.hasBeenTouched = false;
+
 		this.randomisePos();
 
 		this.addChild(this.pipe1);
 		this.addChild(this.pipe2);
+		this.addChild(this.scoreCollider);
 
 		//this.orientation = Math.random() < 0.5 ? 0 : 1; // 0 == down to up, 1 == up to down
 		this.tag = "Pipe";
 
-		Object.assign(this,props);
+		if(props)
+			Object.assign(this,props);
 	}
 
 	onAdd(){
@@ -54,6 +63,11 @@ class Pipe extends PIXI.Container {
 		if(this.x < 0-pipe_green.width){
 			this.x += (Settings.PIXI.applicationSettings.width * 2) + pipe_green.width + 20;
 			this.randomisePos();
+			this.scoreCollider.width = pipe_green.width;
+			this.scoreCollider.height = this.pipe2.y - (this.pipe1.y + pipe_green_flipped.height);
+			this.scoreCollider.x = this.pipe1.x;
+			this.scoreCollider.y = this.pipe1.y + pipe_green_flipped.height;
+			this.scoreCollider.hasBeenTouched = false;
 		}
 	}
 

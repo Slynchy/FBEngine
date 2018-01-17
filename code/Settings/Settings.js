@@ -53,7 +53,17 @@ Settings.prototype.init = function(){
 		'pipe_green_flipped': 'pipe_green_flipped.png',
 		'background_day': 'background_day.png',
 		'test_sprite': 'test_sprite.png',
-		'ground_floor': 'ground_floor.png'
+		'ground_floor': 'ground_floor.png',
+		'number0': '0.png',
+		'number1': '1.png',
+		'number2': '2.png',
+		'number3': '3.png',
+		'number4': '4.png',
+		'number5': '5.png',
+		'number6': '6.png',
+		'number7': '7.png',
+		'number8': '8.png',
+		'number9': '9.png'
 	};
 
 	this.flowSettings = {
