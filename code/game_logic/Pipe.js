@@ -9,7 +9,6 @@ class Pipe extends PIXI.Container {
 		this.checkCollisions = false;
 
 		this.pipe1 = new GameObject(pipe_green_flipped, {tag:"Pipe"});
-		//this.pipe1.rotation = Math.PI;
 		this.pipe2 = new GameObject(pipe_green, {tag:"Pipe"});
 
 		this.randomisePos();
