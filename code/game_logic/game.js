@@ -135,13 +135,24 @@ class Game extends Token {
 	CheckCollision(obj1, obj2){
 		if(obj1.checkCollisions == false || obj2.checkCollisions == false) return false;
 
-		var obj1_wPos = obj1.toGlobal(this.scene);
-		var obj2_wPos = obj2.toGlobal(this.scene);
+		var obj1_truePos = {
+			x1: obj1.toGlobal(this.scene).x - (obj1.width * obj1.anchor.x),
+			x2: obj1.toGlobal(this.scene).x - (obj1.width * obj1.anchor.x) + obj1.width,
+			y1: obj1.toGlobal(this.scene).y - (obj1.height * obj1.anchor.y),
+			y2 :obj1.toGlobal(this.scene).y - (obj1.height * obj1.anchor.y) + obj1.height
+		};
 
-		if (obj1_wPos.x < obj2_wPos.x + obj2.width &&
-			obj1_wPos.x + obj1.width > obj2_wPos.x &&
-			obj1_wPos.y < obj2_wPos.y + obj2.height &&
-			obj1_wPos.y + obj1.height > obj2_wPos.y)
+		var obj2_truePos = {
+			x1: obj2.toGlobal(this.scene).x - (obj2.width * obj2.anchor.x),
+			x2: obj2.toGlobal(this.scene).x - (obj2.width * obj2.anchor.x) + obj2.width,
+			y1: obj2.toGlobal(this.scene).y - (obj2.height * obj2.anchor.y),
+			y2 :obj2.toGlobal(this.scene).y - (obj2.height * obj2.anchor.y) + obj2.height
+		}
+
+		if (obj1_truePos.x1 < obj2_truePos.x2 &&
+			obj1_truePos.x2 > obj2_truePos.x1 &&
+			obj1_truePos.y1 < obj2_truePos.y2 &&
+			obj1_truePos.y2 > obj2_truePos.y1 )
 		{
 			return true;
 		}
