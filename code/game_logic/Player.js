@@ -13,16 +13,24 @@ class Player extends GameObject {
 		];
 		this.currentFrame = 0;
 		this.animTimer = 0;
-		this.animSpeed = 30;
+		this.animSpeed = Settings.GameSettings.birdAnimSpeed;
+
+		// Setting centered sprite
+		this.anchor.x = 0.5;
+		this.anchor.y = 0.5;
 
 		Object.assign(this,props);
+	}
+
+	onAdd(scene,world){
+		super.onAdd(scene,world);
 	}
 
 	endStep(dt){
 		super.endStep(dt);
 
 		//this.x += 1;
-		this._vY += 1;
+		this._vY += Settings.GameSettings.gravityStrength;
 		this._vY = this._vY > Settings.GameSettings.gravity ? Settings.GameSettings.gravity : this._vY;
 
 		this.y += this._vY;
@@ -31,16 +39,22 @@ class Player extends GameObject {
 			this.y = 0;
 		}
 
-		// this.animTimer += dt;
-		// if(this.animTimer > this.animSpeed){
-		// 	this.animTimer = 0;
-		// 	if(this.currentFrame + 1 > this.animTextures.length){
-		// 		this.currentFrame = 0;
-		// 	} else {
-		// 		this.currentFrame++;
-		// 	}
-		// 	this.texture = this.animTextures[this.currentFrame];
-		//}
+		this.rotation = Math.atan2(this._vY, 5);
+
+		if(this._vY < 0) {
+
+		} else {
+			this.animTimer += dt;
+			if (this.animTimer > this.animSpeed) {
+				this.animTimer = 0;
+				if (this.currentFrame + 1 >= this.animTextures.length) {
+					this.currentFrame = 0;
+				} else {
+					this.currentFrame++;
+				}
+				this.texture = this.animTextures[this.currentFrame];
+			}
+		}
 	}
 
 	jump(){
