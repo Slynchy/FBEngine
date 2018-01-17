@@ -1,6 +1,7 @@
 let ContainerObject = require('../game_engine/ContainerObject.js');
 let GameObject = require('../game_engine/GameObject.js');
 let PIXI = require("pixi.js");
+let jsAnim = require("js-easing-functions");
 
 class InGameUI extends ContainerObject {
 	constructor(props){
@@ -9,6 +10,8 @@ class InGameUI extends ContainerObject {
 
 		//this.orientation = Math.random() < 0.5 ? 0 : 1; // 0 == down to up, 1 == up to down
 		this.tag = "InGameUI";
+
+		this.timer = 0;
 
 		this.numbers = [];
 		this.numbers.push(number0);
@@ -45,6 +48,44 @@ class InGameUI extends ContainerObject {
 		this.addChild(this.scoreText[2]);
 
 		Object.assign(this,props);
+	}
+
+	endStep(dt){
+		"use strict";
+		super.endStep(dt);
+
+		if(this.gamestart){
+			this.timer += dt;
+
+			if(this.timer > 2000){
+				if(!this.timerStart) this.timerStart = this.timer;
+				this.gamestart.alpha = jsAnim.easeOutQuad(this.timerStart - this.timer, 1, 1, 1000);
+
+				if(this.gamestart.alpha <= 0){
+					this.gamestart.callback();
+				}
+			}
+		}
+	}
+
+	playGameStart(cb){
+		"use strict";
+		let self = this;
+		this.gamestart = new GameObject(message, { checkCollisions: false });
+		this.gamestart.anchor.x = 0.5;
+		this.gamestart.anchor.y = 0.5;
+		this.gamestart.x = Settings.PIXI.applicationSettings.width / 2;
+		this.gamestart.y = Settings.PIXI.applicationSettings.height / 2;
+		this.addChild(this.gamestart);
+		this.timer = 0;
+		this.gamestart.callback = function() {
+			self.removeChild(self.gamestart);
+			if(cb) cb();
+			self.gamestart = null;
+		}
+		// fade out in 5 seconds or when the player taps
+
+		//if(cb) cb();
 	}
 
 	onAdd(){

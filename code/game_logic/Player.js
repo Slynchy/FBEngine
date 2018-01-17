@@ -14,6 +14,7 @@ class Player extends GameObject {
 		this.currentFrame = 0;
 		this.animTimer = 0;
 		this.animSpeed = Settings.GameSettings.birdAnimSpeed;
+		this._isFrozen = true;
 
 		// Setting centered sprite
 		this.anchor.x = 0.5;
@@ -22,13 +23,19 @@ class Player extends GameObject {
 		Object.assign(this,props);
 	}
 
+	freeze(){
+		this._isFrozen = true;
+	}
+
+	unfreeze(){
+		this._isFrozen = false;
+	}
+
 	onAdd(scene,world){
 		super.onAdd(scene,world);
 	}
 
-	endStep(dt){
-		super.endStep(dt);
-
+	handleMovement(dt){
 		//this.x += 1;
 		this._vY += Settings.GameSettings.gravityStrength;
 		this._vY = this._vY > Settings.GameSettings.gravity ? Settings.GameSettings.gravity : this._vY;
@@ -38,7 +45,9 @@ class Player extends GameObject {
 		if(this.y > Settings.PIXI.applicationSettings.height){
 			this.y = 0;
 		}
+	}
 
+	handleAnimation(dt){
 		this.rotation = Math.atan2(this._vY, 5);
 
 		if(this._vY < 0) {
@@ -55,6 +64,20 @@ class Player extends GameObject {
 				this.texture = this.animTextures[this.currentFrame];
 			}
 		}
+	}
+
+	get isFrozen(){
+		return this._isFrozen;
+	}
+
+	endStep(dt){
+		super.endStep(dt);
+
+		if(!this._isFrozen){
+			this.handleMovement(dt);
+			this.handleAnimation(dt);
+		}
+
 	}
 
 	jump(){
