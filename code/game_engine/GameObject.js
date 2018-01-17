@@ -2,6 +2,7 @@ let PIXI = require("pixi.js");
 
 class GameObject extends PIXI.Sprite {
 	constructor(texture, props){
+		"use strict";
 		super(texture);
 
 		this.parentScene = null;
@@ -10,6 +11,8 @@ class GameObject extends PIXI.Sprite {
 		this._vY = 0;
 
 		this.tag = "GameObject";
+
+		this._isVisible = false;
 
 		this.checkCollisions = true;
 
@@ -51,10 +54,25 @@ class GameObject extends PIXI.Sprite {
 	}
 
 	get y() {
+		"use strict";
 		return this.position.y;
 	}
 
+	hide(){
+		"use strict";
+		this.alpha = 0;
+		this._isVisible = false;
+	}
+
+	show(){
+		"use strict";
+		this.alpha = 1;
+		this._isVisible = this.isVisible;
+	}
+
 	get isVisible(){
+		"use strict";
+		let result;
 		if(this.parentScene){
 			if(
 				this.x < this.parentScene.position.x + Settings.PIXI.applicationSettings.width &&
@@ -62,17 +80,22 @@ class GameObject extends PIXI.Sprite {
 				this.y < this.parentScene.position.y + Settings.PIXI.applicationSettings.height &&
 				this.y + this.texture.height > this.parentScene.position.y
 			){
-				return true;
+				result = true;
 			}
-			else return false;
-		} else return false;
+			else result = false;
+		} else result = false;
+
+		this._isVisible = result;
+		return result;
 	}
 
 	onAdd(scene){
+		"use strict";
 		this.parentScene = scene;
 	}
 
 	onRemove(){
+		"use strict";
 		this.body = null;
 	}
 

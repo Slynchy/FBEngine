@@ -6,6 +6,7 @@ let Player = require("./Player.js");
 let Background = require("./Background.js");
 let Pipe = require("./Pipe.js");
 let Ground = require("./Ground.js");
+let InGameUI = require("./InGameUI.js");
 
 class Game extends Token {
 	constructor(props){
@@ -15,10 +16,16 @@ class Game extends Token {
 			Game variables go here
 		 */
 		this.name = "Game";
-		this._difficulty = 0;
 		this.scene = new PIXI.Container();
+		this.score = 0;
 		this.counter = 0;
 		this.player = null;
+
+		this._states = {
+			STARTING: 0,
+			INGAME: 1,
+			GAMEOVER: 2
+		};
 
 		this.physics = {
 			gravity: 9.81,
@@ -33,14 +40,6 @@ class Game extends Token {
 		Object.assign(this, props);
 	}
 
-	get difficulty(){
-		return this._difficulty;
-	}
-
-	set difficulty(val){
-		this._difficulty = val;
-	}
-
 	endStep(delta){
 		"use strict";
 		super.endStep(delta);
@@ -51,11 +50,11 @@ class Game extends Token {
 		//this.player.rotation += (0.004);
 	};
 
-	// THIS IS CALLED 1 FRAME BEFORE "ON DESTROY"
 	onDestroy(){
 		"use strict";
 		super.onDestroy();
 		application.stage.removeChild(this.scene);
+		application.stage.removeChild(this.ui);
 		flowController.game = null;
 	};
 
@@ -113,7 +112,12 @@ class Game extends Token {
 		});
 		this.addObjectToScene(this.jumpButton);
 
+
 		application.stage.addChild(this.scene);
+
+		this.ui = new InGameUI();
+		application.stage.addChild(this.ui);
+		this.ui.onAdd(application.stage);
 	};
 
 	/*
