@@ -104,10 +104,6 @@ FlowController.prototype.enterGame = function(){
 
 FlowController.prototype.inGame = function(){
 	"use strict";
-	// woop
-	if(!this.game) {
-		this.currentAction = this.showMainMenu;
-	}
 };
 
 module.exports = new FlowController();
