@@ -140,7 +140,7 @@ class Game extends Token {
 		this.jumpButton.height = Settings.PIXI.applicationSettings.height;
 		this.jumpButton.interactive = true;
 		this.jumpButton.on('pointerup', (event) =>{
-			if(this.ui && this.ui.gamestart && this.ui.gamestart.callback){
+			if(this.ui && this.ui.gamestart && this.ui.gamestart.callback && this.ui.gamestart.isBeingRemoved === false){
 				this.ui.gamestart.callback();
 			} else {
 				self.player.jump();

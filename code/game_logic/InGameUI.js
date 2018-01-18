@@ -57,12 +57,19 @@ class InGameUI extends ContainerObject {
 		if(this.gamestart){
 			this.timer += dt;
 
-			if(this.timer > 2000){
+			if(this.timer > 2000 || this.gamestart.isBeingRemoved === true){
 				if(!this.timerStart) this.timerStart = this.timer;
 				this.gamestart.alpha = jsAnim.easeOutQuad(this.timerStart - this.timer, 1, 1, 1000);
 
 				if(this.gamestart.alpha <= 0){
-					this.gamestart.callback();
+					if(this.gamestart.isBeingRemoved === true){
+						this.removeChild(this.gamestart);
+						this.gamestart = null;
+					} else {
+						this.gamestart.callback();
+						this.removeChild(this.gamestart);
+						this.gamestart = null;
+					}
 				}
 			}
 		}
@@ -74,14 +81,15 @@ class InGameUI extends ContainerObject {
 		this.gamestart = new GameObject(message, { checkCollisions: false });
 		this.gamestart.anchor.x = 0.5;
 		this.gamestart.anchor.y = 0.5;
+		this.gamestart.isBeingRemoved = false;
 		this.gamestart.x = Settings.PIXI.applicationSettings.width / 2;
 		this.gamestart.y = Settings.PIXI.applicationSettings.height / 2;
 		this.addChild(this.gamestart);
 		this.timer = 0;
 		this.gamestart.callback = function() {
-			self.removeChild(self.gamestart);
+			//self.removeChild(self.gamestart);
+			self.gamestart.isBeingRemoved = true;
 			if(cb) cb();
-			self.gamestart = null;
 		}
 		// fade out in 5 seconds or when the player taps
 
