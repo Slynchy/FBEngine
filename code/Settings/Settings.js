@@ -39,6 +39,10 @@ Settings.prototype.init = function(){
 		}
 	};
 
+	this.Analytics = {
+		tid: 'UA-73612409-3'
+	};
+
 	this.Graphics = {
 		width: 1366,
 		height: 768,
