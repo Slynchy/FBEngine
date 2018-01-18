@@ -22,10 +22,12 @@ class Game extends Token {
 		this.player = null;
 
 		this._states = {
+			DO_NOTHING: -1,
 			STARTING: 0,
 			INGAME: 1,
 			GAMEOVER: 2
 		};
+		this.state = this._states.DO_NOTHING;
 
 		this.physics = {
 			gravity: 9.81,
@@ -40,14 +42,44 @@ class Game extends Token {
 		Object.assign(this, props);
 	}
 
+	changeState(state){
+		"use strict";
+		let self = this;
+		this.state = state;
+
+		switch(this.state){
+			case this._states.STARTING:
+				this.ui.playGameStart(function(){
+					self.changeState(self._states.INGAME);
+					self.player.unfreeze();
+				});
+				break;
+			case this._states.INGAME:
+
+				break;
+			case this._states.GAMEOVER:
+				this.player.playGameOverAnim();
+				break;
+		}
+	}
+
 	endStep(delta){
 		"use strict";
 		super.endStep(delta);
 
-		for(let i=0; i < this.sceneGraph.length; i++){
-			this.sceneGraph[i].endStep(delta);
+		this.ui.endStep(delta);
+
+		switch(this.state){
+			case this._states.STARTING:
+			case this._states.INGAME:
+				for(let i=0; i < this.sceneGraph.length; i++){
+					this.sceneGraph[i].endStep(delta);
+				}
+				break;
+			case this._states.GAMEOVER:
+				this.player.endStep(delta);
+				break;
 		}
-		//this.player.rotation += (0.004);
 	};
 
 	onDestroy(){
@@ -108,7 +140,11 @@ class Game extends Token {
 		this.jumpButton.height = Settings.PIXI.applicationSettings.height;
 		this.jumpButton.interactive = true;
 		this.jumpButton.on('pointerup', (event) =>{
-			self.player.jump();
+			if(this.ui && this.ui.gamestart && this.ui.gamestart.callback && this.ui.gamestart.isBeingRemoved === false){
+				this.ui.gamestart.callback();
+			} else {
+				self.player.jump();
+			}
 		});
 		this.addObjectToScene(this.jumpButton);
 
@@ -118,6 +154,8 @@ class Game extends Token {
 		this.ui = new InGameUI();
 		application.stage.addChild(this.ui);
 		this.ui.onAdd(application.stage);
+
+		this.changeState(this._states.STARTING);
 	};
 
 	/*

@@ -16,6 +16,14 @@ global.PIXI = PIXI;
 
 
 /*
+	ANALYTICS INITIALIZATION
+*/
+
+const Analytics = new (require("./code/game_engine/Analytics.js"))(Settings.Analytics.tid, true);
+global.Analytics = Analytics;
+Analytics.SendEvent('entered_game', 'entered', null, 1);
+
+/*
 	APPLICATION INITIALIZATION
 */
 
@@ -92,22 +100,29 @@ global.RemoveToken = RemoveToken;
 	MAIN CODE INITIALIZATION
 */
 
+let lastTime = 0;
 function MainLoop (delta) {
 	"use strict";
+	let deltaTime = 0;
+	if(lastTime){
+		deltaTime = Date.now() - lastTime;
+	}
+	lastTime = Date.now();
+
 	if(flowController.currentAction)
 		flowController.currentAction();
 
 	if(flowController && flowController.game)
-		flowController.game.physicsStep(delta);
+		flowController.game.physicsStep(deltaTime);
 
 	for(let i = 0; i < tokens.length; i++){
 		if(!tokens[i]._queuedForDestruction && tokens[i].startStep){
-			tokens[i].startStep(delta);
+			tokens[i].startStep(deltaTime);
 		}
 	}
 	for(let i = 0; i < tokens.length; i++){
 		if(!tokens[i]._queuedForDestruction && tokens[i].endStep){
-			tokens[i].endStep(delta);
+			tokens[i].endStep(deltaTime);
 		}
 	}
 	for(let i = (tokens.length-1); i >= 0; i--){
