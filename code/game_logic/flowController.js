@@ -7,16 +7,30 @@ let FlowController = function(){
 	this.currentAction = this.main;
 };
 
+FlowController.prototype.log = function(data){
+	return console.log("[flowController] " + data);
+};
+
 FlowController.prototype.main = function(){
 	"use strict";
 	// ENTRY POINT
-	console.log("main");
-	this.currentAction = this.startLoading;
+	console.log('[flowController] main');
+	let self = this;
+	if(FBInstant){
+		this.currentAction = this.startFBInstant;
+		FBInstant.initializeAsync()
+			.then(function() {
+				console.log("[flowController] FACEBOOK INITITIALIZED!");
+				self.currentAction = self.startLoading;
+			});
+	} else {
+		this.currentAction = this.startLoading;
+	}
 };
 
 FlowController.prototype.startLoading = function(){
 	"use strict";
-	console.log("startLoading");
+	console.log("[flowController] startLoading");
 
 	let self = this;
 	let length = Object.keys(Settings.resources).length;
@@ -29,10 +43,10 @@ FlowController.prototype.startLoading = function(){
 	}
 
 	PIXI.loader.onLoad.add((file, res) => {
-		console.log("Loaded resource: " + res.url);
+		console.log("[flowController] Loaded resource: " + res.url);
 	});
 	PIXI.loader.onError.add((err) => {
-		throw new Error("Failed to load file! " + err.stack);
+		throw new Error("[flowController] Failed to load file! " + err.stack);
 	});
 
 	let firstPromise;
@@ -58,30 +72,48 @@ FlowController.prototype.startLoading = function(){
 		self.finishedLoading = true;
 	});
 
+	if(FBInstant){
+		FBInstant.setLoadingProgress(0);
+	}
 	this.currentAction = this.waitForLoading;
 };
 
 FlowController.prototype.waitForLoading = function(){
 	"use strict";
-	console.log("waitForLoading");
+	console.log("[flowController] waitForLoading");
+	let self = this;
 
 	if(PIXI.loader.progress === 100 && this.finishedLoading === true) {
-		this.currentAction = this.showSplashScreen;
+		FBInstant.setLoadingProgress(100);
+		console.log("[flowController] FB INSTANT GAME STARTING");
+		this.currentAction = this.startFBInstant;
+		FBInstant.startGameAsync()
+			.then(function() {
+				self.currentAction = self.showSplashScreen;
+				global.FBINSTANT_INFO = {
+					contextId: FBInstant.context.getID(),
+					contextType: FBInstant.context.getType()
+				};
+			});
 	} else {
-		return;
+		FBInstant.setLoadingProgress(PIXI.loader.progress);
 	}
+};
+
+FlowController.prototype.startFBInstant = function(){
+	"use strict";
 };
 
 FlowController.prototype.showSplashScreen = function(){
 	"use strict";
-	console.log("showSplashScreen");
+	console.log("[flowController] showSplashScreen");
 	// TODO: splash screen
 	this.currentAction = this.showMainMenu;
 };
 
 FlowController.prototype.showMainMenu = function(){
 	"use strict";
-	console.log("showMainMenu");
+	console.log("[flowController] showMainMenu");
 
 	let self = this;
 	this.mainMenu = AddToken(new Settings.flowSettings.mainMenu());
@@ -97,7 +129,7 @@ FlowController.prototype.onMainMenu = function(){};
 
 FlowController.prototype.enterGame = function(){
 	"use strict";
-	console.log("enterGame");
+	console.log("[flowController] enterGame");
 	this.game = AddToken(new Settings.flowSettings.inGame());
 	this.currentAction = this.inGame;
 };

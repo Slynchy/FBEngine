@@ -1,3 +1,7 @@
+/*
+	Google Analytics wrapper
+	Doesn't work with FB
+ */
 
 class Analytics {
 
@@ -8,6 +12,8 @@ class Analytics {
 
 		this.tid = tid;
 		this.cid = 'clientid';
+
+		this.mode = 'FBINSTANT';
 
 		if(typeof(debuggingMode) === "undefined"){
 			this._debug = false;
@@ -30,14 +36,42 @@ class Analytics {
 		"use strict";
 		let self = this;
 
-		let genData = this._generateData('event', category, action, label, value);
-		this._postAjax(
-			'https://www.google-analytics.com/collect?',
-			genData,
-			function(da){
-				self.log("Sent event of category \"" + category + "\" " + genData);
+		if(typeof(value) === "undefined") value = 1;
+
+		if(this.mode === 'FBINSTANT'){
+
+			try{
+				let result = FBInstant.logEvent(
+					category,
+					value,
+					{
+						action: action,
+						label: label
+					},
+				);
+				if(result){
+					// We could throw an error here but analytics are not that important -Sam
+					console.error("Send event " + category + " unsuccessfully");
+				} else {
+					console.log("Send event " + category + " successfully");
+				}
 			}
-		);
+			catch(err){
+				console.error(err);
+			}
+
+		} else if(this.mode === 'GOOGLE') {
+
+			let genData = this._generateData('event', category, action, label, value);
+			this._postAjax(
+				Settings.Analytics.url,
+				genData,
+				function(da){
+					self.log("Sent event of category \"" + category + "\" " + genData);
+				}
+			);
+
+		}
 	}
 
 	_generateData(type, category, action, label, value){

@@ -1,0 +1,19 @@
+body {
+  background-color: #fff;
+  color:#fff;
+  overflow:hidden;
+}
+
+.mockAlert {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  background-color: #ccc;
+  color:#000;
+  font-family: 'Helvetica';
+  position: absolute;
+  left: 30%;
+  top: 45%;
+  float:left;
+  box-shadow: 10px 10px 5px #888888;
+}
