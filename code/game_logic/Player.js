@@ -84,6 +84,10 @@ class Player extends GameObject {
 		this._vY = -Settings.GameSettings.birdJumpPower;
 	}
 
+	playDeathAnim(){
+
+	};
+
 	onCollide(){
 		super.onCollide();
 
@@ -99,8 +103,10 @@ class Player extends GameObject {
 				case "Ground":
 				case "Pipe":
 				default:
-					if(flowController.game)
+					if(flowController.game){
+						//flowController.game.gameOver();
 						flowController.game.quit();
+					}
 					return;
 			}
 		}

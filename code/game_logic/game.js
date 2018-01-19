@@ -42,27 +42,6 @@ class Game extends Token {
 		Object.assign(this, props);
 	}
 
-	changeState(state){
-		"use strict";
-		let self = this;
-		this.state = state;
-
-		switch(this.state){
-			case this._states.STARTING:
-				this.ui.playGameStart(function(){
-					self.changeState(self._states.INGAME);
-					self.player.unfreeze();
-				});
-				break;
-			case this._states.INGAME:
-
-				break;
-			case this._states.GAMEOVER:
-				this.player.playGameOverAnim();
-				break;
-		}
-	}
-
 	endStep(delta){
 		"use strict";
 		super.endStep(delta);
@@ -173,6 +152,46 @@ class Game extends Token {
 			}
 		}
 		if(obj.onAdd) obj.onAdd(this.scene, this.physics.world);
+	}
+
+	gameOver(){
+		"use strict";
+		this.flashWhite();
+		this.player.playDeathAnim(
+			/* onFinish, onRewindFinish */
+			function(){
+				// onFinish
+			},
+			function(){
+				// onRewindFinish
+			}
+		);
+	}
+
+	flashWhite(){
+		"use strict";
+		// create white object and fade alpha to 0, destroy object when alpha hits 0
+	}
+
+	changeState(state){
+		"use strict";
+		let self = this;
+		this.state = state;
+
+		switch(this.state){
+			case this._states.STARTING:
+				this.ui.playGameStart(function(){
+					self.changeState(self._states.INGAME);
+					self.player.unfreeze();
+				});
+				break;
+			case this._states.INGAME:
+
+				break;
+			case this._states.GAMEOVER:
+				this.player.playGameOverAnim();
+				break;
+		}
 	}
 
 	CheckCollision(obj1, obj2){
