@@ -11,6 +11,7 @@ class Token {
 	destroy() {
 		"use strict";
 		this._queuedForDestruction = true;
+		if(this.onDestroy) this.onDestroy();
 	};
 
 	startStep(delta){

@@ -69,7 +69,11 @@ Settings.prototype.init = function(){
 		'number7': '7.png',
 		'number8': '8.png',
 		'number9': '9.png',
-		'message': 'message.png'
+		'message': 'message.png',
+		'mainMenu_play': 'mainMenu/playbutton.png',
+		'mainMenu_copyright': 'mainMenu/copyright.png',
+		'mainMenu_leaderboard': 'mainMenu/leaderboardbutton.png',
+		'mainMenu_title': 'mainMenu/title.png'
 	};
 
 	this.flowSettings = {

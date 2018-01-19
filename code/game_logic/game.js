@@ -29,8 +29,8 @@ class Game extends Token {
 		};
 		this.state = this._states.DO_NOTHING;
 
+		// DEPRECATED
 		this.physics = {
-			gravity: 9.81,
 			scale: 1,
 			dtElapsed: 0,
 			stepAmount: 1, // amount of iterations to do per frame
@@ -88,6 +88,7 @@ class Game extends Token {
 		application.stage.removeChild(this.scene);
 		application.stage.removeChild(this.ui);
 		flowController.game = null;
+		flowController.showMainMenu();
 	};
 
 	onAdd(){

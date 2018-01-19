@@ -44,28 +44,6 @@ global.flowController = flowController;
 	FUNCTIONS INITIALIZATION
 */
 
-Object.assignDeep = function(target, ...sources) {
-	if (!sources.length) return target;
-	const source = sources.shift();
-
-	let isObject = function(item) {
-		return (item && typeof item === 'object' && !Array.isArray(item));
-	};
-
-	if (isObject(target) && isObject(source)) {
-		for (const key in source) {
-			if (isObject(source[key])) {
-				if (!target[key]) Object.assign(target, { [key]: {} });
-				Object.assignDeep(target[key], source[key]);
-			} else {
-				Object.assign(target, { [key]: source[key] });
-			}
-		}
-	}
-
-	return Object.assignDeep(target, ...sources);
-};
-
 function SetRendererProperties(rendererView){
 	"use strict";
 	rendererView.style.width = Settings.PIXI.styleSettings.width;
@@ -126,7 +104,6 @@ function MainLoop (delta) {
 	}
 	for(let i = (tokens.length-1); i >= 0; i--){
 		if(tokens[i]._queuedForDestruction){
-			tokens[i].onDestroy();
 			tokens[i] = null;
 			tokens.splice(i,1);
 		}

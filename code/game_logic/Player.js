@@ -81,7 +81,6 @@ class Player extends GameObject {
 	}
 
 	jump(){
-		console.log('jump!');
 		this._vY = -Settings.GameSettings.birdJumpPower;
 	}
 
@@ -100,9 +99,8 @@ class Player extends GameObject {
 				case "Ground":
 				case "Pipe":
 				default:
-					//alert(obj.tag);
-					console.log(obj.tag);
-					flowController.game.quit();
+					if(flowController.game)
+						flowController.game.quit();
 					return;
 			}
 		}
