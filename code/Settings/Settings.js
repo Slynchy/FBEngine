@@ -18,7 +18,7 @@ Settings.prototype.init = function(){
 	};
 
 	this.PIXI.styleSettings = {
-		width: (this.PIXI.applicationSettings.width / this.PIXI.applicationSettings.height) * window.innerHeight,
+		width: window.innerWidth,
 		height: window.innerHeight,
 		position: 'absolute',
 		left: '50%',
@@ -40,7 +40,8 @@ Settings.prototype.init = function(){
 	};
 
 	this.Analytics = {
-		tid: 'UA-73612409-3'
+		tid: 'UA-73612409-3',
+		url: 'https://www.google-analytics.com/collect?'
 	};
 
 	this.Graphics = {

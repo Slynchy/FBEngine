@@ -21,7 +21,6 @@ global.PIXI = PIXI;
 
 const Analytics = new (require("./code/game_engine/Analytics.js"))(Settings.Analytics.tid, true);
 global.Analytics = Analytics;
-Analytics.SendEvent('entered_game', 'entered', null, 1);
 
 /*
 	APPLICATION INITIALIZATION
