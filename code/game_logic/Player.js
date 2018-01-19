@@ -37,10 +37,11 @@ class Player extends GameObject {
 
 	handleMovement(dt){
 		//this.x += 1;
-		this._vY += Settings.GameSettings.gravityStrength;
-		this._vY = this._vY > Settings.GameSettings.gravity ? Settings.GameSettings.gravity : this._vY;
+        let _gravitySpeed = Settings.GameSettings.gravityStrength;
+		this._vY += _gravitySpeed * dt;
+		this._vY = this._vY > Settings.GameSettings.terminalVelocity ? Settings.GameSettings.terminalVelocity : this._vY;
 
-		this.y += this._vY;
+		this.y += this._vY * dt;
 
 		if(this.y > Settings.PIXI.applicationSettings.height){
 			this.y = 0;

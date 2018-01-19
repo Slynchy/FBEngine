@@ -34,6 +34,7 @@ application.renderer.backgroundColor = 0xEEEEEE;
 document.body.appendChild(application.view);
 SetRendererProperties(application.renderer.view);
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+application.ticker.scale = 0.001;
 application.ticker.add(MainLoop);
 
 const flowController = require("./code/game_logic/flowController.js");
@@ -77,14 +78,9 @@ global.RemoveToken = RemoveToken;
 	MAIN CODE INITIALIZATION
 */
 
-let lastTime = 0;
 function MainLoop (delta) {
 	"use strict";
-	let deltaTime = 0;
-	if(lastTime){
-		deltaTime = Date.now() - lastTime;
-	}
-	lastTime = Date.now();
+	let deltaTime = delta;
 
 	if(flowController.currentAction)
 		flowController.currentAction();

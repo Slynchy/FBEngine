@@ -12,7 +12,7 @@ class Background extends GameObject {
 
 	endStep(dt){
 		super.endStep(dt);
-		this.x -= Settings.GameSettings.moveSpeed;
+		this.x -= Settings.GameSettings.moveSpeed * dt;
 
 		if(this.x < 0-this.width){
 			this.x += Settings.PIXI.applicationSettings.width * 2;

@@ -58,7 +58,7 @@ class Pipe extends PIXI.Container {
 
 	endStep(dt){
 		"use strict";
-		this.x -= Settings.GameSettings.moveSpeed;
+		this.x -= Settings.GameSettings.moveSpeed * dt;
 
 		if(this.x < 0-pipe_green.width){
 			this.x += (Settings.PIXI.applicationSettings.width * 2) + pipe_green.width + 20;

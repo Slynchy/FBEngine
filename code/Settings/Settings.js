@@ -9,11 +9,11 @@ Settings.prototype.init = function(){
 	this.PIXI = {};
 
 	this.PIXI.applicationSettings = {
-		width: 384,
-		height: 683,
+		width: 384, // REQUIRED
+		height: 683, // REQUIRED
 		antialias: false,
-		sharedTicker: true,
-		autoStart: false,
+		sharedTicker: true, // REQUIRED
+		autoStart: false, // REQUIRED
 		roundPixels: true
 	};
 
@@ -28,14 +28,14 @@ Settings.prototype.init = function(){
 	};
 
 	this.GameSettings = {
-		birdJumpPower: 10,
-		gravity: 9.81,
-		gravityStrength: 1,
+		birdJumpPower: 5,
+		gravityStrength: 0.35,
+		terminalVelocity: 4.5,
 		birdAnimSpeed: 30, // in milliseconds, how often to change sprite of anim
 		moveSpeed: 1.75, // move speed of the level
 		pipes: {
-			offset: 40, // The base amount to offset the pipes on the Y axis
-			chanceOffset: 50 // The amount that it COULD offset (i.e. if it's 50, then the offset can be 0 to 50)
+			offset: 35, // The base amount to offset the pipes on the Y axis
+			chanceOffset: 40 // The amount that it COULD offset (i.e. if it's 50, then the offset can be 0 to 50)
 		}
 	};
 

@@ -55,7 +55,7 @@ class InGameUI extends ContainerObject {
 		super.endStep(dt);
 
 		if(this.gamestart){
-			this.timer += dt;
+			this.timer += dt * 3;
 
 			if(this.timer > 2000 || this.gamestart.isBeingRemoved === true){
 				if(!this.timerStart) this.timerStart = this.timer;
