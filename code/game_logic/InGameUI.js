@@ -50,9 +50,24 @@ class InGameUI extends ContainerObject {
 		Object.assign(this,props);
 	}
 
+	hideScore(setOrDo){
+
+		if(setOrDo === 'set'){
+			this._hideScore = true;
+		} else {
+            this.scoreText[0].alpha = lerp(this.scoreText[0].alpha, 0, 0.04 );
+            this.scoreText[1].alpha = lerp(this.scoreText[1].alpha, 0, 0.04 );
+            this.scoreText[2].alpha = lerp(this.scoreText[2].alpha, 0, 0.04 );
+		}
+	}
+
 	endStep(dt){
 		"use strict";
 		super.endStep(dt);
+
+        if(this._hideScore === true){
+        	this.hideScore('do');
+		}
 
 		if(this.gamestart){
 			this.timer += dt * 6;

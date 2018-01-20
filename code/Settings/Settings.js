@@ -41,7 +41,7 @@ Settings.prototype.init = function(){
 
 	this.Analytics = {
 		tid: 'UA-73612409-3',
-		url: 'https://www.google-analytics.com/collect?'
+		url: 'https://www.google-analytics.com/collect?' // deprecated
 	};
 
 	this.resources = {
@@ -100,7 +100,11 @@ Settings.prototype.init = function(){
         'bronzeMedal': 'endscreen/bronzeMedal.png',
         'silverMedal': 'endscreen/silverMedal.png',
         'goldMedal': 'endscreen/goldMedal.png',
-        'platinumMedal': 'endscreen/platinumMedal.png'
+        'platinumMedal': 'endscreen/platinumMedal.png',
+        'ok_button': 'endscreen/ok.png',
+        'menu_button': 'endscreen/menu.png',
+        'share_button': 'endscreen/share.png',
+        'share_button_grey': 'endscreen/share_grey.png'
 	};
 
 	this.flowSettings = {

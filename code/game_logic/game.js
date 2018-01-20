@@ -196,6 +196,7 @@ class Game extends Token {
 
 		this.state = this._states.GAMEOVER;
 		this.flashWhite();
+		this.ui.hideScore('set');
 		this.freezePipesNShit();
 
 		let showAd = false;

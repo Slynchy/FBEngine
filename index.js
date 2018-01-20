@@ -6,6 +6,20 @@
 const Settings = require("./code/Settings/Settings.js");
 global.Settings = Settings;
 
+/*
+	GAMESPARKS INITIALIZATION
+*/
+
+//const gsApi = require("./code/Settings/Settings.js");
+//global.gsApi = gsApi;
+
+/*
+	SAVE DATA INITIALIZATION
+*/
+
+const SaveData = require("./code/game_engine/SaveData.js");
+global.SaveData = SaveData;
+
 
 /*
 	PIXI INITIALIZATION
@@ -35,7 +49,7 @@ global.tokens = [];
 
 const application = new PIXI.Application(Settings.PIXI.applicationSettings);
 global.application = application;
-application.renderer.backgroundColor = 0xEEEEEE;
+application.renderer.backgroundColor = 0x000000;
 document.body.appendChild(application.view);
 SetRendererProperties(application.renderer.view);
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
