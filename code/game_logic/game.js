@@ -7,6 +7,7 @@ let Background = require("./Background.js");
 let Pipe = require("./Pipe.js");
 let Ground = require("./Ground.js");
 let InGameUI = require("./InGameUI.js");
+let EndScreenUI = require("./EndScreenUI.js");
 let FlashWhite = require("./FlashWhite.js");
 let StaticEffect = require("./StaticEffect.js");
 
@@ -74,6 +75,8 @@ class Game extends Token {
 					this._whiteFlash.endStep(delta);
 				break;
             case this._states.GAMEOVER_UI:
+            	if(this.gameOverUI)
+                    this.gameOverUI.endStep(delta);
             	break;
 		}
 	};
@@ -194,20 +197,31 @@ class Game extends Token {
 		this.state = this._states.GAMEOVER;
 		this.flashWhite();
 		this.freezePipesNShit();
-		this.player.playDeathAnim(
-			/* onFinish, onRewindFinish */
-			function(){
-				// onFinish
-                self.unfreezePipesNShit();
-				self.startRewind();
-			},
-			function(){
-				// onRewindFinish
-                //self.destroy();
-				self.scene.removeChild(self.rewindUI);
-				self.changeState(self._states.GAMEOVER_UI);
-			}
-		);
+
+		let showAd = false;
+		if(showAd === false){
+            this.player.playDeathAnim(
+                function(){
+                    // onRewindFinish
+                    self.changeState(self._states.GAMEOVER_UI);
+                }
+            );
+		} else {
+            this.player.playDeathAnim(
+                /* onFinish, onRewindFinish */
+                function(){
+                    // onFinish
+                    self.unfreezePipesNShit();
+                    self.startRewind();
+                },
+                function(){
+                    // onRewindFinish
+                    //self.destroy();
+                    self.scene.removeChild(self.rewindUI);
+                    self.changeState(self._states.GAMEOVER_UI);
+                }
+            );
+		}
 	}
 
 	flashWhite(){
@@ -243,34 +257,34 @@ class Game extends Token {
 			case this._states.GAMEOVER:
 				this.player.playGameOverAnim();
 				break;
+            case this._states.GAMEOVER_UI:
+            	this.gameOverUI = new EndScreenUI({score: this.score});
+            	this.scene.addChild(this.gameOverUI);
+                break;
 		}
 	}
 
 	CheckCollision(obj1, obj2){
 		if(obj1.checkCollisions == false || obj2.checkCollisions == false) return false;
 
-		var obj1_truePos = {
+		let obj1_truePos = {
 			x1: obj1.toGlobal(this.scene).x - (obj1.width * obj1.anchor.x),
 			x2: obj1.toGlobal(this.scene).x - (obj1.width * obj1.anchor.x) + obj1.width,
 			y1: obj1.toGlobal(this.scene).y - (obj1.height * obj1.anchor.y),
 			y2 :obj1.toGlobal(this.scene).y - (obj1.height * obj1.anchor.y) + obj1.height
 		};
 
-		var obj2_truePos = {
+        let obj2_truePos = {
 			x1: obj2.toGlobal(this.scene).x - (obj2.width * obj2.anchor.x),
 			x2: obj2.toGlobal(this.scene).x - (obj2.width * obj2.anchor.x) + obj2.width,
 			y1: obj2.toGlobal(this.scene).y - (obj2.height * obj2.anchor.y),
 			y2 :obj2.toGlobal(this.scene).y - (obj2.height * obj2.anchor.y) + obj2.height
-		}
+		};
 
-		if (obj1_truePos.x1 < obj2_truePos.x2 &&
+		return (obj1_truePos.x1 < obj2_truePos.x2 &&
 			obj1_truePos.x2 > obj2_truePos.x1 &&
 			obj1_truePos.y1 < obj2_truePos.y2 &&
-			obj1_truePos.y2 > obj2_truePos.y1 )
-		{
-			return true;
-		}
-		else return false;
+			obj1_truePos.y2 > obj2_truePos.y1 );
 	}
 
 	freezePipesNShit(){

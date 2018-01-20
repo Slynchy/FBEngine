@@ -31,7 +31,7 @@ Settings.prototype.init = function(){
 		birdJumpPower: 5,
 		gravityStrength: 0.35,
 		terminalVelocity: 4.5,
-		birdAnimSpeed: 30, // in milliseconds, how often to change sprite of anim
+		birdAnimSpeed: 10, // in milliseconds, how often to change sprite of anim
 		moveSpeed: 2.25, // move speed of the level
 		pipes: {
 			offset: 35, // The base amount to offset the pipes on the Y axis
@@ -63,6 +63,16 @@ Settings.prototype.init = function(){
 		'number7': '7.png',
 		'number8': '8.png',
 		'number9': '9.png',
+        'number0_s': '0s.png',
+        'number1_s': '1s.png',
+        'number2_s': '2s.png',
+        'number3_s': '3s.png',
+        'number4_s': '4s.png',
+        'number5_s': '5s.png',
+        'number6_s': '6s.png',
+        'number7_s': '7s.png',
+        'number8_s': '8s.png',
+        'number9_s': '9s.png',
 		'message': 'message.png',
 		'mainMenu_play': 'mainMenu/playbutton.png',
 		'mainMenu_copyright': 'mainMenu/copyright.png',
@@ -85,6 +95,12 @@ Settings.prototype.init = function(){
         'static5': 'static_effect/static/5.webp',
         'static6': 'static_effect/static/6.webp',
         'static7': 'static_effect/static/7.webp',
+        'gameover': 'gameover.png',
+        'endscreen_main': 'endscreen/main.png',
+        'bronzeMedal': 'endscreen/bronzeMedal.png',
+        'silverMedal': 'endscreen/silverMedal.png',
+        'goldMedal': 'endscreen/goldMedal.png',
+        'platinumMedal': 'endscreen/platinumMedal.png'
 	};
 
 	this.flowSettings = {

@@ -103,7 +103,7 @@ class Player extends GameObject {
 				case this._deathAnimStates.STAGE1:
                     this.handleMovement(dt);
                     this.handleAnimation(dt);
-                    if(this.y > Settings.PIXI.applicationSettings.height){
+                    if(this.y - (this.height / 2) - 10 > Settings.PIXI.applicationSettings.height){
                         this._deathAnim.onFinish();
                         this._deathAnim.state = this._deathAnimStates.STAGE2;
                         if(this.recording){

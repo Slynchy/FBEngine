@@ -46,6 +46,15 @@ class MainMenu extends Token {
 		this.title.y = (application.renderer.height / 5)- (this.title.height / 2);
 		this.dialog.addChild(this.title);
 
+		this.copyright = new GameObject(mainMenu_copyright, { checkCollisions: false });
+		this.copyright.anchor.x = 0.5;
+		this.copyright.anchor.y = 0.5;
+		this.copyright.scale.x = 3;
+		this.copyright.scale.y = 3;
+        this.copyright.x = (application.renderer.width / 2);
+        this.copyright.y = (application.renderer.height - this.copyright.height - 10);
+        this.dialog.addChild(this.copyright);
+
 		this.play = new GameObject(mainMenu_play, { checkCollisions: false });
 		this.play.scale.x = 3;
 		this.play.scale.y = 3;
