@@ -64,9 +64,11 @@ FlowController.prototype.startLoading = function(){
 	}
 
 	PIXI.loader.load(function(loader, resources){
+		global._TEXTURES = {};
 		for(let k in resources){
 			if(resources.hasOwnProperty(k)){
 				global[k] = resources[k].texture;
+				global._TEXTURES[k] = resources[k].texture;
 			}
 		}
 		self.finishedLoading = true;

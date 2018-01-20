@@ -18,6 +18,10 @@ class Pipe extends PIXI.Container {
 		this.scoreCollider.y = this.pipe1.y + pipe_green_flipped.height;
 		this.scoreCollider.hasBeenTouched = false;
 
+		this.rewind = false;
+
+		this._isFrozen = false;
+
 		this.randomisePos();
 
 		this.addChild(this.pipe1);
@@ -31,6 +35,10 @@ class Pipe extends PIXI.Container {
 			Object.assign(this,props);
 	}
 
+    get isFrozen(){
+        return this._isFrozen;
+    }
+
 	onAdd(){
 		"use strict";
 	}
@@ -43,6 +51,14 @@ class Pipe extends PIXI.Container {
 	set x(val) {
 		this.position.x = val;
 	}
+
+    freeze(){
+        this._isFrozen = true;
+    }
+
+    unfreeze(){
+        this._isFrozen = false;
+    }
 
 	set y(val) {
 		this.position.y = val;
@@ -58,16 +74,32 @@ class Pipe extends PIXI.Container {
 
 	endStep(dt){
 		"use strict";
-		this.x -= Settings.GameSettings.moveSpeed * dt;
+		if(this.isFrozen) return;
 
-		if(this.x < 0-pipe_green.width){
-			this.x += (Settings.PIXI.applicationSettings.width * 2) + pipe_green.width + 20;
-			this.randomisePos();
-			this.scoreCollider.width = pipe_green.width;
-			this.scoreCollider.height = this.pipe2.y - (this.pipe1.y + pipe_green_flipped.height);
-			this.scoreCollider.x = this.pipe1.x;
-			this.scoreCollider.y = this.pipe1.y + pipe_green_flipped.height;
-			this.scoreCollider.hasBeenTouched = false;
+		if(this.rewind){
+            this.x += Settings.GameSettings.moveSpeed * dt;
+
+            if(this.x > Settings.PIXI.applicationSettings.width) {
+                this.x -= (Settings.PIXI.applicationSettings.width * 2) + pipe_green.width + 20;
+                this.randomisePos();
+                this.scoreCollider.width = pipe_green.width;
+                this.scoreCollider.height = this.pipe2.y - (this.pipe1.y + pipe_green_flipped.height);
+                this.scoreCollider.x = this.pipe1.x;
+                this.scoreCollider.y = this.pipe1.y + pipe_green_flipped.height;
+                this.scoreCollider.hasBeenTouched = false;
+            }
+		} else {
+            this.x -= Settings.GameSettings.moveSpeed * dt;
+
+            if(this.x < 0-pipe_green.width){
+                this.x += (Settings.PIXI.applicationSettings.width * 2) + pipe_green.width + 20;
+                this.randomisePos();
+                this.scoreCollider.width = pipe_green.width;
+                this.scoreCollider.height = this.pipe2.y - (this.pipe1.y + pipe_green_flipped.height);
+                this.scoreCollider.x = this.pipe1.x;
+                this.scoreCollider.y = this.pipe1.y + pipe_green_flipped.height;
+                this.scoreCollider.hasBeenTouched = false;
+            }
 		}
 	}
 

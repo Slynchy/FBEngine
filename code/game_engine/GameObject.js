@@ -18,11 +18,17 @@ class GameObject extends PIXI.Sprite {
 
 		this.collisions = [];
 
+		this._isFrozen = false;
+
 		this.width = texture ? texture.width : 0;
 		this.height = texture ? texture.height : 0;
 
 		if(props)
 			Object.assign(this, props);
+	}
+
+	get isFrozen(){
+		return this._isFrozen;
 	}
 
 	get vX() {
@@ -40,6 +46,14 @@ class GameObject extends PIXI.Sprite {
 	set vY(val) {
 		this._vY = val;
 	}
+
+    freeze(){
+        this._isFrozen = true;
+    }
+
+    unfreeze(){
+        this._isFrozen = false;
+    }
 
 	set x(val) {
 		this.position.x = val;
@@ -100,7 +114,7 @@ class GameObject extends PIXI.Sprite {
 	}
 
 	endStep(){
-
+        if(this.isFrozen) return;
 	}
 
 	onCollide(){

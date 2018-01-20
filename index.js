@@ -26,6 +26,11 @@ global.Analytics = Analytics;
 	APPLICATION INITIALIZATION
 */
 
+function lerp(v0, v1, t) {
+    return v0*(1-t)+v1*t
+}
+global.lerp = lerp;
+
 global.tokens = [];
 
 const application = new PIXI.Application(Settings.PIXI.applicationSettings);

@@ -68,7 +68,23 @@ Settings.prototype.init = function(){
 		'mainMenu_copyright': 'mainMenu/copyright.png',
 		'mainMenu_leaderboard': 'mainMenu/leaderboardbutton.png',
 		'mainMenu_title': 'mainMenu/title.png',
-        'white': 'white.png'
+        'white': 'white.png',
+        'static_effect0': 'static_effect/0.webp',
+        'static_effect1': 'static_effect/1.webp',
+        'static_effect2': 'static_effect/2.webp',
+        'static_effect3': 'static_effect/3.webp',
+        'static_effect4': 'static_effect/4.webp',
+        'static_effect5': 'static_effect/5.webp',
+        'static_effect6': 'static_effect/6.webp',
+        'static_effect7': 'static_effect/7.webp',
+        'static0': 'static_effect/static/0.webp',
+        'static1': 'static_effect/static/1.webp',
+        'static2': 'static_effect/static/2.webp',
+        'static3': 'static_effect/static/3.webp',
+        'static4': 'static_effect/static/4.webp',
+        'static5': 'static_effect/static/5.webp',
+        'static6': 'static_effect/static/6.webp',
+        'static7': 'static_effect/static/7.webp',
 	};
 
 	this.flowSettings = {

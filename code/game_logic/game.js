@@ -8,6 +8,7 @@ let Pipe = require("./Pipe.js");
 let Ground = require("./Ground.js");
 let InGameUI = require("./InGameUI.js");
 let FlashWhite = require("./FlashWhite.js");
+let StaticEffect = require("./StaticEffect.js");
 
 class Game extends Token {
 	constructor(props){
@@ -28,7 +29,8 @@ class Game extends Token {
 			DO_NOTHING: -1,
 			STARTING: 0,
 			INGAME: 1,
-			GAMEOVER: 2
+			GAMEOVER: 2,
+			GAMEOVER_UI: 3
 		};
 		this.state = this._states.DO_NOTHING;
 
@@ -54,14 +56,25 @@ class Game extends Token {
 		switch(this.state){
 			case this._states.STARTING:
 			case this._states.INGAME:
+                this.player.endStep(delta);
 				for(let i=0; i < this.sceneGraph.length; i++){
 					this.sceneGraph[i].endStep(delta);
 				}
 				break;
 			case this._states.GAMEOVER:
 				this.player.endStep(delta);
-                this._whiteFlash.endStep(delta);
+				if(this.rewindUI)
+                	this.rewindUI.endStep(delta);
+				if(this.player.recording && this.player.recording.isPlaying){
+                    for(let i=0; i < this.sceneGraph.length; i++){
+                        this.sceneGraph[i].endStep(delta);
+                    }
+				}
+				if(this._whiteFlash)
+					this._whiteFlash.endStep(delta);
 				break;
+            case this._states.GAMEOVER_UI:
+            	break;
 		}
 	};
 
@@ -115,7 +128,7 @@ class Game extends Token {
 		this.player = new Player(yellowbird_midflap);
 		this.player.x = 100;
 		this.player.y = application.renderer.height / 2;
-		this.addObjectToScene(this.player);
+        this.scene.addChild(this.player);
 
 		this.jumpButton = new GameObject(null, { checkCollisions: false });
 		this.jumpButton.x = 0;
@@ -159,21 +172,41 @@ class Game extends Token {
 		if(obj.onAdd) obj.onAdd(this.scene, this.physics.world);
 	}
 
+	startRewind(){
+		"use strict";
+		for(let i = 0; i < this.sceneGraph.length; i++){
+			var obj = this.sceneGraph[i];
+			if(obj.tag === "Pipe" ||
+                obj.tag === "Ground" ||
+                obj.tag === "Background" ){
+				obj.rewind = true;
+			}
+		}
+
+		this.rewindUI = new StaticEffect();
+		this.scene.addChild(this.rewindUI);
+	}
+
 	gameOver(){
 		"use strict";
 		let self = this;
 
 		this.state = this._states.GAMEOVER;
 		this.flashWhite();
+		this.freezePipesNShit();
 		this.player.playDeathAnim(
 			/* onFinish, onRewindFinish */
 			function(){
 				// onFinish
-				self.destroy();
+                self.unfreezePipesNShit();
+				self.startRewind();
 			},
-			//function(){
+			function(){
 				// onRewindFinish
-			//}
+                //self.destroy();
+				self.scene.removeChild(self.rewindUI);
+				self.changeState(self._states.GAMEOVER_UI);
+			}
 		);
 	}
 
@@ -185,6 +218,7 @@ class Game extends Token {
 		this._whiteFlash = new FlashWhite({
 			onDestroy: function(){
 				// do stuff
+				self._whiteFlash = null;
 			},
 			_scene: application.stage,
 		});
@@ -239,6 +273,32 @@ class Game extends Token {
 		else return false;
 	}
 
+	freezePipesNShit(){
+        for(let i = 0; i < this.sceneGraph.length; i++){
+            var obj = this.sceneGraph[i];
+            if(
+            	obj.tag === "Pipe" ||
+                obj.tag === "Ground" ||
+                obj.tag === "Background" )
+            {
+                obj.freeze();
+            }
+        }
+	}
+
+    unfreezePipesNShit(){
+        for(let i = 0; i < this.sceneGraph.length; i++){
+            var obj = this.sceneGraph[i];
+            if(
+                obj.tag === "Pipe" ||
+                obj.tag === "Ground" ||
+                obj.tag === "Background" )
+            {
+                obj.unfreeze();
+            }
+        }
+    }
+
 	HandleCollision(obj1,obj2){
 		obj1.collisions.push(obj2);
 		obj2.collisions.push(obj1);
@@ -250,15 +310,12 @@ class Game extends Token {
 	physicsStep(dt){
 		this.physics.dtElapsed += dt;
 
+		this.player.collisions = [];
+
 		if(this.physics.dtElapsed >= this.physics.stepInterval){
 			this.physics.dtElapsed = 0;
 			for(let i = 0; i < this.physics.stepAmount; i++){
 				for(let o = 0; o < this.sceneGraph.length; o++){
-					if(this.sceneGraph[o].isPlayer === true) {
-						this.sceneGraph[o].collisions = [];
-						continue;
-					}
-
 					this.sceneGraph[o].collisions = [];
 					let coll = this.CheckCollision(this.player, this.sceneGraph[o]);
 					if(coll){

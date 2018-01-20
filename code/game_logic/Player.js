@@ -1,4 +1,5 @@
 let GameObject = require('../game_engine/GameObject.js');
+let jsAnim = require("js-easing-functions");
 
 class Player extends GameObject {
 	constructor(texture, props){
@@ -16,6 +17,12 @@ class Player extends GameObject {
 		this.animSpeed = Settings.GameSettings.birdAnimSpeed;
 		this._isFrozen = true;
 
+		this.recording = null;/*{
+			frames: [],
+			recordInterval: 20,
+			rewindSpeed: 1
+		};*/
+
 		this._deathAnimStates = {
 			STAGE1: 1337,
 			STAGE2: 1,
@@ -30,14 +37,6 @@ class Player extends GameObject {
 		this.anchor.y = 0.5;
 
 		Object.assign(this,props);
-	}
-
-	freeze(){
-		this._isFrozen = true;
-	}
-
-	unfreeze(){
-		this._isFrozen = false;
 	}
 
 	onAdd(scene,world){
@@ -89,6 +88,17 @@ class Player extends GameObject {
 			this.handleAnimation(dt);
 		} else if(this._deathAnim && this._deathAnim.playing === true){
 
+			if(this._deathAnim.onRewind && this._deathAnim.state === this._deathAnimStates.STAGE1){
+
+				this.recording.currentRecordTimer += dt;
+
+				if(this.recording.currentRecordTimer > this.recording.recordInterval){
+					this.recording.currentRecordTimer = 0;
+                    this.recording.frames.push({y: this.y, vY: this._vY});
+                    console.log('pushing rewind frame');
+				}
+			}
+
 			switch(this._deathAnim.state){
 				case this._deathAnimStates.STAGE1:
                     this.handleMovement(dt);
@@ -96,6 +106,9 @@ class Player extends GameObject {
                     if(this.y > Settings.PIXI.applicationSettings.height){
                         this._deathAnim.onFinish();
                         this._deathAnim.state = this._deathAnimStates.STAGE2;
+                        if(this.recording){
+                        	this.recording.currentFrame = this.recording.frames.length-1;
+						}
                     }
 					break;
                 case this._deathAnimStates.STAGE2:
@@ -103,7 +116,14 @@ class Player extends GameObject {
                         this._deathAnim.state = this._deathAnimStates.FINISHED;
                         break;
 					} else {
-                		// do shit
+
+                        this.handleAnimation(dt);
+                		this.handleRewind(dt);
+                		if(this.recording.currentFrame < 0){
+                			this._deathAnim.state = this._deathAnimStates.FINISHED;
+                			this._deathAnim.onRewind();
+						}
+
 					}
                     break;
                 case this._deathAnimStates.FINISHED:
@@ -112,6 +132,26 @@ class Player extends GameObject {
 
 		}
 
+	}
+
+	handleRewind(dt){
+		"use strict";
+		this.recording.animTimer += dt * this.recording.rewindSpeed;
+
+        this.y = lerp(
+			this.y,
+			this.recording.frames[this.recording.currentFrame].y,
+			0.4
+		);
+        this.vY = lerp(
+            this.vY,
+            this.recording.frames[this.recording.currentFrame].vY,
+            0.4
+        );
+
+		if(Math.round(this.y) === Math.round(this.recording.frames[this.recording.currentFrame].y)){
+			this.recording.currentFrame--;
+		}
 	}
 
 	jump(){
@@ -125,6 +165,22 @@ class Player extends GameObject {
 
 		this.freeze();
         this._vY = -Settings.GameSettings.birdJumpPower * 1.33;
+
+        if(onRewind){
+        	console.log('making rewind');
+        	this.recording = {
+                frames: [],
+                recordInterval: 5,
+				currentRecordTimer: 0,
+                rewindSpeed: 0.2,
+				currentFrame: 0,
+				animTimer: 0,
+				isPlaying: true,
+            };
+
+        	this.recording.frames.push({y: this.y, vY: this._vY});
+		}
+
 		this.isDying = true;
 		this._deathAnim = {
 			playing: true,
