@@ -7,7 +7,8 @@ class Background extends GameObject {
 		this.tag = "Background";
 
 		this.checkCollisions = false;
-		Object.assign(this,props);
+        if(props)
+            Object.assign(this,props);
 	}
 
 	endStep(dt){

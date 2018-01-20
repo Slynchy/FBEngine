@@ -32,7 +32,7 @@ Settings.prototype.init = function(){
 		gravityStrength: 0.35,
 		terminalVelocity: 4.5,
 		birdAnimSpeed: 30, // in milliseconds, how often to change sprite of anim
-		moveSpeed: 1.75, // move speed of the level
+		moveSpeed: 2.25, // move speed of the level
 		pipes: {
 			offset: 35, // The base amount to offset the pipes on the Y axis
 			chanceOffset: 40 // The amount that it COULD offset (i.e. if it's 50, then the offset can be 0 to 50)
@@ -42,12 +42,6 @@ Settings.prototype.init = function(){
 	this.Analytics = {
 		tid: 'UA-73612409-3',
 		url: 'https://www.google-analytics.com/collect?'
-	};
-
-	this.Graphics = {
-		width: 1366,
-		height: 768,
-		bgColor: 0xEEEEEE
 	};
 
 	this.resources = {
@@ -73,7 +67,8 @@ Settings.prototype.init = function(){
 		'mainMenu_play': 'mainMenu/playbutton.png',
 		'mainMenu_copyright': 'mainMenu/copyright.png',
 		'mainMenu_leaderboard': 'mainMenu/leaderboardbutton.png',
-		'mainMenu_title': 'mainMenu/title.png'
+		'mainMenu_title': 'mainMenu/title.png',
+        'white': 'white.png'
 	};
 
 	this.flowSettings = {

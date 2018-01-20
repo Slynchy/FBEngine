@@ -16,6 +16,15 @@ class Player extends GameObject {
 		this.animSpeed = Settings.GameSettings.birdAnimSpeed;
 		this._isFrozen = true;
 
+		this._deathAnimStates = {
+			STAGE1: 1337,
+			STAGE2: 1,
+			FINISHED: 2
+		};
+
+		this._isDying = false;
+        this._deathAnim = null;
+
 		// Setting centered sprite
 		this.anchor.x = 0.5;
 		this.anchor.y = 0.5;
@@ -39,17 +48,18 @@ class Player extends GameObject {
 		//this.x += 1;
         let _gravitySpeed = Settings.GameSettings.gravityStrength;
 		this._vY += _gravitySpeed * dt;
-		this._vY = this._vY > Settings.GameSettings.terminalVelocity ? Settings.GameSettings.terminalVelocity : this._vY;
+		this._vY = this._vY > Settings.GameSettings.terminalVelocity && this.isDying !== true ? Settings.GameSettings.terminalVelocity : this._vY;
 
 		this.y += this._vY * dt;
-
-		if(this.y > Settings.PIXI.applicationSettings.height){
-			this.y = 0;
-		}
 	}
 
 	handleAnimation(dt){
 		this.rotation = Math.atan2(this._vY, 5);
+
+		if(this.isDying === true) {
+            this.texture = this.animTextures[0];
+			return;
+        }
 
 		if(this._vY < 0) {
 
@@ -77,19 +87,55 @@ class Player extends GameObject {
 		if(!this._isFrozen){
 			this.handleMovement(dt);
 			this.handleAnimation(dt);
+		} else if(this._deathAnim && this._deathAnim.playing === true){
+
+			switch(this._deathAnim.state){
+				case this._deathAnimStates.STAGE1:
+                    this.handleMovement(dt);
+                    this.handleAnimation(dt);
+                    if(this.y > Settings.PIXI.applicationSettings.height){
+                        this._deathAnim.onFinish();
+                        this._deathAnim.state = this._deathAnimStates.STAGE2;
+                    }
+					break;
+                case this._deathAnimStates.STAGE2:
+                	if(!this._deathAnim.onRewind) {
+                        this._deathAnim.state = this._deathAnimStates.FINISHED;
+                        break;
+					} else {
+                		// do shit
+					}
+                    break;
+                case this._deathAnimStates.FINISHED:
+                    break;
+			}
+
 		}
 
 	}
 
 	jump(){
+		if(this.isDying || this.isFrozen) return;
 		this._vY = -Settings.GameSettings.birdJumpPower;
 	}
 
-	playDeathAnim(){
+    playDeathAnim(onFinish, onRewind){
+		"use strict";
+		if(typeof(onRewind)==='undefined') onRewind = null;
 
-	};
+		this.freeze();
+        this._vY = -Settings.GameSettings.birdJumpPower * 1.33;
+		this.isDying = true;
+		this._deathAnim = {
+			playing: true,
+			onFinish: onFinish,
+			onRewind: onRewind,
+			state: this._deathAnimStates.STAGE1
+		}
+	}
 
 	onCollide(){
+		if(this.isDying === true) return;
 		super.onCollide();
 
 		for(let i=0; i < this.collisions.length; i++){
@@ -105,8 +151,8 @@ class Player extends GameObject {
 				case "Pipe":
 				default:
 					if(flowController.game){
-						//flowController.game.gameOver();
-						flowController.game.quit();
+						flowController.game.gameOver();
+						//flowController.game.quit();
 					}
 					return;
 			}

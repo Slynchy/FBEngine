@@ -7,6 +7,7 @@ let Background = require("./Background.js");
 let Pipe = require("./Pipe.js");
 let Ground = require("./Ground.js");
 let InGameUI = require("./InGameUI.js");
+let FlashWhite = require("./FlashWhite.js");
 
 class Game extends Token {
 	constructor(props){
@@ -20,6 +21,8 @@ class Game extends Token {
 		this.score = 0;
 		this.counter = 0;
 		this.player = null;
+        this._whiteFlash = null;
+        this.ui = null;
 
 		this._states = {
 			DO_NOTHING: -1,
@@ -57,6 +60,7 @@ class Game extends Token {
 				break;
 			case this._states.GAMEOVER:
 				this.player.endStep(delta);
+                this._whiteFlash.endStep(delta);
 				break;
 		}
 	};
@@ -122,6 +126,7 @@ class Game extends Token {
 		this.jumpButton.on('pointerup', (event) =>{
 			if(this.ui && this.ui.gamestart && this.ui.gamestart.callback && this.ui.gamestart.isBeingRemoved === false){
 				this.ui.gamestart.callback();
+                self.player.jump();
 			} else {
 				self.player.jump();
 			}
@@ -156,21 +161,34 @@ class Game extends Token {
 
 	gameOver(){
 		"use strict";
+		let self = this;
+
+		this.state = this._states.GAMEOVER;
 		this.flashWhite();
 		this.player.playDeathAnim(
 			/* onFinish, onRewindFinish */
 			function(){
 				// onFinish
+				self.destroy();
 			},
-			function(){
+			//function(){
 				// onRewindFinish
-			}
+			//}
 		);
 	}
 
 	flashWhite(){
 		"use strict";
 		// create white object and fade alpha to 0, destroy object when alpha hits 0
+		let self = this;
+
+		this._whiteFlash = new FlashWhite({
+			onDestroy: function(){
+				// do stuff
+			},
+			_scene: application.stage,
+		});
+		this.addObjectToScene(this._whiteFlash);
 	}
 
 	changeState(state){
