@@ -38,6 +38,8 @@ class Analytics {
 		"use strict";
 		let self = this;
 
+		if(this.enabled === false) return;
+
 		if(typeof(value) === "undefined") value = 1;
 
 		if(this.mode === 'FBINSTANT'){
