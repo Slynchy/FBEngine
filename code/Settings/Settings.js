@@ -51,6 +51,7 @@ Settings.prototype.init = function(){
 	};
 
 	this.Analytics = {
+	    enabled: false,
 		tid: 'UA-73612409-3',
 		url: 'https://www.google-analytics.com/collect?' // deprecated
 	};
@@ -127,6 +128,11 @@ Settings.prototype.init = function(){
 		mainMenu: mainMenu,
 		inGame: game
 	}
+
+    this.adverts = {
+        placementId: '0000',
+        enabled: false
+    }
 
 };
 

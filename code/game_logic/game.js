@@ -201,6 +201,10 @@ class Game extends Token {
 		let self = this;
 		if(typeof(canShowAd) === 'undefined') canShowAd = true;
 
+		if(this.score >= 5){
+            Analytics.SendEvent('score', null, null, this.score);
+		}
+
 		this.state = this._states.GAMEOVER;
 		this.flashWhite();
 		this.ui.hideScore('set');

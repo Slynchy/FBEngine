@@ -14,6 +14,13 @@ global.Settings = Settings;
 //global.gsApi = gsApi;
 
 /*
+	AD API INITIALIZATION
+*/
+
+const adAPI = require("./code/game_engine/Adverts.js");
+global.adAPI = adAPI;
+
+/*
 	SAVE DATA INITIALIZATION
 */
 

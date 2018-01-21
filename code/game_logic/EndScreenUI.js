@@ -157,6 +157,7 @@ class EndScreenUI extends ContainerObject {
         this.share_button.x = this.main_ui.width / 2 + 40;
         this.share_button.y = this.main_ui.height + 20;
         this.share_button.on('pointerup', (event) =>{
+            Analytics.SendEvent('share_button_clicked');
             console.log('sharreee!');
             FBInstant.shareAsync({
                 intent: 'REQUEST',

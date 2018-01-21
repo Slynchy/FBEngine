@@ -20,12 +20,18 @@ FlowController.prototype.main = function(){
 		this.currentAction = this.startFBInstant;
 		FBInstant.initializeAsync()
 			.then(function() {
-				console.log("[flowController] FBInstant inititalized");
-				self.currentAction = self.initializeSaveData;
+				console.log("[flowController] Initializing ad api");
+                adAPI.initialize(function(){
+                    self.currentAction = self.initializeSaveData;
+				});
 			});
 	} else {
 		this.currentAction = this.startLoading;
 	}
+};
+
+FlowController.prototype.startFBInstant = function(){
+    "use strict";
 };
 
 FlowController.prototype.initializeSaveData = function(){
@@ -117,10 +123,6 @@ FlowController.prototype.waitForLoading = function(){
 	} else {
 		FBInstant.setLoadingProgress(PIXI.loader.progress);
 	}
-};
-
-FlowController.prototype.startFBInstant = function(){
-	"use strict";
 };
 
 FlowController.prototype.showSplashScreen = function(){

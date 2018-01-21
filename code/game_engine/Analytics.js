@@ -15,6 +15,8 @@ class Analytics {
 
 		this.mode = 'FBINSTANT';
 
+		this.enabled = Settings.Analytics.enabled;
+
 		if(typeof(debuggingMode) === "undefined"){
 			this._debug = false;
 		} else {

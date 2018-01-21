@@ -40,8 +40,12 @@ class RewardedAdDialog extends ContainerObject {
         this.playButton.scale.y = 2;
         this.playButton.alpha = 1.0;
         this.playButton.on('pointerup', function(){
-            self.watchedAd = true;
-            self.destroy();
+            Analytics.SendEvent('clicked_ad');
+            adAPI.showAd(function(){
+                self.watchedAd = true;
+                Analytics.SendEvent('finished_ad');
+                self.destroy();
+            })
         });
         this.buttonContainer.addChild(this.playButton);
 
@@ -53,6 +57,7 @@ class RewardedAdDialog extends ContainerObject {
         this.nothanksButton.alpha = 1.0;
         this.nothanksButton.y = 300;
         this.nothanksButton.on('pointerup', function(){
+            Analytics.SendEvent('skipped_ad');
             self.destroy();
         });
         this.buttonContainer.addChild(this.nothanksButton);
