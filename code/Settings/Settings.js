@@ -6,7 +6,18 @@ let Settings = function() {
 };
 
 Settings.prototype.init = function(){
+
+    this.DEBUG = {
+        suppressLoadingLogs: true,
+    };
+
 	this.PIXI = {};
+
+	this.SaveData = {
+	    defaultSaveData:{
+	        highScore: 0
+        }
+    };
 
 	this.PIXI.applicationSettings = {
 		width: 384, // REQUIRED

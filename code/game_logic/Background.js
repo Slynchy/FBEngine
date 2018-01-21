@@ -28,7 +28,7 @@ class Background extends GameObject {
             this.x += (Settings.GameSettings.moveSpeed * dt) * this.parralaxSpeed;
 
             if(this.x > Settings.PIXI.applicationSettings.width){
-                this.x -= Settings.PIXI.applicationSettings.width * 2 + this.width;
+                this.x -= Settings.PIXI.applicationSettings.width * 2;
             }
         }
 	}

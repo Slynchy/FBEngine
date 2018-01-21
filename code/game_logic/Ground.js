@@ -21,7 +21,7 @@ class Ground extends GameObject {
             this.x += Settings.GameSettings.moveSpeed * dt;
 
             if(this.x > Settings.PIXI.applicationSettings.width){
-                this.x -= Settings.PIXI.applicationSettings.width * 2 + this.width;
+                this.x -= Settings.PIXI.applicationSettings.width * 2;
             }
 		}
 	}

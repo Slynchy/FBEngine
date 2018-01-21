@@ -31,7 +31,8 @@ class Game extends Token {
 			STARTING: 0,
 			INGAME: 1,
 			GAMEOVER: 2,
-			GAMEOVER_UI: 3
+			GAMEOVER_UI: 3,
+            REWARDED_AD: 0x6c6f616473616d6f6e6579
 		};
 		this.state = this._states.DO_NOTHING;
 
@@ -199,7 +200,10 @@ class Game extends Token {
 		this.ui.hideScore('set');
 		this.freezePipesNShit();
 
-		let showAd = false;
+		if(SaveData.data.highScore < this.score)
+        	SaveData.saveData('highScore', this.score);
+
+		let showAd = true;
 		if(showAd === false){
             this.player.playDeathAnim(
                 function(){
@@ -261,6 +265,8 @@ class Game extends Token {
             case this._states.GAMEOVER_UI:
             	this.gameOverUI = new EndScreenUI({score: this.score});
             	this.scene.addChild(this.gameOverUI);
+                break;
+            case this._states.REWARDED_AD:
                 break;
 		}
 	}

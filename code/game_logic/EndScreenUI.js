@@ -111,21 +111,21 @@ class EndScreenUI extends ContainerObject {
         this.scoreContainer.addChild(this.highScore_digit3);
 
         digit1 =  digit2 =  digit3 = '0';
-        if(this.score.toString().length === 1){
+        if(SaveData.data.highScore.toString().length === 1){
             digit1 = "0";
             this.highScore_digit1.alpha = 0;
             digit2 = "0";
             this.highScore_digit2.alpha = 0;
-            digit3 = this.score.toString()[0];
+            digit3 = SaveData.data.highScore.toString()[0];
         } else if(this.score.toString().length === 2){
             digit1 = "0";
             this.highScore_digit1.alpha = 0;
-            digit2 = this.score.toString()[0];
-            digit3 = this.score.toString()[1];
+            digit2 = SaveData.data.highScore.toString()[0];
+            digit3 = SaveData.data.highScore.toString()[1];
         } else {
-            digit1 = this.score.toString()[0];
-            digit2 = this.score.toString()[1];
-            digit3 = this.score.toString()[2];
+            digit1 = SaveData.data.highScore.toString()[0];
+            digit2 = SaveData.data.highScore.toString()[1];
+            digit3 = SaveData.data.highScore.toString()[2];
         }
         this.highScore_digit1.texture = _TEXTURES["number" + digit1 + "_s"];
         this.highScore_digit2.texture = _TEXTURES["number" + digit2 + "_s"];

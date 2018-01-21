@@ -20,12 +20,26 @@ FlowController.prototype.main = function(){
 		this.currentAction = this.startFBInstant;
 		FBInstant.initializeAsync()
 			.then(function() {
-				console.log("[flowController] FACEBOOK INITITIALIZED!");
-				self.currentAction = self.startLoading;
+				console.log("[flowController] FBInstant inititalized");
+				self.currentAction = self.initializeSaveData;
 			});
 	} else {
 		this.currentAction = this.startLoading;
 	}
+};
+
+FlowController.prototype.initializeSaveData = function(){
+	"use strict";
+    console.log('[flowController] initializeSaveData');
+    let self = this;
+	SaveData.initialize(function(){
+		self.currentAction = self.startLoading;
+	});
+	this.currentAction = this.waitForSaveData;
+};
+
+FlowController.prototype.waitForSaveData = function(){
+    "use strict";
 };
 
 FlowController.prototype.startLoading = function(){
@@ -43,7 +57,8 @@ FlowController.prototype.startLoading = function(){
 	}
 
 	PIXI.loader.onLoad.add((file, res) => {
-		console.log("[flowController] Loaded resource: " + res.url);
+		if(!Settings.DEBUG.suppressLoadingLogs)
+			console.log("[flowController] Loaded resource: " + res.url);
 	});
 	PIXI.loader.onError.add((err) => {
 		throw new Error("[flowController] Failed to load file! " + err.stack);
@@ -82,7 +97,9 @@ FlowController.prototype.startLoading = function(){
 
 FlowController.prototype.waitForLoading = function(){
 	"use strict";
-	console.log("[flowController] waitForLoading");
+    if(!Settings.DEBUG.suppressLoadingLogs)
+		console.log("[flowController] waitForLoading");
+
 	let self = this;
 
 	if(PIXI.loader.progress === 100 && this.finishedLoading === true) {
