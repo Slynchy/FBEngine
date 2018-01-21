@@ -90,6 +90,7 @@ Settings.prototype.init = function(){
 		'mainMenu_leaderboard': 'mainMenu/leaderboardbutton.png',
 		'mainMenu_title': 'mainMenu/title.png',
         'white': 'white.png',
+        'black': 'black.png',
         'static_effect0': 'static_effect/0.webp',
         'static_effect1': 'static_effect/1.webp',
         'static_effect2': 'static_effect/2.webp',
@@ -115,7 +116,11 @@ Settings.prototype.init = function(){
         'ok_button': 'endscreen/ok.png',
         'menu_button': 'endscreen/menu.png',
         'share_button': 'endscreen/share.png',
-        'share_button_grey': 'endscreen/share_grey.png'
+        'share_button_grey': 'endscreen/share_grey.png',
+        'sunburst': 'rewardedAd/sunburst.png',
+        'playAdButton': 'rewardedAd/playAdButton.png',
+        'noThanks_button': 'rewardedAd/nothanks.png',
+        'ad_description': 'rewardedAd/desc.png'
 	};
 
 	this.flowSettings = {

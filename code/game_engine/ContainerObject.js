@@ -16,6 +16,10 @@ class ContainerObject extends PIXI.Container {
 		"use strict";
 	}
 
+	destroy(){
+
+	}
+
 	physicsStep(){
 		"use strict";
 	}

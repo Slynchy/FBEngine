@@ -79,7 +79,7 @@ class Pipe extends PIXI.Container {
 		if(this.rewind){
             this.x += Settings.GameSettings.moveSpeed * dt;
 
-            if(this.x > Settings.PIXI.applicationSettings.width) {
+            if(this.x > Settings.PIXI.applicationSettings.width * 2) {
                 this.x -= (Settings.PIXI.applicationSettings.width * 2) + pipe_green.width + 20;
                 this.randomisePos();
                 this.scoreCollider.width = pipe_green.width;

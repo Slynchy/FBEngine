@@ -11,10 +11,10 @@ class StaticEffect extends GameObject {
 
         this.numberOfFrames = 8;
         this.timer = 0;
-        this.interval = 4;
+        this.interval = 3;
         this.frame = 0;
 
-        this.alpha = 0.3;
+        this.alpha = 0.5;
 
         this.static = new GameObject(static0);
         this.static.scale.x = Settings.PIXI.applicationSettings.width / this.static.width;
@@ -24,7 +24,7 @@ class StaticEffect extends GameObject {
 
         this.numberOfStaticFrames = 8;
         this.staticTimer = 0;
-        this.staticInterval = 4;
+        this.staticInterval = 1;
         this.staticFrame = 0;
 
         if(props)

@@ -26,9 +26,9 @@ class InGameUI extends ContainerObject {
 		this.numbers.push(number9);
 
 		this.scoreText = [];
+		this.scoreText.push(new GameObject(null,{ checkCollisions: false }));
 		this.scoreText.push(new GameObject(number0,{ checkCollisions: false }));
-		this.scoreText.push(new GameObject(number0,{ checkCollisions: false }));
-		this.scoreText.push(new GameObject(number0,{ checkCollisions: false }));
+		this.scoreText.push(new GameObject(null,{ checkCollisions: false }));
 
 		let offset = Settings.PIXI.applicationSettings.width / 2 - ( (number0.width * 3) / 2);
 		this.scoreText[0].x = offset;
@@ -61,12 +61,25 @@ class InGameUI extends ContainerObject {
 		}
 	}
 
+    showScore(setOrDo){
+
+        if(setOrDo === 'set'){
+            this._hideScore = false;
+        } else {
+            this.scoreText[0].alpha = lerp(this.scoreText[0].alpha, 1, 0.04 );
+            this.scoreText[1].alpha = lerp(this.scoreText[1].alpha, 1, 0.04 );
+            this.scoreText[2].alpha = lerp(this.scoreText[2].alpha, 1, 0.04 );
+        }
+    }
+
 	endStep(dt){
 		"use strict";
 		super.endStep(dt);
 
         if(this._hideScore === true){
         	this.hideScore('do');
+		} else {
+        	this.showScore('do');
 		}
 
 		if(this.gamestart){

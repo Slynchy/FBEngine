@@ -10,6 +10,7 @@ let InGameUI = require("./InGameUI.js");
 let EndScreenUI = require("./EndScreenUI.js");
 let FlashWhite = require("./FlashWhite.js");
 let StaticEffect = require("./StaticEffect.js");
+let RewardedAdDialog = require("./RewardedAdDialog.js");
 
 class Game extends Token {
 	constructor(props){
@@ -79,6 +80,10 @@ class Game extends Token {
             	if(this.gameOverUI)
                     this.gameOverUI.endStep(delta);
             	break;
+            case this._states.REWARDED_AD:
+                if(this.rewardedAdUI)
+                    this.rewardedAdUI.endStep(delta);
+                break;
 		}
 	};
 
@@ -191,9 +196,10 @@ class Game extends Token {
 		this.scene.addChild(this.rewindUI);
 	}
 
-	gameOver(){
+	gameOver(canShowAd){
 		"use strict";
 		let self = this;
+		if(typeof(canShowAd) === 'undefined') canShowAd = true;
 
 		this.state = this._states.GAMEOVER;
 		this.flashWhite();
@@ -204,6 +210,11 @@ class Game extends Token {
         	SaveData.saveData('highScore', this.score);
 
 		let showAd = true;
+
+		if(canShowAd === false){
+			showAd = false;
+		}
+
 		if(showAd === false){
             this.player.playDeathAnim(
                 function(){
@@ -223,7 +234,7 @@ class Game extends Token {
                     // onRewindFinish
                     //self.destroy();
                     self.scene.removeChild(self.rewindUI);
-                    self.changeState(self._states.GAMEOVER_UI);
+                    self.changeState(self._states.REWARDED_AD);
                 }
             );
 		}
@@ -267,6 +278,37 @@ class Game extends Token {
             	this.scene.addChild(this.gameOverUI);
                 break;
             case this._states.REWARDED_AD:
+            	this.rewardedAdUI = new RewardedAdDialog(
+            		function(){ // onSuccess
+						self.changeState(self._states.INGAME);
+
+                        self.player.unfreeze();
+                        self.player.isDying = false;
+                        self.player.reset();
+
+                        self.unfreezePipesNShit();
+
+                        self.scene.removeChild(self.rewardedAdUI);
+                        self.rewardedAdUI = null;
+
+                        for(let i = 0; i < self.sceneGraph.length; i++){
+                            let obj = self.sceneGraph[i];
+                            if(obj.tag === "Pipe" ||
+                                obj.tag === "Ground" ||
+                                obj.tag === "Background" ){
+                                obj.rewind = false;
+                            }
+                        }
+
+                        self.ui.showScore('set');
+					},
+					function(){ // onClose
+						self.scene.removeChild(self.rewardedAdUI);
+						self.rewardedAdUI = null;
+						self.changeState(self._states.GAMEOVER_UI);
+					}
+				);
+            	this.scene.addChild(this.rewardedAdUI);
                 break;
 		}
 	}

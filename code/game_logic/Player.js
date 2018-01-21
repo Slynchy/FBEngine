@@ -39,6 +39,11 @@ class Player extends GameObject {
 		Object.assign(this,props);
 	}
 
+	reset(){
+        this.recording = null;
+        this._deathAnim = null;
+	}
+
 	onAdd(scene,world){
 		super.onAdd(scene,world);
 	}
@@ -204,13 +209,17 @@ class Player extends GameObject {
 					flowController.game.ui.updateScore(++flowController.game.score);
 					break;
 				case "Ground":
+                    if(flowController.game){
+                        flowController.game.gameOver(false);
+                    }
+                    break;
 				case "Pipe":
-				default:
 					if(flowController.game){
-						flowController.game.gameOver();
-						//flowController.game.quit();
+						flowController.game.gameOver(true);
 					}
 					return;
+				default:
+					break;
 			}
 		}
 	}

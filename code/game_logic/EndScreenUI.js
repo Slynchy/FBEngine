@@ -18,6 +18,12 @@ class EndScreenUI extends ContainerObject {
 
         this.revealButtons = false;
 
+        this.bg = new GameObject(black, {checkCollisions: false});
+        this.bg.width = Settings.PIXI.applicationSettings.width;
+        this.bg.height = Settings.PIXI.applicationSettings.height;
+        this.bg.alpha = 0.0;
+        this.addChild(this.bg);
+
         this.gameOver = new GameObject(gameover, {checkCollisions: false});
         this.gameOver.anchor.x = 0.5;
         this.gameOver.anchor.y = 0.5;
@@ -175,6 +181,7 @@ class EndScreenUI extends ContainerObject {
         "use strict";
         super.endStep(dt);
 
+        this.bg.alpha = lerp(this.bg.alpha, 0.6, 0.007)
         this.gameOver.alpha = lerp(this.gameOver.alpha, 1, 0.01);
         if(this.gameOver.alpha > 0.7){
             if(!this.main.startTime){
