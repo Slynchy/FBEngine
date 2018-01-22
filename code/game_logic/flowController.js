@@ -88,8 +88,20 @@ FlowController.prototype.startLoading = function(){
 		global._TEXTURES = {};
 		for(let k in resources){
 			if(resources.hasOwnProperty(k)){
-				global[k] = resources[k].texture;
-				global._TEXTURES[k] = resources[k].texture;
+				if(!resources[k].texture){
+					if(
+						resources[k].url.includes('.ogg', Math.floor(resources[k].url.length * 0.5)) ||
+						resources[k].url.includes('.mp3', Math.floor(resources[k].url.length * 0.5))
+					){
+						// audio is handled seperately
+							//console.log("loaded " + k);
+					} else {
+						global[k] = resources[k];
+					}
+				} else {
+					global[k] = resources[k].texture;
+					global._TEXTURES[k] = resources[k].texture;
+				}
 			}
 		}
 		self.finishedLoading = true;

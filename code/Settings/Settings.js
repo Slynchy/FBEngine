@@ -121,7 +121,9 @@ Settings.prototype.init = function(){
         'sunburst': 'rewardedAd/sunburst.png',
         'playAdButton': 'rewardedAd/playAdButton.png',
         'noThanks_button': 'rewardedAd/nothanks.png',
-        'ad_description': 'rewardedAd/desc.png'
+		'ad_description': 'rewardedAd/desc.png',
+
+		'test_sound': 'test.ogg'
 	};
 
 	this.flowSettings = {
