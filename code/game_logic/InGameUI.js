@@ -25,27 +25,36 @@ class InGameUI extends ContainerObject {
 		this.numbers.push(number8);
 		this.numbers.push(number9);
 
+		this.score = 0;
+
 		this.scoreText = [];
-		this.scoreText.push(new GameObject(null,{ checkCollisions: false }));
 		this.scoreText.push(new GameObject(number0,{ checkCollisions: false }));
-		this.scoreText.push(new GameObject(null,{ checkCollisions: false }));
+		this.scoreText.push(new GameObject(number0,{ checkCollisions: false }));
+		this.scoreText.push(new GameObject(number0,{ checkCollisions: false }));
+		for(let i = 0; i < this.scoreText.length; i++){
+			this.scoreText[i].anchor.x = 0.5;
+			this.scoreText[i].anchor.y = 0.5;
+		}
 
-		let offset = Settings.PIXI.applicationSettings.width / 2 - ( (number0.width * 3) / 2);
-		this.scoreText[0].x = offset;
-		this.scoreText[1].x = offset + number0.width;
-		this.scoreText[2].x = offset + (number0.width*2);
+		this.scoreContainer = new PIXI.Container();
+		this.scoreContainer.x = Settings.PIXI.applicationSettings.width / 2;
+		this.scoreContainer.y = Settings.PIXI.applicationSettings.height / 5;
 
-		this.scoreText[0].y = Settings.PIXI.applicationSettings.height / 5;
-		this.scoreText[1].y = Settings.PIXI.applicationSettings.height / 5;
-		this.scoreText[2].y = Settings.PIXI.applicationSettings.height / 5;
+		this.scoreText[0].x = -number0.width;
+		this.scoreText[1].x = 0;
+		this.scoreText[2].x = number0.width;
 
 		this.scoreText[0].hide();
+		this.scoreText[0]._value = -1;
+		this.scoreText[1]._value = 0;
 		this.scoreText[2].hide();
+		this.scoreText[2]._value = -1;
 
 
-		this.addChild(this.scoreText[0]);
-		this.addChild(this.scoreText[1]);
-		this.addChild(this.scoreText[2]);
+		this.scoreContainer.addChild(this.scoreText[0]);
+		this.scoreContainer.addChild(this.scoreText[1]);
+		this.scoreContainer.addChild(this.scoreText[2]);
+		this.addChild(this.scoreContainer);
 
 		Object.assign(this,props);
 	}
@@ -66,9 +75,17 @@ class InGameUI extends ContainerObject {
         if(setOrDo === 'set'){
             this._hideScore = false;
         } else {
-            this.scoreText[0].alpha = lerp(this.scoreText[0].alpha, 1, setOrDo * 0.3 );
-            this.scoreText[1].alpha = lerp(this.scoreText[1].alpha, 1, setOrDo * 0.3 );
-            this.scoreText[2].alpha = lerp(this.scoreText[2].alpha, 1, setOrDo * 0.3 );
+			if(this.scoreText[0]._value !== -1) {
+				this.scoreText[0].alpha = lerp(this.scoreText[0].alpha, 1, setOrDo * 0.3);
+			}
+
+            //if(this.scoreText[1]._value !== -1){
+				this.scoreText[1].alpha = lerp(this.scoreText[1].alpha, 1, setOrDo * 0.3 );
+			//}
+
+			if(this.scoreText[2]._value !== -1){
+            	this.scoreText[2].alpha = lerp(this.scoreText[2].alpha, 1, setOrDo * 0.3 );
+            }
         }
     }
 
@@ -131,28 +148,39 @@ class InGameUI extends ContainerObject {
 
 	updateScore(score){
 		"use strict";
-		var digits = score.toString();
+		let digits = score.toString();
+		this.score = score;
 		switch(digits.length){
 			case 1:
 				this.scoreText[0].hide();
 				this.scoreText[1].show();
 				this.scoreText[2].hide();
 				this.scoreText[1].texture = this.numbers[Number.parseInt(digits[0])];
+				this.scoreText[1]._value = digits[0];
 				break;
 			case 2:
 				this.scoreText[0].show();
 				this.scoreText[1].show();
 				this.scoreText[2].hide();
 				this.scoreText[0].texture = this.numbers[Number.parseInt(digits[0])];
+				this.scoreText[0]._value = digits[0];
 				this.scoreText[1].texture = this.numbers[Number.parseInt(digits[1])];
+				this.scoreText[1]._value = digits[1];
+
+				this.scoreContainer.x = (Settings.PIXI.applicationSettings.width / 2) + (number0.width / 2);
 				break;
 			case 3:
 				this.scoreText[0].show();
 				this.scoreText[1].show();
 				this.scoreText[2].show();
 				this.scoreText[0].texture = this.numbers[Number.parseInt(digits[0])];
+				this.scoreText[0]._value = digits[0];
 				this.scoreText[1].texture = this.numbers[Number.parseInt(digits[1])];
+				this.scoreText[1]._value = digits[1];
 				this.scoreText[2].texture = this.numbers[Number.parseInt(digits[2])];
+				this.scoreText[2]._value = digits[2];
+
+				this.scoreContainer.x = (Settings.PIXI.applicationSettings.width / 2);
 				break;
 		}
 	}
