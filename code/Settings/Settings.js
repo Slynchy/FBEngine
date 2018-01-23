@@ -126,6 +126,12 @@ Settings.prototype.init = function(){
 		'test_sound': 'test.ogg'
 	};
 
+	this.audioSettings = {
+		globalVolume: 1.0,
+		sfxVolume: 1.0, // unusued
+		musicVolume: 1.0, // unused
+	}
+
 	this.flowSettings = {
 		mainMenu: mainMenu,
 		inGame: game
