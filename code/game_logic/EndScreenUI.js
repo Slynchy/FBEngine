@@ -123,7 +123,7 @@ class EndScreenUI extends ContainerObject {
             digit2 = "0";
             this.highScore_digit2.alpha = 0;
             digit3 = SaveData.data.highScore.toString()[0];
-        } else if(this.score.toString().length === 2){
+        } else if(SaveData.data.highScore.toString().length === 2){
             digit1 = "0";
             this.highScore_digit1.alpha = 0;
             digit2 = SaveData.data.highScore.toString()[0];
