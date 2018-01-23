@@ -51,10 +51,10 @@ class Player extends GameObject {
 	handleMovement(dt){
 		//this.x += 1;
         let _gravitySpeed = Settings.GameSettings.gravityStrength;
-		this._vY += _gravitySpeed * dt;
+		this._vY += _gravitySpeed * (1.0 * dt);
 		this._vY = this._vY > Settings.GameSettings.terminalVelocity && this.isDying !== true ? Settings.GameSettings.terminalVelocity : this._vY;
 
-		this.y += this._vY * dt;
+		this.y += this._vY * (1.0 * dt);
 	}
 
 	handleAnimation(dt){
@@ -97,7 +97,7 @@ class Player extends GameObject {
 
 				this.recording.currentRecordTimer += dt;
 
-				if(this.recording.currentRecordTimer > this.recording.recordInterval){
+				if(this.recording.currentRecordTimer >= this.recording.recordInterval){
 					this.recording.currentRecordTimer = 0;
                     this.recording.frames.push({y: this.y, vY: this._vY});
                     console.log('pushing rewind frame');
@@ -113,6 +113,8 @@ class Player extends GameObject {
                         this._deathAnim.state = this._deathAnimStates.STAGE2;
                         if(this.recording){
                         	this.recording.currentFrame = this.recording.frames.length-1;
+                        	this.recording.initialPos = this.y;
+                        	this.recording.initialVel = this.vY;
 						}
                     }
 					break;
@@ -142,20 +144,27 @@ class Player extends GameObject {
 	handleRewind(dt){
 		"use strict";
 		this.recording.animTimer += dt * this.recording.rewindSpeed;
+		if(!this._rewindAnimTimer){
+			this._rewindAnimTimer = 0;
+		}
+		this._rewindAnimTimer += dt * 0.3;
 
         this.y = lerp(
-			this.y,
+			this.recording.currentFrame < (this.recording.frames.length-1) ? this.recording.frames[this.recording.currentFrame+1].y : this.recording.initialPos,
 			this.recording.frames[this.recording.currentFrame].y,
-			0.4
+			this._rewindAnimTimer
 		);
         this.vY = lerp(
-            this.vY,
+			this.recording.currentFrame < (this.recording.frames.length-1) ? this.recording.frames[this.recording.currentFrame+1].vY : this.recording.initialVel,
             this.recording.frames[this.recording.currentFrame].vY,
-            0.4
+			this._rewindAnimTimer
         );
 
-		if(Math.round(this.y) === Math.round(this.recording.frames[this.recording.currentFrame].y)){
+		//if(Math.round(this.y) === Math.round(this.recording.frames[this.recording.currentFrame].y)){
+		if(this._rewindAnimTimer >= 1.0){
+			console.log("frame");
 			this.recording.currentFrame--;
+			this._rewindAnimTimer = 0;
 		}
 	}
 

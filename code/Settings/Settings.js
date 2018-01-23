@@ -8,7 +8,7 @@ let Settings = function() {
 Settings.prototype.init = function(){
 
     this.DEBUG = {
-        suppressLoadingLogs: true,
+        suppressLoadingLogs: false,
     };
 
 	this.PIXI = {};

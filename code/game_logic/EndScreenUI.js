@@ -79,9 +79,6 @@ class EndScreenUI extends ContainerObject {
         this.score_digit2 = new GameObject(number0_s, {checkCollisions: false});
         this.score_digit2.x = -(number0_s.width * this.score_digit1.scale.x);
         this.score_digit3 = new GameObject(number0_s, {checkCollisions: false});
-        this.scoreContainer.addChild(this.score_digit1);
-        this.scoreContainer.addChild(this.score_digit2);
-        this.scoreContainer.addChild(this.score_digit3);
 
         let digit1,digit2,digit3;
         if(this.score.toString().length === 1){
@@ -103,6 +100,9 @@ class EndScreenUI extends ContainerObject {
         this.score_digit1.texture = _TEXTURES["number" + digit1 + "_s"];
         this.score_digit2.texture = _TEXTURES["number" + digit2 + "_s"];
         this.score_digit3.texture = _TEXTURES["number" + digit3 + "_s"];
+		this.scoreContainer.addChild(this.score_digit1);
+		this.scoreContainer.addChild(this.score_digit2);
+		this.scoreContainer.addChild(this.score_digit3);
 
         this.highScore_digit1 = new GameObject(number0_s, {checkCollisions: false});
         this.highScore_digit1.x = -((number0_s.width * this.score_digit1.scale.x) * 2);
@@ -112,9 +112,6 @@ class EndScreenUI extends ContainerObject {
         this.highScore_digit2.y = this.highScore_digit1.y;
         this.highScore_digit3 = new GameObject(number0_s, {checkCollisions: false});
         this.highScore_digit3.y = this.highScore_digit1.y;
-        this.scoreContainer.addChild(this.highScore_digit1);
-        this.scoreContainer.addChild(this.highScore_digit2);
-        this.scoreContainer.addChild(this.highScore_digit3);
 
         digit1 =  digit2 =  digit3 = '0';
         if(SaveData.data.highScore.toString().length === 1){
@@ -136,6 +133,16 @@ class EndScreenUI extends ContainerObject {
         this.highScore_digit1.texture = _TEXTURES["number" + digit1 + "_s"];
         this.highScore_digit2.texture = _TEXTURES["number" + digit2 + "_s"];
         this.highScore_digit3.texture = _TEXTURES["number" + digit3 + "_s"];
+		this.scoreContainer.addChild(this.highScore_digit1);
+		this.scoreContainer.addChild(this.highScore_digit2);
+		this.scoreContainer.addChild(this.highScore_digit3);
+
+		this.highScore_digit1.tag = "highScore_digit1";
+		this.highScore_digit2.tag = "highScore_digit2";
+		this.highScore_digit3.tag = "highScore_digit3";
+		this.score_digit1.tag = "score_digit1";
+		this.score_digit2.tag = "score_digit2";
+		this.score_digit3.tag = "score_digit3";
 
         this.main.addChild(this.scoreContainer);
 
@@ -182,8 +189,8 @@ class EndScreenUI extends ContainerObject {
         "use strict";
         super.endStep(dt);
 
-        this.bg.alpha = lerp(this.bg.alpha, 0.6, 0.007)
-        this.gameOver.alpha = lerp(this.gameOver.alpha, 1, 0.01);
+        this.bg.alpha = lerp(this.bg.alpha, 0.6, dt * 0.3);
+        this.gameOver.alpha = lerp(this.gameOver.alpha, 1, dt * 0.3);
         if(this.gameOver.alpha > 0.7){
             if(!this.main.startTime){
                 this.main.startTime = Date.now();
@@ -206,8 +213,8 @@ class EndScreenUI extends ContainerObject {
         }
 
         if(this.revealButtons){
-            this.share_button.alpha = lerp(this.share_button.alpha, 1, 0.06);
-            this.ok_button.alpha = lerp(this.ok_button.alpha, 1, 0.06);
+            this.share_button.alpha = lerp(this.share_button.alpha, 1, dt * 0.3);
+            this.ok_button.alpha = lerp(this.ok_button.alpha, 1, dt * 0.3);
         }
     }
 

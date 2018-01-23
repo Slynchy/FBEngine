@@ -119,9 +119,16 @@ global.RemoveToken = RemoveToken;
 	MAIN CODE INITIALIZATION
 */
 
+let deltaExperimental = Date.now();
+
 function MainLoop (delta) {
 	"use strict";
 	let deltaTime = delta;
+
+	if(deltaExperimental){
+		deltaTime = (Date.now() - deltaExperimental) * 0.07;
+		deltaExperimental = Date.now();
+	}
 
 	if(flowController.currentAction)
 		flowController.currentAction();

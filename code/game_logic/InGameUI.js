@@ -55,9 +55,9 @@ class InGameUI extends ContainerObject {
 		if(setOrDo === 'set'){
 			this._hideScore = true;
 		} else {
-            this.scoreText[0].alpha = lerp(this.scoreText[0].alpha, 0, 0.04 );
-            this.scoreText[1].alpha = lerp(this.scoreText[1].alpha, 0, 0.04 );
-            this.scoreText[2].alpha = lerp(this.scoreText[2].alpha, 0, 0.04 );
+            this.scoreText[0].alpha = lerp(this.scoreText[0].alpha, 0, setOrDo * 0.3 );
+            this.scoreText[1].alpha = lerp(this.scoreText[1].alpha, 0, setOrDo * 0.3 );
+            this.scoreText[2].alpha = lerp(this.scoreText[2].alpha, 0, setOrDo * 0.3 );
 		}
 	}
 
@@ -66,9 +66,9 @@ class InGameUI extends ContainerObject {
         if(setOrDo === 'set'){
             this._hideScore = false;
         } else {
-            this.scoreText[0].alpha = lerp(this.scoreText[0].alpha, 1, 0.04 );
-            this.scoreText[1].alpha = lerp(this.scoreText[1].alpha, 1, 0.04 );
-            this.scoreText[2].alpha = lerp(this.scoreText[2].alpha, 1, 0.04 );
+            this.scoreText[0].alpha = lerp(this.scoreText[0].alpha, 1, setOrDo * 0.3 );
+            this.scoreText[1].alpha = lerp(this.scoreText[1].alpha, 1, setOrDo * 0.3 );
+            this.scoreText[2].alpha = lerp(this.scoreText[2].alpha, 1, setOrDo * 0.3 );
         }
     }
 
@@ -77,9 +77,9 @@ class InGameUI extends ContainerObject {
 		super.endStep(dt);
 
         if(this._hideScore === true){
-        	this.hideScore('do');
+        	this.hideScore(dt);
 		} else {
-        	this.showScore('do');
+        	this.showScore(dt);
 		}
 
 		if(this.gamestart){
