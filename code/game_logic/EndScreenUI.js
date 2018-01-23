@@ -107,12 +107,16 @@ class EndScreenUI extends ContainerObject {
 		this.scoreContainer.addChild(this.score_digit3);
 
         this.highScore_digit1 = new GameObject(number0_s, {checkCollisions: false});
-        this.highScore_digit1.x = -((number0_s.width * this.score_digit1.scale.x) * 2);
-        this.highScore_digit1.y = 40;
-        this.highScore_digit2 = new GameObject(number0_s, {checkCollisions: false});
-        this.highScore_digit2.x = -(number0_s.width * this.score_digit1.scale.x);
-        this.highScore_digit2.y = this.highScore_digit1.y;
-        this.highScore_digit3 = new GameObject(number0_s, {checkCollisions: false});
+		this.highScore_digit2 = new GameObject(number0_s, {checkCollisions: false});
+		this.highScore_digit3 = new GameObject(number0_s, {checkCollisions: false});
+		this.scoreContainer.addChild(this.highScore_digit1);
+		this.scoreContainer.addChild(this.highScore_digit2);
+		this.scoreContainer.addChild(this.highScore_digit3);
+        this.highScore_digit1.x = this.score_digit1.x;
+        this.highScore_digit2.x = this.score_digit2.x;
+		this.highScore_digit3.x = this.score_digit3.x;
+		this.highScore_digit1.y = 40;
+		this.highScore_digit2.y = this.highScore_digit1.y;
         this.highScore_digit3.y = this.highScore_digit1.y;
 
         digit1 =  digit2 =  digit3 = '0';
@@ -135,9 +139,6 @@ class EndScreenUI extends ContainerObject {
         this.highScore_digit1.texture = _TEXTURES["number" + digit1 + "_s"];
         this.highScore_digit2.texture = _TEXTURES["number" + digit2 + "_s"];
         this.highScore_digit3.texture = _TEXTURES["number" + digit3 + "_s"];
-		this.scoreContainer.addChild(this.highScore_digit1);
-		this.scoreContainer.addChild(this.highScore_digit2);
-		this.scoreContainer.addChild(this.highScore_digit3);
 
 		this.highScore_digit1.tag = "highScore_digit1";
 		this.highScore_digit2.tag = "highScore_digit2";
