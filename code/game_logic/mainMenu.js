@@ -16,6 +16,9 @@ class MainMenu extends Token {
 
 		this._onPlay = null;
 
+		this.animTimer = 0;
+		this.animState = 1;
+
 		this.bg = new Background(background_day);
 		this.bg.width = Settings.PIXI.applicationSettings.width;
 		this.bg.height = Settings.PIXI.applicationSettings.height;
@@ -28,6 +31,13 @@ class MainMenu extends Token {
 		this.bg2.x = this.bg2.width;
 		this.bg2.height = Settings.PIXI.applicationSettings.height;
 		this.dialog.addChild(this.bg2);
+
+		this.bird = new GameObject(yellowbird_midflap, {checkCollisions: false});
+		this.bird.anchor.x = 0.5;
+		this.bird.anchor.y = 0.5;
+		this.bird.x = Settings.PIXI.applicationSettings.width / 2;
+		this.bird.y = Settings.PIXI.applicationSettings.height / 2;
+		this.dialog.addChild(this.bird);
 
 		this.ground = new Ground();
 		this.ground.x = 0;
@@ -61,7 +71,7 @@ class MainMenu extends Token {
 		this.play.scale.x = 3;
 		this.play.scale.y = 3;
 		this.play.x = ((application.renderer.width / 2) - (this.play.width / 2)) - (this.play.width / 2) - 5;
-		this.play.y = (application.renderer.height / 2)- (this.play.height / 2);
+		this.play.y = (application.renderer.height / 2) - (this.play.height / 2) + 50;
 		this.play.interactive = true;
 		this.play.on('pointerup', (event) =>{
 			self.startGame();
@@ -72,7 +82,7 @@ class MainMenu extends Token {
 		this.leaderboard.scale.x = 3;
 		this.leaderboard.scale.y = 3;
 		this.leaderboard.x = ((application.renderer.width / 2) - (this.leaderboard.width / 2)) + (this.leaderboard.width / 2) + 5;
-		this.leaderboard.y = (application.renderer.height / 2)- (this.leaderboard.height / 2);
+		this.leaderboard.y = (application.renderer.height / 2)- (this.leaderboard.height / 2) + 50;
 		this.leaderboard.interactive = true;
 		this.leaderboard.on('pointerup', (event) =>{
 			console.log('leaderboard');
@@ -112,6 +122,32 @@ class MainMenu extends Token {
 	endStep(dt){
 		"use strict";
 		super.endStep(dt);
+
+		let storedY = this.bird.y;
+		this.bird.y = -100 + ((Settings.PIXI.applicationSettings.height / 2) + ((20) * Math.sin(Date.now() * 0.002)));
+		storedY = storedY - this.bird.y;
+		this.bird.rotation = Math.atan2(storedY, 4);
+
+		this.animTimer += dt;
+		if(this.animTimer > Settings.GameSettings.birdAnimSpeed){
+			this.animTimer = 0;
+			if(this.animState >= 2){
+				this.animState = 0;
+			} else {
+				this.animState++;
+			}
+			switch(this.animState){
+				case 0:
+					this.bird.texture = yellowbird_downflap;
+					break;
+				case 1:
+					this.bird.texture = yellowbird_midflap;
+					break;
+				case 2:
+					this.bird.texture = yellowbird_upflap;
+					break;
+			}
+		}
 
 		this.bg.endStep(dt);
 		this.bg2.endStep(dt);

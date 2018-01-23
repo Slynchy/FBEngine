@@ -17,6 +17,8 @@ class Player extends GameObject {
 		this.animSpeed = Settings.GameSettings.birdAnimSpeed;
 		this._isFrozen = true;
 
+		this.terminalVelocity = false;
+
 		this.recording = null;/*{
 			frames: [],
 			recordInterval: 20,
@@ -49,15 +51,23 @@ class Player extends GameObject {
 	}
 
 	handleMovement(dt){
+		"use strict";
 		//this.x += 1;
         let _gravitySpeed = Settings.GameSettings.gravityStrength;
 		this._vY += _gravitySpeed * (1.0 * dt);
-		this._vY = this._vY > Settings.GameSettings.terminalVelocity && this.isDying !== true ? Settings.GameSettings.terminalVelocity : this._vY;
+
+		if(this._vY > Settings.GameSettings.terminalVelocity && this.isDying !== true){
+			this._vY = (Settings.GameSettings.terminalVelocity);
+			this.terminalVelocity = true;
+		} else {
+			this.terminalVelocity = false;
+		}
 
 		this.y += this._vY * (1.0 * dt);
 	}
 
 	handleAnimation(dt){
+		"use strict";
 		this.rotation = Math.atan2(this._vY, 5);
 
 		if(this.isDying === true) {
@@ -65,18 +75,29 @@ class Player extends GameObject {
 			return;
         }
 
-		if(this._vY < 0) {
-
+		if(this.terminalVelocity) {
+			this.texture = yellowbird_midflap;
+			this.animTimer = 0;
 		} else {
 			this.animTimer += dt;
-			if (this.animTimer > this.animSpeed) {
+			if(this.animTimer > this.animSpeed){
 				this.animTimer = 0;
-				if (this.currentFrame + 1 >= this.animTextures.length) {
+				if(this.currentFrame >= 2){
 					this.currentFrame = 0;
 				} else {
 					this.currentFrame++;
 				}
-				this.texture = this.animTextures[this.currentFrame];
+				switch(this.currentFrame){
+					case 0:
+						this.texture = yellowbird_downflap;
+						break;
+					case 1:
+						this.texture = yellowbird_midflap;
+						break;
+					case 2:
+						this.texture = yellowbird_upflap;
+						break;
+				}
 			}
 		}
 	}
@@ -86,6 +107,7 @@ class Player extends GameObject {
 	}
 
 	endStep(dt){
+		"use strict";
 		super.endStep(dt);
 
 		if(!this._isFrozen){
