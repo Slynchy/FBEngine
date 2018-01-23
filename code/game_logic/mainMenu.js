@@ -21,6 +21,8 @@ class MainMenu extends Token {
 		this.bg.height = Settings.PIXI.applicationSettings.height;
 		this.dialog.addChild(this.bg);
 
+		//let audioInstance = AudioAPI.PlayFile(test_sound, 1.0, true);
+
 		this.bg2 = new Background(background_day);
 		this.bg2.width = Settings.PIXI.applicationSettings.width;
 		this.bg2.x = this.bg2.width;

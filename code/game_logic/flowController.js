@@ -94,7 +94,8 @@ FlowController.prototype.startLoading = function(){
 						resources[k].url.includes('.mp3', Math.floor(resources[k].url.length * 0.5))
 					){
 						// audio is handled seperately
-							//console.log("loaded " + k);
+						console.log("loaded audio file" + k);
+						global[k] = resources[k].sound;
 					} else {
 						global[k] = resources[k];
 					}
