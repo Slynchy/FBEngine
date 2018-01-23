@@ -58,7 +58,7 @@ class EndScreenUI extends ContainerObject {
             } else if(props.score >= 50 && props.score < 100){
                 // platinum
                 medalTexture = goldMedal;
-            } else if(props.score > 100){
+            } else if(props.score >= 100){
                 // platinum
                 medalTexture = platinumMedal;
             }
