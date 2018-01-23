@@ -87,6 +87,7 @@ class GameObject extends PIXI.Sprite {
 	get isVisible(){
 		"use strict";
 		let result;
+
 		if(this.parentScene){
 			if(
 				this.x < this.parentScene.position.x + Settings.PIXI.applicationSettings.width &&
@@ -97,7 +98,13 @@ class GameObject extends PIXI.Sprite {
 				result = true;
 			}
 			else result = false;
-		} else result = false;
+		} else if(this.alpha > 0){
+			result = true;
+		}
+
+		if(this.alpha <= 0){
+			result = false;
+		}
 
 		this._isVisible = result;
 		return result;
