@@ -16,12 +16,14 @@ class EndScreenUI extends ContainerObject {
 
         this.highScore = 100;
 
+        this.fadeIn = props ? (props.hasOwnProperty('fadeIn') ? props.fadeIn : true) : true;
+
         this.revealButtons = false;
 
         this.bg = new GameObject(black, {checkCollisions: false});
         this.bg.width = Settings.PIXI.applicationSettings.width;
         this.bg.height = Settings.PIXI.applicationSettings.height;
-        this.bg.alpha = 0.0;
+        this.bg.alpha = this.fadeIn === true ? 0.0 : 0.6;
         this.addChild(this.bg);
 
         this.gameOver = new GameObject(gameover, {checkCollisions: false});
@@ -189,7 +191,9 @@ class EndScreenUI extends ContainerObject {
         "use strict";
         super.endStep(dt);
 
-        this.bg.alpha = lerp(this.bg.alpha, 0.6, dt * 0.3);
+        if(this.fadeIn){
+			this.bg.alpha = lerp(this.bg.alpha, 0.6, dt * 0.3);
+		}
         this.gameOver.alpha = lerp(this.gameOver.alpha, 1, dt * 0.3);
         if(this.gameOver.alpha > 0.7){
             if(!this.main.startTime){

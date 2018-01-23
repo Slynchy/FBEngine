@@ -259,6 +259,11 @@ class Game extends Token {
 		this.addObjectToScene(this._whiteFlash);
 	}
 
+	changeState_silent(state){
+		"use strict";
+		this.state = state;
+	}
+
 	changeState(state){
 		"use strict";
 		let self = this;
@@ -309,7 +314,9 @@ class Game extends Token {
 					function(){ // onClose
 						self.scene.removeChild(self.rewardedAdUI);
 						self.rewardedAdUI = null;
-						self.changeState(self._states.GAMEOVER_UI);
+						self.changeState_silent(self._states.GAMEOVER_UI);
+						self.gameOverUI = new EndScreenUI({score: self.score, fadeIn: false});
+						self.scene.addChild(self.gameOverUI);
 					}
 				);
             	this.scene.addChild(this.rewardedAdUI);
