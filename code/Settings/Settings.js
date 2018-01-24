@@ -45,8 +45,10 @@ Settings.prototype.init = function(){
 		birdAnimSpeed: 10, // in milliseconds, how often to change sprite of anim
 		moveSpeed: 2.25, // move speed of the level
 		pipes: {
-			offset: 35, // The base amount to offset the pipes on the Y axis
-			chanceOffset: 40 // The amount that it COULD offset (i.e. if it's 50, then the offset can be 0 to 50)
+			offset: 0, // The base amount to offset the pipes on the Y axis
+			baseGap: 70,
+			chanceOffset: 110, // The amount that it COULD offset (i.e. if it's 50, then the offset can be 0 to 50),
+			chanceGap: 70
 		}
 	};
 

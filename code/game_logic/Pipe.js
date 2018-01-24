@@ -11,10 +11,14 @@ class Pipe extends PIXI.Container {
 		this.pipe1 = new GameObject(pipe_green_flipped, {tag:"Pipe"});
 		this.pipe2 = new GameObject(pipe_green, {tag:"Pipe"});
 
+		this.pipe1.anchor.x = 0.5;
+		this.pipe2.anchor.x = 0.5;
+		this.pipe2.anchor.y = 1.0;
+
 		this.scoreCollider = new GameObject(null, {tag:"AddScoreTrigger"});
 		this.scoreCollider.width = pipe_green.width;
 		this.scoreCollider.height = this.pipe2.y - (this.pipe1.y + pipe_green_flipped.height);
-		this.scoreCollider.x = this.pipe1.x;
+		this.scoreCollider.x = this.pipe1.x - (pipe_green.width / 2);
 		this.scoreCollider.y = this.pipe1.y + pipe_green_flipped.height;
 		this.scoreCollider.hasBeenTouched = false;
 
@@ -106,10 +110,36 @@ class Pipe extends PIXI.Container {
 	randomisePos(){
 		"use strict";
 		let randomY = (Math.random() * Settings.GameSettings.pipes.chanceOffset) + Settings.GameSettings.pipes.offset;
+
+		let magic = (Settings.PIXI.applicationSettings.height - (pipe_green.height * 2));
+
+		// initial offsetting
 		this.pipe1.y = 0;
-		this.pipe2.y = Settings.PIXI.applicationSettings.height / 2;
-		this.pipe1.y -= randomY;
-		this.pipe2.y += randomY;
+		this.pipe2.y = Settings.PIXI.applicationSettings.height - magic;
+
+		// chance gap
+		let chanceGap =  (Math.random() * Settings.GameSettings.pipes.chanceGap );
+
+		// Do gaps
+		let totalGap = (chanceGap) + (Settings.GameSettings.pipes.baseGap);
+		this.pipe1.y -= totalGap * 0.5;
+		this.pipe2.y += totalGap * 0.5;
+
+		// work out offset range
+		let minOff = (ground_floor.height - (Settings.PIXI.applicationSettings.height - this.pipe2.y)) * -1;
+		let maxOff = this.pipe1.y * -1;
+
+		// Offset
+			// https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
+		let getRandomInt = function(min, max){return Math.floor(Math.random() * (max - min + 1)) + min};
+		let fOffset = getRandomInt(minOff, maxOff);
+		this.pipe1.y += fOffset;
+		this.pipe2.y += fOffset;
+
+		if(this.pipe1.y > 0 || this.pipe2.y < Settings.PIXI.applicationSettings.height - ground_floor.height){
+			console.error('bad pipe pos!');
+			Analytics.SendEvent('bad_pipe_pos');
+		}
 	}
 }
 
