@@ -136,6 +136,9 @@ class Pipe extends PIXI.Container {
 		this.pipe1.y += fOffset;
 		this.pipe2.y += fOffset;
 
+		this.pipe1.y = Math.round(this.pipe1.y);
+		this.pipe2.y = Math.round(this.pipe2.y);
+
 		if(this.pipe1.y > 0 || this.pipe2.y < Settings.PIXI.applicationSettings.height - ground_floor.height){
 			console.error('bad pipe pos!');
 			Analytics.SendEvent('bad_pipe_pos');
