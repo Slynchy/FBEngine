@@ -81,7 +81,7 @@ class Pipe extends PIXI.Container {
 		if(this.isFrozen) return;
 
 		if(this.rewind){
-            this.x += Settings.GameSettings.moveSpeed * dt;
+            this.x += (Settings.GameSettings.moveSpeed * dt) * Settings.GameSettings.rewindSpeed;
 
             if(this.x > Settings.PIXI.applicationSettings.width * 2) {
                 this.x -= (Settings.PIXI.applicationSettings.width * 2) + pipe_green.width + 20;
@@ -95,7 +95,7 @@ class Pipe extends PIXI.Container {
 		} else {
             this.x -= Settings.GameSettings.moveSpeed * dt;
 
-            if(this.x < 0-pipe_green.width){
+            if(this.x < -(pipe_green.width / 2)){
                 this.x += (Settings.PIXI.applicationSettings.width * 2) - pipe_green.width - 20;
                 this.randomisePos();
                 this.scoreCollider.width = pipe_green.width;

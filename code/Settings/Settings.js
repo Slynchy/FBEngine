@@ -41,6 +41,7 @@ Settings.prototype.init = function(){
 	this.GameSettings = {
 		birdJumpPower: 5,
 		gravityStrength: 0.35,
+		rewindSpeed: 1.75,
 		terminalVelocity: 4.5,
 		birdAnimSpeed: 10, // in milliseconds, how often to change sprite of anim
 		moveSpeed: 2.25, // move speed of the level
