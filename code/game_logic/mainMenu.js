@@ -37,17 +37,19 @@ class MainMenu extends Token {
 		this.bird.anchor.y = 0.5;
 		this.bird.x = Settings.PIXI.applicationSettings.width / 2;
 		this.bird.y = Settings.PIXI.applicationSettings.height / 2;
+		this.bird.scale.x = 2;
+		this.bird.scale.y = 2;
 		this.dialog.addChild(this.bird);
 
 		this.ground = new Ground();
 		this.ground.x = 0;
-		this.ground.y = application.renderer.height - ground_floor.height;
+		this.ground.y = application.renderer.height - (ground_floor.height * 3);
 		this.ground.width = application.renderer.width;
 		this.dialog.addChild(this.ground);
 
 		this.ground2 = new Ground();
 		this.ground2.x = application.renderer.width;
-		this.ground2.y = application.renderer.height - ground_floor.height;
+		this.ground2.y = application.renderer.height - (ground_floor.height * 3);
 		this.ground2.width = application.renderer.width;
 		this.dialog.addChild(this.ground2);
 
@@ -138,13 +140,13 @@ class MainMenu extends Token {
 			}
 			switch(this.animState){
 				case 0:
-					this.bird.texture = yellowbird_downflap;
+					this.bird.updateTexture(yellowbird_downflap);
 					break;
 				case 1:
-					this.bird.texture = yellowbird_midflap;
+					this.bird.updateTexture(yellowbird_midflap);
 					break;
 				case 2:
-					this.bird.texture = yellowbird_upflap;
+					this.bird.updateTexture(yellowbird_upflap);
 					break;
 			}
 		}

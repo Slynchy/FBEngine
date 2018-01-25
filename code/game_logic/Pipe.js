@@ -15,11 +15,20 @@ class Pipe extends PIXI.Container {
 		this.pipe2.anchor.x = 0.5;
 		this.pipe2.anchor.y = 1.0;
 
+		this.pipe1.scale.x = 2;
+		this.pipe1.scale.y = 2;
+		this.pipe2.scale.x = 2;
+		this.pipe2.scale.y = 2;
+
+		let adjustedWidth = pipe_green.width * this.pipe1.scale.x;
+		let adjustedHeight = pipe_green.height * this.pipe1.scale.y;
+
 		this.scoreCollider = new GameObject(null, {tag:"AddScoreTrigger"});
-		this.scoreCollider.width = pipe_green.width;
-		this.scoreCollider.height = this.pipe2.y - (this.pipe1.y + pipe_green_flipped.height);
-		this.scoreCollider.x = this.pipe1.x - (pipe_green.width / 2);
-		this.scoreCollider.y = this.pipe1.y + pipe_green_flipped.height;
+		this.scoreCollider.anchor.x = 0.5;
+		this.scoreCollider.width = (adjustedWidth / 2);
+		this.scoreCollider.height = Settings.PIXI.applicationSettings.height;
+		this.scoreCollider.x = this.pipe1.x;
+		this.scoreCollider.y = 0;
 		this.scoreCollider.hasBeenTouched = false;
 
 		this.rewind = false;
@@ -80,28 +89,31 @@ class Pipe extends PIXI.Container {
 		"use strict";
 		if(this.isFrozen) return;
 
+		let adjustedWidth = pipe_green.width * this.pipe1.scale.x;
+		let adjustedHeight = pipe_green.height * this.pipe1.scale.y;
+
 		if(this.rewind){
             this.x += (Settings.GameSettings.moveSpeed * dt) * Settings.GameSettings.rewindSpeed;
 
             if(this.x > Settings.PIXI.applicationSettings.width * 2) {
-                this.x -= (Settings.PIXI.applicationSettings.width * 2) + pipe_green.width + 20;
+                this.x -= (Settings.PIXI.applicationSettings.width * 2) + (adjustedWidth) + 20;
                 this.randomisePos();
-                this.scoreCollider.width = pipe_green.width;
-                this.scoreCollider.height = this.pipe2.y - (this.pipe1.y + pipe_green_flipped.height);
-                this.scoreCollider.x = this.pipe1.x;
-                this.scoreCollider.y = this.pipe1.y + pipe_green_flipped.height;
+				this.scoreCollider.width = (adjustedWidth);
+				this.scoreCollider.height = Settings.PIXI.applicationSettings.height;
+				this.scoreCollider.x = this.pipe1.x;
+				this.scoreCollider.y = 0;
                 this.scoreCollider.hasBeenTouched = false;
             }
 		} else {
             this.x -= Settings.GameSettings.moveSpeed * dt;
 
-            if(this.x < -(pipe_green.width / 2)){
-                this.x += (Settings.PIXI.applicationSettings.width * 2) - pipe_green.width - 20;
+            if(this.x < -((pipe_green.width*3) / 2)){
+                this.x += (Settings.PIXI.applicationSettings.width * 2) - (pipe_green.width*3) - 20;
                 this.randomisePos();
-                this.scoreCollider.width = pipe_green.width;
-                this.scoreCollider.height = this.pipe2.y - (this.pipe1.y + pipe_green_flipped.height);
-                this.scoreCollider.x = this.pipe1.x;
-                this.scoreCollider.y = this.pipe1.y + pipe_green_flipped.height;
+				this.scoreCollider.width = (adjustedWidth);
+				this.scoreCollider.height = Settings.PIXI.applicationSettings.height;
+				this.scoreCollider.x = this.pipe1.x;
+				this.scoreCollider.y = 0;
                 this.scoreCollider.hasBeenTouched = false;
             }
 		}
@@ -109,9 +121,12 @@ class Pipe extends PIXI.Container {
 
 	randomisePos(){
 		"use strict";
+		let adjustedWidth = pipe_green.width * this.pipe1.scale.x;
+		let adjustedHeight = pipe_green.height * this.pipe1.scale.y;
+
 		let randomY = (Math.random() * Settings.GameSettings.pipes.chanceOffset) + Settings.GameSettings.pipes.offset;
 
-		let magic = (Settings.PIXI.applicationSettings.height - (pipe_green.height * 2));
+		let magic = (Settings.PIXI.applicationSettings.height - ((adjustedHeight) * 2));
 
 		// initial offsetting
 		this.pipe1.y = 0;
@@ -126,7 +141,7 @@ class Pipe extends PIXI.Container {
 		this.pipe2.y += totalGap * 0.5;
 
 		// work out offset range
-		let minOff = (ground_floor.height - (Settings.PIXI.applicationSettings.height - this.pipe2.y)) * -1;
+		let minOff = ((ground_floor.height * 3) - (Settings.PIXI.applicationSettings.height - this.pipe2.y)) * -1;
 		let maxOff = this.pipe1.y * -1;
 
 		// Offset
@@ -139,7 +154,7 @@ class Pipe extends PIXI.Container {
 		this.pipe1.y = Math.round(this.pipe1.y);
 		this.pipe2.y = Math.round(this.pipe2.y);
 
-		if(this.pipe1.y > 0 || this.pipe2.y < Settings.PIXI.applicationSettings.height - ground_floor.height){
+		if(this.pipe1.y > 0 || this.pipe2.y < Settings.PIXI.applicationSettings.height - (ground_floor.height * 3)){
 			console.error('bad pipe pos!');
 			Analytics.SendEvent('bad_pipe_pos');
 		}

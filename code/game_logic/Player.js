@@ -17,6 +17,9 @@ class Player extends GameObject {
 		this.animSpeed = Settings.GameSettings.birdAnimSpeed;
 		this._isFrozen = true;
 
+		this.scale.x = 2;
+		this.scale.y = 2;
+
 		this.terminalVelocity = false;
 
 		this.recording = null;/*{
@@ -68,15 +71,15 @@ class Player extends GameObject {
 
 	handleAnimation(dt){
 		"use strict";
-		this.rotation = Math.atan2(this._vY, 5);
+		this.rotation = Math.atan2(this._vY, 20);
 
 		if(this.isDying === true) {
-            this.texture = this.animTextures[0];
+			this.updateTexture(this.animTextures[0]);
 			return;
         }
 
 		if(this.terminalVelocity) {
-			this.texture = yellowbird_midflap;
+			this.updateTexture(yellowbird_midflap);
 			this.animTimer = 0;
 		} else {
 			this.animTimer += dt;
@@ -89,13 +92,13 @@ class Player extends GameObject {
 				}
 				switch(this.currentFrame){
 					case 0:
-						this.texture = yellowbird_downflap;
+						this.updateTexture(yellowbird_downflap);
 						break;
 					case 1:
-						this.texture = yellowbird_midflap;
+						this.updateTexture(yellowbird_midflap);
 						break;
 					case 2:
-						this.texture = yellowbird_upflap;
+						this.updateTexture(yellowbird_upflap);
 						break;
 				}
 			}

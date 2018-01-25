@@ -84,6 +84,14 @@ class GameObject extends PIXI.Sprite {
 		this._isVisible = this.isVisible;
 	}
 
+	updateTexture(texture){
+		let storedXscale = this.scale.x;
+		let storedYscale = this.scale.y;
+		this.texture = texture;
+		this.scale.x = storedXscale;
+		this.scale.y = storedYscale;
+	}
+
 	get isVisible(){
 		"use strict";
 		let result;

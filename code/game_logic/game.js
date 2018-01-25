@@ -124,13 +124,13 @@ class Game extends Token {
 
 		this.ground = new Ground();
 		this.ground.x = 0;
-		this.ground.y = application.renderer.height - ground_floor.height;
+		this.ground.y = application.renderer.height - (ground_floor.height * 3);
 		this.ground.width = application.renderer.width;
 		this.addObjectToScene(this.ground);
 
 		this.ground2 = new Ground();
 		this.ground2.x = application.renderer.width;
-		this.ground2.y = application.renderer.height - ground_floor.height;
+		this.ground2.y = application.renderer.height - (ground_floor.height * 3);
 		this.ground2.width = application.renderer.width;
 		this.addObjectToScene(this.ground2);
 
