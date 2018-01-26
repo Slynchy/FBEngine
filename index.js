@@ -78,6 +78,10 @@ PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 application.ticker.scale = 0.001;
 application.ticker.add(MainLoop);
 
+window.addEventListener('resize', function(){
+	onResize(application.renderer, application.view);
+});
+
 const flowController = require("./code/game_logic/flowController.js");
 global.flowController = flowController;
 
@@ -88,12 +92,11 @@ global.flowController = flowController;
 
 function SetRendererProperties(rendererView){
 	"use strict";
-	rendererView.style.width = Settings.PIXI.styleSettings.width;
-	rendererView.style.height = Settings.PIXI.styleSettings.height;
-	rendererView.style.position = Settings.PIXI.styleSettings.position;
-	rendererView.style.left = Settings.PIXI.styleSettings.left;
-	rendererView.style.top = Settings.PIXI.styleSettings.top;
-	rendererView.style.transform = Settings.PIXI.styleSettings.transform;
+	rendererView.style = Object.assign(rendererView.style, Settings.PIXI.styleSettings);
+}
+
+function onResize(renderer) {
+	renderer.resize( Settings.PIXI.applicationSettings.width, Settings.PIXI.applicationSettings.height );
 }
 
 function AddToken(token){
