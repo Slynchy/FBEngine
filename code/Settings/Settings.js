@@ -41,6 +41,7 @@ Settings.prototype.init = function(){
 	};
 
 	this.GameSettings = {
+		textScale: 4,
 		birdJumpPower: 5,
 		gravityStrength: 0.35,
 		rewindSpeed: 1.75,
@@ -94,6 +95,7 @@ Settings.prototype.init = function(){
 		'mainMenu_play': 'mainMenu/playbutton.png',
 		'mainMenu_copyright': 'mainMenu/copyright.png',
 		'mainMenu_leaderboard': 'mainMenu/leaderboardbutton.png',
+		'mainMenu_leaderboard_locked': 'mainMenu/leaderboardbutton_locked.png',
 		'mainMenu_title': 'mainMenu/title.png',
         'white': 'white.png',
         'black': 'black.png',
