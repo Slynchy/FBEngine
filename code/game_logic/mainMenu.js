@@ -67,6 +67,17 @@ class MainMenu extends Token {
         this.copyright.y = (application.renderer.height - this.copyright.height - 10);
         this.dialog.addChild(this.copyright);
 
+        this.muteButton = new GameObject(flowController.audioMuted === true ? button_muted : button_unmuted, {checkCollisions: false});
+		this.muteButton.anchor.x = 1.0;
+		this.muteButton.x = Settings.PIXI.applicationSettings.width - 10;
+		this.muteButton.y = 10;
+		this.muteButton.interactive = true;
+		this.muteButton.on('pointerup', (event) =>{
+			AudioAPI.muted = !AudioAPI.muted;
+			self.updateMuteButton();
+		});
+		this.dialog.addChild(this.muteButton);
+
 		this.play = new GameObject(mainMenu_play, { checkCollisions: false });
 		this.play.scale.x = 3;
 		this.play.scale.y = 3;
@@ -93,6 +104,11 @@ class MainMenu extends Token {
 
 		if(props) Object.assign(this,props);
 	};
+
+	updateMuteButton(){
+		let tex = (AudioAPI.muted === true ? button_muted : button_unmuted);
+		this.muteButton.updateTexture(tex);
+	}
 
 	startGame(){
 		"use strict";

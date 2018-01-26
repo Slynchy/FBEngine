@@ -130,6 +130,8 @@ Settings.prototype.init = function(){
         'playAdButton': 'rewardedAd/playAdButton.png',
         'noThanks_button': 'rewardedAd/nothanks.png',
 		'ad_description': 'rewardedAd/desc.png',
+		'button_muted': 'audio_muted.png',
+		'button_unmuted': 'audio_unmuted.png',
 
 		'm_mainmenu': ['bensound-psychedelic.mp3']
 	};

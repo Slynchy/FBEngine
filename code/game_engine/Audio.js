@@ -13,6 +13,32 @@ class Audio {
 		PIXI.sound.volumeAll = Settings.audioSettings.globalVolume;
 	}
 
+	get muted(){
+    	return this._isMuted;
+	}
+
+	set muted(val){
+    	"use strict";
+
+    	if(typeof(val) !== 'boolean') throw new Error("[Audio] Incorrect type passed to muted");
+    	if(this._isMuted === val) return;
+
+    	this._isMuted = val;
+
+    	if(val === true){
+			// handle muting
+			for(let i = 0; i < this.audioInstances.length; i++){
+
+			}
+		} else {
+    		// handle unmuting
+			for(let i = 0; i < this.audioInstances.length; i++){
+
+			}
+		}
+
+	}
+
     PlayFile(file, volume, loop){
         "use strict";
         let self = this;
