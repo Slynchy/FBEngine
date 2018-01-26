@@ -274,6 +274,7 @@ class Game extends Token {
 		switch(this.state){
 			case this._states.STARTING:
 				this.ui.playGameStart(function(){
+					if(self.player.isDying) return;
 					self.changeState(self._states.INGAME);
 					self.player.unfreeze();
 				});
