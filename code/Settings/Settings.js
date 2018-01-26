@@ -53,7 +53,8 @@ Settings.prototype.init = function(){
 			baseGap: 70,
 			chanceOffset: 110, // The amount that it COULD offset (i.e. if it's 50, then the offset can be 0 to 50),
 			chanceGap: 70
-		}
+		},
+		retryScoreThreshold: 5, // if score is less than or equal to this number, don't show an ad
 	};
 
 	this.Analytics = {

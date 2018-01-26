@@ -217,7 +217,7 @@ class Game extends Token {
 
 		let showAd = true;
 
-		if(canShowAd === false || this.hasRetried === true){
+		if(canShowAd === false || this.hasRetried === true || this.score <= Settings.GameSettings.retryScoreThreshold){
 			showAd = false;
 		}
 
