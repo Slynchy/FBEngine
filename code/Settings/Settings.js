@@ -31,10 +31,12 @@ Settings.prototype.init = function(){
 	this.PIXI.styleSettings = {
 		width: window.innerWidth,
 		height: window.innerHeight,
-		position: 'absolute',
-		left: '50%',
-		top: '50%',
-		transform: 'translate3d( -50%, -50%, 0 )',
+		// position: 'fixed',
+		// //maxWidth: '100%',
+		// //maxHeight: '100%',
+		// left: '50%',
+		// top: '50%',
+		// transform: 'translate3d( -50%, -50%, 0 )',
 		//SCALE_MODE: PIXI.SCALE_MODES.NEAREST,
 	};
 
