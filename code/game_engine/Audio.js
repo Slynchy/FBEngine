@@ -33,6 +33,8 @@ class Audio {
 
 		instance.volume = volume;
         instance.uid = file.url.hashCode() | Date.now();
+        instance.filename = file.url;
+		instance.fileKey = file.fileKey;
 
         this.audioInstances.push(instance);
         instance.on('end', function(){ 
@@ -44,8 +46,9 @@ class Audio {
     }
 
     removeAudio(uid){
-        for(let i = this.audioInstances.length; i >= 0; --i){
+        for(let i = this.audioInstances.length-1; i >= 0; i--){
             if(this.audioInstances[i].uid === uid){
+				this.audioInstances[i].stop();
                 this.audioInstances.splice(i, 1);
                 return;
             }
@@ -66,8 +69,9 @@ class Audio {
         }
 
         for(let s = 0; s < strings.length; s++){
-            for(let i = this.audioInstances.length; i >= 0; --i){
-                if(this.audioInstances[i].filename === strings[s]){
+            for(let i = this.audioInstances.length-1; i >= 0; i--){
+                if(this.audioInstances[i].fileKey === strings[s]){
+					this.audioInstances[i].stop();
                     this.audioInstances.splice(i, 1);
                 }
             }

@@ -95,6 +95,7 @@ FlowController.prototype.startLoading = function(){
 					){
 						// audio is handled seperately
 						console.log("loaded audio file" + k);
+						resources[k].sound.fileKey = k;
 						global[k] = resources[k].sound;
 					} else {
 						global[k] = resources[k];
