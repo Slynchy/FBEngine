@@ -27,6 +27,8 @@ class Game extends Token {
         this._whiteFlash = null;
         this.ui = null;
 
+        this.hasRetried = false;
+
 		this._states = {
 			DO_NOTHING: -1,
 			STARTING: 0,
@@ -215,7 +217,7 @@ class Game extends Token {
 
 		let showAd = true;
 
-		if(canShowAd === false){
+		if(canShowAd === false || this.hasRetried === true){
 			showAd = false;
 		}
 
@@ -296,6 +298,8 @@ class Game extends Token {
                         self.player.reset();
 
                         self.unfreezePipesNShit();
+
+						self.hasRetried = true;
 
                         self.scene.removeChild(self.rewardedAdUI);
                         self.rewardedAdUI = null;
