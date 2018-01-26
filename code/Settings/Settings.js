@@ -128,7 +128,7 @@ Settings.prototype.init = function(){
         'noThanks_button': 'rewardedAd/nothanks.png',
 		'ad_description': 'rewardedAd/desc.png',
 
-		'test_sound': 'test.ogg'
+		'm_mainmenu': ['bensound-psychedelic.mp3']
 	};
 
 	this.audioSettings = {

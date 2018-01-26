@@ -143,6 +143,8 @@ FlowController.prototype.showSplashScreen = function(){
 	"use strict";
 	console.log("[flowController] showSplashScreen");
 	// TODO: splash screen
+
+	this.music = AudioAPI.PlayFile(m_mainmenu, Settings.audioSettings.musicVolume * Settings.audioSettings.globalVolume, true);
 	this.currentAction = this.showMainMenu;
 };
 
