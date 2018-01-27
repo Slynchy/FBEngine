@@ -1,22 +1,38 @@
-
 let api = require("pixi-sound");
 
+/**
+ * The main engine audio handler
+ */
 class Audio {
     constructor(){
         this.audioInstances = [];
+
+        this._isMuted = false;
 
         if(PIXI.sound.isSupported === false){
 			console.error("SOUND NOT SUPPORTED");
 			PIXI.sound.useLegacy = true;
 		}
 
+        if(PIXI.sound.isSupported === false){
+            throw new Error("LEGACY SOUND NOT SUPPORTED");
+        }
+
 		PIXI.sound.volumeAll = Settings.audioSettings.globalVolume;
 	}
 
+    /**
+     * Gets if the global audio is muted
+     * @returns {boolean}
+     */
 	get muted(){
     	return this._isMuted;
 	}
 
+    /**
+     * Sets the global mute value
+     * @param {boolean} val
+     */
 	set muted(val){
     	"use strict";
 
@@ -28,17 +44,26 @@ class Audio {
     	if(val === true){
 			// handle muting
 			for(let i = 0; i < this.audioInstances.length; i++){
-
+                this.audioInstances[i]._origVolume = this.audioInstances[i].volume;
+                this.audioInstances[i].volume = 0;
 			}
 		} else {
     		// handle unmuting
 			for(let i = 0; i < this.audioInstances.length; i++){
-
+                this.audioInstances[i].volume = this.audioInstances[i]._origVolume ? this.audioInstances[i]._origVolume : 1;
 			}
 		}
 
 	}
 
+    /**
+     *
+     * @param file
+     * @param {float} volume
+     * @param {boolean?} loop
+     * @returns {PIXI.sound.IMediaInstance|Promise<PIXI.sound.IMediaInstance>|void|Promise<void>}
+     * @constructor
+     */
     PlayFile(file, volume, loop){
         "use strict";
         let self = this;
@@ -71,6 +96,10 @@ class Audio {
         return instance;
     }
 
+    /**
+     * Stops the specified track by unique ID
+     * @param {int} uid
+     */
     removeAudio(uid){
         for(let i = this.audioInstances.length-1; i >= 0; i--){
             if(this.audioInstances[i].uid === uid){
@@ -81,17 +110,23 @@ class Audio {
         }
     };
 
-    /*
-        Usage for one file:
-            + stopAllInstancesOf('filename_without_suffix');
-        Usage for multiple files:
-            + stopAllInstancesOf(['filename_without_suffix', 'filename_without_suffix2']);
-    */
+    /**
+     * Stops all instances of the specified track
+     * @param {string|Array} strings
+     */
     stopAllInstancesOf(strings){
-        if(strings.constructor !== Array){
+        if(strings.hasOwnProperty && strings.hasOwnProperty('fileKey')){
+            let temp = strings;
+            strings = [];
+            strings.push(temp.fileKey);
+        } else if(typeof(strings) === 'string'){
             let temp = strings;
             strings = [];
             strings.push(temp);
+        } else if(strings.constructor === Array){
+            // handled by default
+        } else {
+            throw new Error("[Audio] Unhandled parameter type!");
         }
 
         for(let s = 0; s < strings.length; s++){
@@ -103,42 +138,6 @@ class Audio {
             }
         }
     }
-
-    // deprecated
-    PlayMusic(file, volume, loop){
-        "use strict";
-        if(typeof(volume) === "undefined"){
-            volume = 1.0;
-        };
-        if(typeof(loop) === "undefined"){
-            loop = true;
-        };
-
-        let instance = PIXI.audioManager.getAudio(file);
-        if(!instance) throw new Error("Audio file not found! " + file);
-
-        instance.volume = volume;
-        instance.loop = loop;
-
-        this.audioInstances.push(instance);
-
-        instance.play();
-    }
-
-    // deprecated
-    async cleanup(){
-        if(this.audioInstances.length === 0 || this._isCleaningUp === true) return;
-
-        this._isCleaningUp = true;
-
-        for(let i = this.audioInstances.length; i >= 0; --i){
-            if(this.audioInstances[i].playing === false){
-                this.audioInstances.splice(i, 1);
-            }
-        }
-
-        this._isCleaningUp = false;
-    };
 
 }
 
