@@ -83,7 +83,7 @@ class Audio {
         if(!instance) throw new Error("Audio file failed! " + file.url);
 
         instance.volume = volume;
-        instance.uid = file.url.hashCode() | Date.now();
+        instance.uid = file.fileKey.generateUID();
         instance.filename = file.url;
         instance.fileKey = file.fileKey;
 
