@@ -122,6 +122,10 @@ global.RemoveToken = RemoveToken;
 	MAIN CODE INITIALIZATION
 */
 
+/*
+    This gives us more accurate delta time... possibly
+    Set to false or null to disable
+ */
 let deltaExperimental = Date.now();
 
 function MainLoop (delta) {
