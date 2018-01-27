@@ -31,8 +31,8 @@ global.Settings = Settings;
 	GAMESPARKS INITIALIZATION
 */
 
-//const gsApi = require("./code/Settings/Settings.js");
-//global.gsApi = gsApi;
+const gsApi = require("./code/game_engine/gamesparks/GSModule.js");
+global.gsApi = gsApi;
 
 /*
 	AD API INITIALIZATION

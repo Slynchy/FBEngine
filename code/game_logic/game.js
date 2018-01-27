@@ -286,6 +286,7 @@ class Game extends Token {
 				this.player.playGameOverAnim();
 				break;
             case this._states.GAMEOVER_UI:
+                gsApi.SendData('add_score', 'score', self.score);
             	this.gameOverUI = new EndScreenUI({score: this.score});
             	this.scene.addChild(this.gameOverUI);
                 break;

@@ -97,6 +97,9 @@ class MainMenu extends Token {
 		this.leaderboard.interactive = true;
 		this.leaderboard.on('pointerup', (event) =>{
 			console.log('leaderboard');
+            gsApi.GetAroundMeLeaderboard((data) => {
+            	console.log(data);
+			})
 		});
 		this.dialog.addChild(this.leaderboard);
 

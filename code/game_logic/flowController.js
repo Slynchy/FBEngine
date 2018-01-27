@@ -17,7 +17,7 @@ FlowController.prototype.main = function(){
 	console.log('[flowController] main');
 	let self = this;
 	if(FBInstant){
-		this.currentAction = this.startFBInstant;
+		this.currentAction = this.waitForFBInstant;
 		FBInstant.initializeAsync()
 			.then(function() {
 				console.log("[flowController] Initializing ad api");
@@ -30,7 +30,7 @@ FlowController.prototype.main = function(){
 	}
 };
 
-FlowController.prototype.startFBInstant = function(){
+FlowController.prototype.waitForFBInstant = function(){
     "use strict";
 };
 
@@ -128,15 +128,34 @@ FlowController.prototype.waitForLoading = function(){
 		this.currentAction = this.startFBInstant;
 		FBInstant.startGameAsync()
 			.then(function() {
-				self.currentAction = self.showSplashScreen;
+                console.log("[flowController] startGameAsync resolved");
+				self.currentAction = self.startGameSparks;
 				global.FBINSTANT_INFO = {
 					contextId: FBInstant.context.getID(),
-					contextType: FBInstant.context.getType()
+					contextType: FBInstant.context.getType(),
+					playerInfo: {
+						displayName: FBInstant.player.getName(),
+						id: FBInstant.player.getID(),
+					}
 				};
 			});
 	} else {
 		FBInstant.setLoadingProgress(PIXI.loader.progress);
 	}
+};
+
+FlowController.prototype.startGameSparks = function(){
+    "use strict";
+    console.log("[flowController] startGameSparks");
+    let self = this;
+    self.currentAction = self.waitForGameSparks;
+    gsApi.init(() => {
+        self.currentAction = self.showSplashScreen;
+    })
+};
+
+FlowController.prototype.waitForGameSparks = function(){
+    "use strict";
 };
 
 FlowController.prototype.showSplashScreen = function(){

@@ -8,7 +8,7 @@ let Settings = function() {
 Settings.prototype.init = function(){
 
     this.DEBUG = {
-        suppressLoadingLogs: false,
+        suppressLoadingLogs: true,
     };
 
 	this.PIXI = {};
@@ -17,6 +17,13 @@ Settings.prototype.init = function(){
 	    defaultSaveData:{
 	        highScore: 0
         }
+    };
+
+	this.GameSparks = {
+        key: '',
+        secret: '',
+        logger: console.log,
+        debug: false,
     };
 
 	this.PIXI.applicationSettings = {
