@@ -10,6 +10,11 @@ class Background extends GameObject {
 
         this.parralaxSpeed =  0.25;
 
+        //
+
+        //this.width = Settings.PIXI.applicationSettings.width * 2;
+        //this.height = Settings.PIXI.applicationSettings.height;
+
 		this.checkCollisions = false;
         if(props)
             Object.assign(this,props);
@@ -21,14 +26,14 @@ class Background extends GameObject {
         if(!this.rewind){
             this.x -= (Settings.GameSettings.moveSpeed * dt) * this.parralaxSpeed;
 
-            if(this.x < 0-this.width){
-                this.x += Settings.PIXI.applicationSettings.width * 2;
+            if(this.x < (0-this.width)){
+                this.x += this.width * 2;
             }
         } else {
             this.x += ((Settings.GameSettings.moveSpeed * dt) * this.parralaxSpeed) * Settings.GameSettings.rewindSpeed;
 
             if(this.x > Settings.PIXI.applicationSettings.width){
-                this.x -= Settings.PIXI.applicationSettings.width * 2;
+                this.x -= this.width * 2;
             }
         }
 	}

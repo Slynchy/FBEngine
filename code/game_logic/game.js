@@ -104,14 +104,12 @@ class Game extends Token {
 		let self = this;
 
 		this.bg = new Background(background_day);
-		this.bg.width = Settings.PIXI.applicationSettings.width;
-		this.bg.height = Settings.PIXI.applicationSettings.height;
+        this.bg.smartScale(null,Settings.PIXI.applicationSettings.height);
 		this.addObjectToScene(this.bg);
 
 		this.bg2 = new Background(background_day);
-		this.bg2.width = Settings.PIXI.applicationSettings.width;
+        this.bg2.smartScale(null,Settings.PIXI.applicationSettings.height);
 		this.bg2.x = this.bg2.width;
-		this.bg2.height = Settings.PIXI.applicationSettings.height;
 		this.addObjectToScene(this.bg2);
 
 		this.object = new Pipe();
@@ -126,13 +124,13 @@ class Game extends Token {
 
 		this.ground = new Ground();
 		this.ground.x = 0;
-		this.ground.y = application.renderer.height - (ground_floor.height * 3);
+		this.ground.y = application.renderer.height - (ground_floor.height);
 		this.ground.width = application.renderer.width;
 		this.addObjectToScene(this.ground);
 
 		this.ground2 = new Ground();
 		this.ground2.x = application.renderer.width;
-		this.ground2.y = application.renderer.height - (ground_floor.height * 3);
+		this.ground2.y = application.renderer.height - (ground_floor.height);
 		this.ground2.width = application.renderer.width;
 		this.addObjectToScene(this.ground2);
 

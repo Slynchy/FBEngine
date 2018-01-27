@@ -40,7 +40,7 @@ class GSModule {
         "use strict";
         if(!this._isInit || !this._signedIn || this.offlineMode) return;
 
-        this._gamesparks.aroundMeLeaderboardRequest(10,[],'global_leaderboard',false, (data) => {
+        this._gamesparks.aroundMeLeaderboardRequest(5,[],'global_leaderboard',false, (data) => {
             if(data.error){
                 throw new Error(data.error);
             }

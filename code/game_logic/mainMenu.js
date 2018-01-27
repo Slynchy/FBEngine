@@ -20,14 +20,12 @@ class MainMenu extends Token {
 		this.animState = 1;
 
 		this.bg = new Background(background_day);
-		this.bg.width = Settings.PIXI.applicationSettings.width;
-		this.bg.height = Settings.PIXI.applicationSettings.height;
+        this.bg.smartScale(null,Settings.PIXI.applicationSettings.height);
 		this.dialog.addChild(this.bg);
 
 		this.bg2 = new Background(background_day);
-		this.bg2.width = Settings.PIXI.applicationSettings.width;
+        this.bg2.smartScale(null,Settings.PIXI.applicationSettings.height);
 		this.bg2.x = this.bg2.width;
-		this.bg2.height = Settings.PIXI.applicationSettings.height;
 		this.dialog.addChild(this.bg2);
 
 		this.bird = new GameObject(yellowbird_midflap, {checkCollisions: false});
@@ -41,19 +39,19 @@ class MainMenu extends Token {
 
 		this.ground = new Ground();
 		this.ground.x = 0;
-		this.ground.y = application.renderer.height - (ground_floor.height * 3);
+		this.ground.y = application.renderer.height - (ground_floor.height);
 		this.ground.width = application.renderer.width;
 		this.dialog.addChild(this.ground);
 
 		this.ground2 = new Ground();
 		this.ground2.x = application.renderer.width;
-		this.ground2.y = application.renderer.height - (ground_floor.height * 3);
+		this.ground2.y = application.renderer.height - (ground_floor.height);
 		this.ground2.width = application.renderer.width;
 		this.dialog.addChild(this.ground2);
 
 		this.title = new GameObject(mainMenu_title, { checkCollisions: false });
-		this.title.scale.x = 3;
-		this.title.scale.y = 3;
+		this.title.scale.x = 0.5;
+		this.title.scale.y = 0.5;
 		this.title.x = (application.renderer.width / 2) - (this.title.width / 2);
 		this.title.y = (application.renderer.height / 5)- (this.title.height / 2);
 		this.dialog.addChild(this.title);
@@ -145,7 +143,7 @@ class MainMenu extends Token {
 		let storedY = this.bird.y;
 		this.bird.y = -100 + ((Settings.PIXI.applicationSettings.height / 2) + ((20) * Math.sin(Date.now() * 0.002)));
 		storedY = storedY - this.bird.y;
-		this.bird.rotation = Math.atan2(storedY, 4);
+		this.bird.rotation = Math.atan2(storedY, 1);
 
 		this.animTimer += dt;
 		if(this.animTimer > Settings.GameSettings.birdAnimSpeed){

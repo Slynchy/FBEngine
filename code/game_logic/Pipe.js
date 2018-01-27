@@ -141,7 +141,7 @@ class Pipe extends PIXI.Container {
 		this.pipe2.y += totalGap * 0.5;
 
 		// work out offset range
-		let minOff = ((ground_floor.height * 3) - (Settings.PIXI.applicationSettings.height - this.pipe2.y)) * -1;
+		let minOff = ((ground_floor.height) - (Settings.PIXI.applicationSettings.height - this.pipe2.y)) * -1;
 		let maxOff = this.pipe1.y * -1;
 
 		// Offset
