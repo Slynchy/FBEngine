@@ -4,17 +4,21 @@ class GSModule {
         this['debug'] = false;
         this['secret'] = null;
         this['key'] = null;
+        this['offlineMode'] = null;
         Object.assign(this,Settings.GameSparks);
 
         this._signedIn = false;
         this._isInit = false;
 
-        this._gamesparks = new GameSparks();
-
-        /*
-            Dirty hack to make GS work with build setup
-         */
-        global.gamesparks = this._gamesparks;
+        if(!this.offlineMode) {
+            this._gamesparks = new GameSparks();
+            /*
+                Dirty hack to make GS work with build setup
+             */
+            global.gamesparks = this._gamesparks;
+        }
+        else
+            this._gamesparks = {};
     }
 
     get _gs (){
@@ -23,13 +27,18 @@ class GSModule {
 
     init(callback){
         "use strict";
+        if(this.offlineMode === true){
+            if(callback)
+                callback();
+            return;
+        }
         this._initCallback = callback;
         this._gamesparks.initPreview(this);
     }
 
     GetAroundMeLeaderboard(callback){
         "use strict";
-        if(!this._isInit || !this._signedIn) return;
+        if(!this._isInit || !this._signedIn || this.offlineMode) return;
 
         this._gamesparks.aroundMeLeaderboardRequest(10,[],'global_leaderboard',false, (data) => {
             if(data.error){
@@ -50,6 +59,11 @@ class GSModule {
      */
     SendData(key, attr, data, callback){
         "use strict";
+        if(this.offlineMode === true){
+            if(callback)
+                callback();
+            return;
+        }
         if(this._signedIn === false) throw new Error("Not signed in!");
         if(this._isInit === false) throw new Error("Not init'd!");
 

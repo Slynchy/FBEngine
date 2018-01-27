@@ -24,6 +24,7 @@ Settings.prototype.init = function(){
         secret: '',
         logger: console.log,
         debug: false,
+		offlineMode: true,
     };
 
 	this.PIXI.applicationSettings = {
