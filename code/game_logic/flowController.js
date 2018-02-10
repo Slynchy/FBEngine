@@ -17,7 +17,7 @@ FlowController.prototype.main = function(){
 	console.log('[flowController] main');
 	let self = this;
 	if(FBInstant){
-		this.currentAction = this.startFBInstant;
+		this.currentAction = this.waitForFBInstant;
 		FBInstant.initializeAsync()
 			.then(function() {
 				console.log("[flowController] Initializing ad api");
@@ -30,7 +30,7 @@ FlowController.prototype.main = function(){
 	}
 };
 
-FlowController.prototype.startFBInstant = function(){
+FlowController.prototype.waitForFBInstant = function(){
     "use strict";
 };
 
@@ -95,6 +95,7 @@ FlowController.prototype.startLoading = function(){
 					){
 						// audio is handled seperately
 						console.log("loaded audio file" + k);
+						resources[k].sound.fileKey = k;
 						global[k] = resources[k].sound;
 					} else {
 						global[k] = resources[k];
@@ -127,10 +128,15 @@ FlowController.prototype.waitForLoading = function(){
 		this.currentAction = this.startFBInstant;
 		FBInstant.startGameAsync()
 			.then(function() {
-				self.currentAction = self.showSplashScreen;
+                console.log("[flowController] startGameAsync resolved");
+				self.currentAction = self.startGameSparks;
 				global.FBINSTANT_INFO = {
 					contextId: FBInstant.context.getID(),
-					contextType: FBInstant.context.getType()
+					contextType: FBInstant.context.getType(),
+					playerInfo: {
+						displayName: FBInstant.player.getName(),
+						id: FBInstant.player.getID(),
+					}
 				};
 			});
 	} else {
@@ -138,10 +144,26 @@ FlowController.prototype.waitForLoading = function(){
 	}
 };
 
+FlowController.prototype.startGameSparks = function(){
+    "use strict";
+    console.log("[flowController] startGameSparks");
+    let self = this;
+    self.currentAction = self.waitForGameSparks;
+    gsApi.init(() => {
+        self.currentAction = self.showSplashScreen;
+    })
+};
+
+FlowController.prototype.waitForGameSparks = function(){
+    "use strict";
+};
+
 FlowController.prototype.showSplashScreen = function(){
 	"use strict";
 	console.log("[flowController] showSplashScreen");
 	// TODO: splash screen
+
+	this.music = AudioAPI.PlayFile(m_mainmenu, Settings.audioSettings.musicVolume * Settings.audioSettings.globalVolume, true);
 	this.currentAction = this.showMainMenu;
 };
 

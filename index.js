@@ -1,19 +1,28 @@
 
 // https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript-jquery
-String.prototype.hashCode = function() {
-	var hash = 0, i, chr;
+String.prototype.generateUID = function() {
+	let hash = 0, i, chr;
 	if (this.length === 0) return hash;
 	for (i = 0; i < this.length; i++) {
-	  chr   = this.charCodeAt(i);
-	  hash  = ((hash << 5) - hash) + chr;
-	  hash |= 0; // Convert to 32bit integer
+		chr   = this.charCodeAt(i);
+		hash  = ((hash << 5) - hash) + chr;
+		hash |= 0; // Convert to 32bit integer
 	}
-	return hash;
+	return Math.floor(hash * Math.random());
   };
 
 /*
 	SETTINGS INITIALIZATION
 */
+
+global.FBINSTANT_INFO = {
+    contextId: null,
+    contextType: null,
+    playerInfo: {
+        displayName: null,
+        id: null,
+    }
+};
 
 const Settings = require("./code/Settings/Settings.js");
 global.Settings = Settings;
@@ -22,8 +31,8 @@ global.Settings = Settings;
 	GAMESPARKS INITIALIZATION
 */
 
-//const gsApi = require("./code/Settings/Settings.js");
-//global.gsApi = gsApi;
+const gsApi = require("./code/game_engine/gamesparks/GSModule.js");
+global.gsApi = gsApi;
 
 /*
 	AD API INITIALIZATION
@@ -78,6 +87,10 @@ PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 application.ticker.scale = 0.001;
 application.ticker.add(MainLoop);
 
+window.addEventListener('resize', function(){
+	onResize(application.renderer, application.view);
+});
+
 const flowController = require("./code/game_logic/flowController.js");
 global.flowController = flowController;
 
@@ -88,12 +101,11 @@ global.flowController = flowController;
 
 function SetRendererProperties(rendererView){
 	"use strict";
-	rendererView.style.width = Settings.PIXI.styleSettings.width;
-	rendererView.style.height = Settings.PIXI.styleSettings.height;
-	rendererView.style.position = Settings.PIXI.styleSettings.position;
-	rendererView.style.left = Settings.PIXI.styleSettings.left;
-	rendererView.style.top = Settings.PIXI.styleSettings.top;
-	rendererView.style.transform = Settings.PIXI.styleSettings.transform;
+	rendererView.style = Object.assign(rendererView.style, Settings.PIXI.styleSettings);
+}
+
+function onResize(renderer) {
+	renderer.resize( Settings.PIXI.applicationSettings.width, Settings.PIXI.applicationSettings.height );
 }
 
 function AddToken(token){
@@ -119,6 +131,10 @@ global.RemoveToken = RemoveToken;
 	MAIN CODE INITIALIZATION
 */
 
+/*
+    This gives us more accurate delta time... possibly
+    Set to false or null to disable
+ */
 let deltaExperimental = Date.now();
 
 function MainLoop (delta) {

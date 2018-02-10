@@ -34,15 +34,17 @@ class InGameUI extends ContainerObject {
 		for(let i = 0; i < this.scoreText.length; i++){
 			this.scoreText[i].anchor.x = 0.5;
 			this.scoreText[i].anchor.y = 0.5;
+			this.scoreText[i].scale.x = Settings.GameSettings.textScale;
+			this.scoreText[i].scale.y = Settings.GameSettings.textScale;
 		}
 
 		this.scoreContainer = new PIXI.Container();
 		this.scoreContainer.x = Settings.PIXI.applicationSettings.width / 2;
 		this.scoreContainer.y = Settings.PIXI.applicationSettings.height / 5;
 
-		this.scoreText[0].x = -number0.width;
+		this.scoreText[0].x = -(number0.width*Settings.GameSettings.textScale);
 		this.scoreText[1].x = 0;
-		this.scoreText[2].x = number0.width;
+		this.scoreText[2].x = number0.width*Settings.GameSettings.textScale;
 
 		this.scoreText[0].hide();
 		this.scoreText[0]._value = -1;
@@ -155,29 +157,29 @@ class InGameUI extends ContainerObject {
 				this.scoreText[0].hide();
 				this.scoreText[1].show();
 				this.scoreText[2].hide();
-				this.scoreText[1].texture = this.numbers[Number.parseInt(digits[0])];
+				this.scoreText[1].updateTexture(this.numbers[Number.parseInt(digits[0])]);
 				this.scoreText[1]._value = digits[0];
 				break;
 			case 2:
 				this.scoreText[0].show();
 				this.scoreText[1].show();
 				this.scoreText[2].hide();
-				this.scoreText[0].texture = this.numbers[Number.parseInt(digits[0])];
+				this.scoreText[0].updateTexture(this.numbers[Number.parseInt(digits[0])]);
 				this.scoreText[0]._value = digits[0];
-				this.scoreText[1].texture = this.numbers[Number.parseInt(digits[1])];
+				this.scoreText[1].updateTexture(this.numbers[Number.parseInt(digits[1])]);
 				this.scoreText[1]._value = digits[1];
 
-				this.scoreContainer.x = (Settings.PIXI.applicationSettings.width / 2) + (number0.width / 2);
+				this.scoreContainer.x = (Settings.PIXI.applicationSettings.width / 2) + ((number0.width * Settings.GameSettings.textScale) / 2);
 				break;
 			case 3:
 				this.scoreText[0].show();
 				this.scoreText[1].show();
 				this.scoreText[2].show();
-				this.scoreText[0].texture = this.numbers[Number.parseInt(digits[0])];
+				this.scoreText[0].updateTexture(this.numbers[Number.parseInt(digits[0])]);
 				this.scoreText[0]._value = digits[0];
-				this.scoreText[1].texture = this.numbers[Number.parseInt(digits[1])];
+				this.scoreText[1].updateTexture(this.numbers[Number.parseInt(digits[1])]);
 				this.scoreText[1]._value = digits[1];
-				this.scoreText[2].texture = this.numbers[Number.parseInt(digits[2])];
+				this.scoreText[2].updateTexture(this.numbers[Number.parseInt(digits[2])]);
 				this.scoreText[2]._value = digits[2];
 
 				this.scoreContainer.x = (Settings.PIXI.applicationSettings.width / 2);

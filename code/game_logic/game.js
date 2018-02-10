@@ -27,6 +27,8 @@ class Game extends Token {
         this._whiteFlash = null;
         this.ui = null;
 
+        this.hasRetried = false;
+
 		this._states = {
 			DO_NOTHING: -1,
 			STARTING: 0,
@@ -102,14 +104,12 @@ class Game extends Token {
 		let self = this;
 
 		this.bg = new Background(background_day);
-		this.bg.width = Settings.PIXI.applicationSettings.width;
-		this.bg.height = Settings.PIXI.applicationSettings.height;
+        this.bg.smartScale(null,Settings.PIXI.applicationSettings.height);
 		this.addObjectToScene(this.bg);
 
 		this.bg2 = new Background(background_day);
-		this.bg2.width = Settings.PIXI.applicationSettings.width;
+        this.bg2.smartScale(null,Settings.PIXI.applicationSettings.height);
 		this.bg2.x = this.bg2.width;
-		this.bg2.height = Settings.PIXI.applicationSettings.height;
 		this.addObjectToScene(this.bg2);
 
 		this.object = new Pipe();
@@ -124,13 +124,13 @@ class Game extends Token {
 
 		this.ground = new Ground();
 		this.ground.x = 0;
-		this.ground.y = application.renderer.height - ground_floor.height;
+		this.ground.y = application.renderer.height - (ground_floor.height);
 		this.ground.width = application.renderer.width;
 		this.addObjectToScene(this.ground);
 
 		this.ground2 = new Ground();
 		this.ground2.x = application.renderer.width;
-		this.ground2.y = application.renderer.height - ground_floor.height;
+		this.ground2.y = application.renderer.height - (ground_floor.height);
 		this.ground2.width = application.renderer.width;
 		this.addObjectToScene(this.ground2);
 
@@ -215,7 +215,7 @@ class Game extends Token {
 
 		let showAd = true;
 
-		if(canShowAd === false){
+		if(canShowAd === false || this.hasRetried === true || this.score <= Settings.GameSettings.retryScoreThreshold){
 			showAd = false;
 		}
 
@@ -272,6 +272,7 @@ class Game extends Token {
 		switch(this.state){
 			case this._states.STARTING:
 				this.ui.playGameStart(function(){
+					if(self.player.isDying) return;
 					self.changeState(self._states.INGAME);
 					self.player.unfreeze();
 				});
@@ -283,6 +284,7 @@ class Game extends Token {
 				this.player.playGameOverAnim();
 				break;
             case this._states.GAMEOVER_UI:
+                gsApi.SendData('add_score', 'score', self.score);
             	this.gameOverUI = new EndScreenUI({score: this.score});
             	this.scene.addChild(this.gameOverUI);
                 break;
@@ -296,6 +298,8 @@ class Game extends Token {
                         self.player.reset();
 
                         self.unfreezePipesNShit();
+
+						self.hasRetried = true;
 
                         self.scene.removeChild(self.rewardedAdUI);
                         self.rewardedAdUI = null;

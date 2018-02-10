@@ -8,7 +8,7 @@ let Settings = function() {
 Settings.prototype.init = function(){
 
     this.DEBUG = {
-        suppressLoadingLogs: false,
+        suppressLoadingLogs: true,
     };
 
 	this.PIXI = {};
@@ -17,6 +17,14 @@ Settings.prototype.init = function(){
 	    defaultSaveData:{
 	        highScore: 0
         }
+    };
+
+	this.GameSparks = {
+        key: '',
+        secret: '',
+        logger: console.log,
+        debug: false,
+		offlineMode: true,
     };
 
 	this.PIXI.applicationSettings = {
@@ -31,14 +39,17 @@ Settings.prototype.init = function(){
 	this.PIXI.styleSettings = {
 		width: window.innerWidth,
 		height: window.innerHeight,
-		position: 'absolute',
-		left: '50%',
-		top: '50%',
-		transform: 'translate3d( -50%, -50%, 0 )',
+		// position: 'fixed',
+		// //maxWidth: '100%',
+		// //maxHeight: '100%',
+		// left: '50%',
+		// top: '50%',
+		// transform: 'translate3d( -50%, -50%, 0 )',
 		//SCALE_MODE: PIXI.SCALE_MODES.NEAREST,
 	};
 
 	this.GameSettings = {
+		textScale: 4,
 		birdJumpPower: 5,
 		gravityStrength: 0.35,
 		rewindSpeed: 1.75,
@@ -50,7 +61,8 @@ Settings.prototype.init = function(){
 			baseGap: 70,
 			chanceOffset: 110, // The amount that it COULD offset (i.e. if it's 50, then the offset can be 0 to 50),
 			chanceGap: 70
-		}
+		},
+		retryScoreThreshold: 5, // if score is less than or equal to this number, don't show an ad
 	};
 
 	this.Analytics = {
@@ -92,6 +104,7 @@ Settings.prototype.init = function(){
 		'mainMenu_play': 'mainMenu/playbutton.png',
 		'mainMenu_copyright': 'mainMenu/copyright.png',
 		'mainMenu_leaderboard': 'mainMenu/leaderboardbutton.png',
+		'mainMenu_leaderboard_locked': 'mainMenu/leaderboardbutton_locked.png',
 		'mainMenu_title': 'mainMenu/title.png',
         'white': 'white.png',
         'black': 'black.png',
@@ -125,8 +138,10 @@ Settings.prototype.init = function(){
         'playAdButton': 'rewardedAd/playAdButton.png',
         'noThanks_button': 'rewardedAd/nothanks.png',
 		'ad_description': 'rewardedAd/desc.png',
+		'button_muted': 'audio_muted.png',
+		'button_unmuted': 'audio_unmuted.png',
 
-		'test_sound': 'test.ogg'
+		'm_mainmenu': ['bensound-psychedelic.mp3']
 	};
 
 	this.audioSettings = {

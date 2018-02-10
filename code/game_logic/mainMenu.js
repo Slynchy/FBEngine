@@ -20,16 +20,12 @@ class MainMenu extends Token {
 		this.animState = 1;
 
 		this.bg = new Background(background_day);
-		this.bg.width = Settings.PIXI.applicationSettings.width;
-		this.bg.height = Settings.PIXI.applicationSettings.height;
+        this.bg.smartScale(null,Settings.PIXI.applicationSettings.height);
 		this.dialog.addChild(this.bg);
 
-		//let audioInstance = AudioAPI.PlayFile(test_sound, 1.0, true);
-
 		this.bg2 = new Background(background_day);
-		this.bg2.width = Settings.PIXI.applicationSettings.width;
+        this.bg2.smartScale(null,Settings.PIXI.applicationSettings.height);
 		this.bg2.x = this.bg2.width;
-		this.bg2.height = Settings.PIXI.applicationSettings.height;
 		this.dialog.addChild(this.bg2);
 
 		this.bird = new GameObject(yellowbird_midflap, {checkCollisions: false});
@@ -37,23 +33,25 @@ class MainMenu extends Token {
 		this.bird.anchor.y = 0.5;
 		this.bird.x = Settings.PIXI.applicationSettings.width / 2;
 		this.bird.y = Settings.PIXI.applicationSettings.height / 2;
+		this.bird.scale.x = 2;
+		this.bird.scale.y = 2;
 		this.dialog.addChild(this.bird);
 
 		this.ground = new Ground();
 		this.ground.x = 0;
-		this.ground.y = application.renderer.height - ground_floor.height;
+		this.ground.y = application.renderer.height - (ground_floor.height);
 		this.ground.width = application.renderer.width;
 		this.dialog.addChild(this.ground);
 
 		this.ground2 = new Ground();
 		this.ground2.x = application.renderer.width;
-		this.ground2.y = application.renderer.height - ground_floor.height;
+		this.ground2.y = application.renderer.height - (ground_floor.height);
 		this.ground2.width = application.renderer.width;
 		this.dialog.addChild(this.ground2);
 
 		this.title = new GameObject(mainMenu_title, { checkCollisions: false });
-		this.title.scale.x = 3;
-		this.title.scale.y = 3;
+		this.title.scale.x = 0.5;
+		this.title.scale.y = 0.5;
 		this.title.x = (application.renderer.width / 2) - (this.title.width / 2);
 		this.title.y = (application.renderer.height / 5)- (this.title.height / 2);
 		this.dialog.addChild(this.title);
@@ -67,6 +65,17 @@ class MainMenu extends Token {
         this.copyright.y = (application.renderer.height - this.copyright.height - 10);
         this.dialog.addChild(this.copyright);
 
+        this.muteButton = new GameObject(flowController.audioMuted === true ? button_muted : button_unmuted, {checkCollisions: false});
+		this.muteButton.anchor.x = 1.0;
+		this.muteButton.x = Settings.PIXI.applicationSettings.width - 10;
+		this.muteButton.y = 10;
+		this.muteButton.interactive = true;
+		this.muteButton.on('pointerup', (event) =>{
+			AudioAPI.muted = !AudioAPI.muted;
+			self.updateMuteButton();
+		});
+		this.dialog.addChild(this.muteButton);
+
 		this.play = new GameObject(mainMenu_play, { checkCollisions: false });
 		this.play.scale.x = 3;
 		this.play.scale.y = 3;
@@ -78,7 +87,7 @@ class MainMenu extends Token {
 		});
 		this.dialog.addChild(this.play);
 
-		this.leaderboard = new GameObject(mainMenu_leaderboard, { checkCollisions: false });
+		this.leaderboard = new GameObject(mainMenu_leaderboard_locked, { checkCollisions: false });
 		this.leaderboard.scale.x = 3;
 		this.leaderboard.scale.y = 3;
 		this.leaderboard.x = ((application.renderer.width / 2) - (this.leaderboard.width / 2)) + (this.leaderboard.width / 2) + 5;
@@ -86,6 +95,9 @@ class MainMenu extends Token {
 		this.leaderboard.interactive = true;
 		this.leaderboard.on('pointerup', (event) =>{
 			console.log('leaderboard');
+            gsApi.GetAroundMeLeaderboard((data) => {
+            	console.log(data);
+			})
 		});
 		this.dialog.addChild(this.leaderboard);
 
@@ -93,6 +105,11 @@ class MainMenu extends Token {
 
 		if(props) Object.assign(this,props);
 	};
+
+	updateMuteButton(){
+		let tex = (AudioAPI.muted === true ? button_muted : button_unmuted);
+		this.muteButton.updateTexture(tex);
+	}
 
 	startGame(){
 		"use strict";
@@ -126,7 +143,7 @@ class MainMenu extends Token {
 		let storedY = this.bird.y;
 		this.bird.y = -100 + ((Settings.PIXI.applicationSettings.height / 2) + ((20) * Math.sin(Date.now() * 0.002)));
 		storedY = storedY - this.bird.y;
-		this.bird.rotation = Math.atan2(storedY, 4);
+		this.bird.rotation = Math.atan2(storedY, 1);
 
 		this.animTimer += dt;
 		if(this.animTimer > Settings.GameSettings.birdAnimSpeed){
@@ -138,13 +155,13 @@ class MainMenu extends Token {
 			}
 			switch(this.animState){
 				case 0:
-					this.bird.texture = yellowbird_downflap;
+					this.bird.updateTexture(yellowbird_downflap);
 					break;
 				case 1:
-					this.bird.texture = yellowbird_midflap;
+					this.bird.updateTexture(yellowbird_midflap);
 					break;
 				case 2:
-					this.bird.texture = yellowbird_upflap;
+					this.bird.updateTexture(yellowbird_upflap);
 					break;
 			}
 		}

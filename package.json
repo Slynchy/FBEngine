@@ -9,7 +9,6 @@
   "author": "TotallyNotAPseudonym",
   "license": "UNLICENSED",
   "dependencies": {
-    "box2dweb-commonjs": "^2.1.0",
     "browserify": "^15.2.0",
     "js-easing-functions": "^1.0.2",
     "pixi-sound": "^2.0.1",

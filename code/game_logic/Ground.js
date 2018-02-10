@@ -5,6 +5,11 @@ class Ground extends GameObject {
 		super(ground_floor);
 		this.tag = "Ground";
 
+		//this.scale.x = 3;
+		//this.scale.y = 3;
+		//this.width = Settings.PIXI.applicationSettings.width;
+        //this.height = 66*3;
+
         this.rewind = false;
 	}
 

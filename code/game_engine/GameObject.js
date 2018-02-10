@@ -27,6 +27,27 @@ class GameObject extends PIXI.Sprite {
 			Object.assign(this, props);
 	}
 
+	smartScale(x,y){
+		"use strict";
+		if(this.width === 0 || this.height === 0) {
+			console.error('divide by zero!');
+			return;
+		}
+
+		if(x) {
+            this.scale.x = x / this.width;
+            if(!y){
+                this.scale.y = this.scale.x;
+			}
+        }
+        if(y) {
+            this.scale.y = y / this.height;
+            if(!x){
+                this.scale.x = this.scale.y;
+            }
+        }
+	}
+
 	get isFrozen(){
 		return this._isFrozen;
 	}
@@ -82,6 +103,14 @@ class GameObject extends PIXI.Sprite {
 		"use strict";
 		this.alpha = 1;
 		this._isVisible = this.isVisible;
+	}
+
+	updateTexture(texture){
+		let storedXscale = this.scale.x;
+		let storedYscale = this.scale.y;
+		this.texture = texture;
+		this.scale.x = storedXscale;
+		this.scale.y = storedYscale;
 	}
 
 	get isVisible(){
