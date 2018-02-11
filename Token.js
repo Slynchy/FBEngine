@@ -2,7 +2,7 @@
 class Token {
 	constructor(props){
 		this.name = "SampleToken";
-		this.uid = Math.random() | Date.now();
+		this.uid = Math.floor(Math.random() * Date.now());
 		this._queuedForDestruction = false;
 
 		if(props) Object.assign(this,props);
@@ -11,6 +11,7 @@ class Token {
 	destroy() {
 		"use strict";
 		this._queuedForDestruction = true;
+		if(this.onDestroy) this.onDestroy();
 	};
 
 	startStep(delta){
@@ -28,6 +29,11 @@ class Token {
 	};
 
 	onAdd(){
+		"use strict";
+	};
+
+	// THIS IS CALLED 1 FRAME BEFORE "ON DESTROY"
+	onRemove(){
 		"use strict";
 	};
 
