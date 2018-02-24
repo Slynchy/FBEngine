@@ -27,7 +27,7 @@ class GameObject extends PIXI.Sprite {
 			Object.assign(this, props);
 	}
 
-	smartScale(x,y){
+	static smartScale(x,y){
 		"use strict";
 		if(this.width === 0 || this.height === 0) {
 			console.error('divide by zero!');
