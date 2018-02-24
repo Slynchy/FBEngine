@@ -59,7 +59,7 @@ class Audio {
     /**
      *
      * @param file
-     * @param {float} volume
+     * @param {number | float} volume
      * @param {boolean?} loop
      * @returns {PIXI.sound.IMediaInstance|Promise<PIXI.sound.IMediaInstance>|void|Promise<void>}
      * @constructor
