@@ -11,6 +11,11 @@ class GenericDialog extends PIXI.Container {
 
         this.parentScene = null;
 
+        this.anchor = {
+            x: 0,
+            y: 0
+        };
+
         if(props)
             Object.assign(this, props);
     }
@@ -37,38 +42,13 @@ class GenericDialog extends PIXI.Container {
     onRemove(){}
 
     set x(val) {
-        let offset = 0;
+        let offset = -(this.width * this.anchor.x);
 
-        if(this['xAlignment']){
-            switch(this['xAlignment']){
-                case 'left':
-                    break;
-                case 'center':
-                    offset = -(this.width / 2);
-                    break;
-                case 'right':
-                    offset = -(this.width);
-                    break;
-            }
-        }
         this.position.x = val + (offset);
     }
 
     set y(val) {
-        let offset = 0;
-
-        if(this['yAlignment']){
-            switch(this['yAlignment']){
-                case 'top':
-                    break;
-                case 'center':
-                    offset = -(this.height / 2);
-                    break;
-                case 'right':
-                    offset = -(this.height);
-                    break;
-            }
-        }
+        let offset = -(this.height * this.anchor.y);
 
         this.position.y = val + (offset);
     }
