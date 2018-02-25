@@ -89,7 +89,8 @@ class Adverts {
         this.instance.showAsync()
             .then( () => {
                 self._loaded = false;
-                if(callback) callback();
+                if(callback)
+                    callback();
                 self.instance = null;
                 self.initialize();
             })
@@ -103,6 +104,9 @@ class Adverts {
                 }
                 console.error('[Adverts] ShowAd failed! ' + err.code);
                 console.error(err.message);
+
+                if(callback)
+                    callback();
             });
     }
 }
