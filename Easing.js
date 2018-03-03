@@ -46,11 +46,7 @@ class Easing {
             }
         }, 16);
 
-        return {
-            cancel: ()=>{
-                clearInterval(interval);
-            }
-        };
+        return interval;
     }
 
 }
