@@ -8,7 +8,7 @@ class Easing {
      * @param {Object} targetPos
      * @param {Number} [speed]
      * @param {Function} [onComplete]
-     * @returns {void}
+     * @returns {Function}
      */
     static async lerpAsync( obj, targetPos, speed, onComplete ){
         if(
@@ -32,9 +32,10 @@ class Easing {
 
         let interval = null;
         interval = setInterval(()=>{
+            counter += 0.06 * speed;
+            if(counter >= 1.0) counter = 1.0;
             obj.x = lerp(origX, targetPos.x, counter);
             obj.y = lerp(origY, targetPos.y, counter);
-            counter += 0.06 * speed;
 
             if(counter >= 1.0){
                 obj.x = targetPos.x;
@@ -44,6 +45,12 @@ class Easing {
                     onComplete();
             }
         }, 16);
+
+        return {
+            cancel: ()=>{
+                clearInterval(interval);
+            }
+        };
     }
 
 }
