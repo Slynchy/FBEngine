@@ -40,8 +40,23 @@ class ContainerObject extends PIXI.Container {
 		return this.position.y;
 	}
 
+    set z(val) {
+        this.zOrder = val;
+    }
+
+    get z() {
+        return this.zOrder;
+    }
+
 	endStep(dt){
 		"use strict";
+
+        this.children.sort(function(a, b){
+        	if(!a.zOrder) a.zOrder = 0;
+        	if(!b.zOrder) b.zOrder = 0;
+            if(a.zOrder === b.zOrder) return 0;
+            else return (a.zOrder<b.zOrder ? -1 : 1);
+        });
 	}
 }
 

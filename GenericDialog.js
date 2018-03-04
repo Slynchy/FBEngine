@@ -1,6 +1,7 @@
 let PIXI = require("pixi.js");
+let ContainerObject = require('./ContainerObject.js');
 
-class GenericDialog extends PIXI.Container {
+class GenericDialog extends ContainerObject {
     constructor(props){
         "use strict";
         super(null);
