@@ -93,6 +93,14 @@ class GameObject extends PIXI.Sprite {
 		return this.position.y;
 	}
 
+    set z(val) {
+        this.zOrder = val;
+    }
+
+    get z() {
+        return this.zOrder;
+    }
+
 	hide(){
 		"use strict";
 		this.alpha = 0;

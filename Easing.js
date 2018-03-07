@@ -85,32 +85,36 @@ class Easing {
      * @param {Object} targetPos
      * @param {Number} [speed]
      * @param {Function} [onComplete]
-     * @returns {void}
+     * @returns {Function}
      */
     static async lerpAsync( obj, targetPos, speed, onComplete ){
         if(Easing._checkParams(obj, targetPos)){
             throw new Error("Invalid object passed!");
         }
 
-		let anim = Easing._generateGenericAnim(obj, targetPos, speed, null, onComplete);
+		    let anim = Easing._generateGenericAnim(obj, targetPos, speed, null, onComplete);
         anim.type = "lerp";
 
         anim.interval = setInterval(()=>{
             anim.obj.x = Easing.lerp(anim.origX, anim.targetPos.x, anim.counter);
-			anim.obj.y = Easing.lerp(anim.origY, anim.targetPos.y, anim.counter);
+			      anim.obj.y = Easing.lerp(anim.origY, anim.targetPos.y, anim.counter);
 
             anim.counter += _COUNTERSTEP * anim.speed;
+            anim.counter += 0.06 * anim.speed;
+            if(anim.counter >= 1.0) anim.counter = 1.0;
+            obj.x = lerp(anim.origX, anim.targetPos.x, anim.counter);
+            obj.y = lerp(anim.origY, anim.targetPos.y, anim.counter);
 
             if(anim.counter >= 1.0){
-				anim.obj.x = anim.targetPos.x;
-				anim.obj.y = anim.targetPos.y;
-                Easing._cleanupAnim(anim);
+                anim.obj.x = anim.targetPos.x;
+                anim.obj.y = anim.targetPos.y;
+                clearInterval(anim.interval);
+                if(anim.onComplete)
+                    anim.onComplete();
             }
-        }, _ANIMUPDATERATE);
+        }, 16);
 
-        Easing._pushAnim(anim);
-
-		return anim;
+        return anim;
     }
 
 	/**
