@@ -31,6 +31,13 @@ class Easing {
 		console.warn("Anim %s not found!", uid);
 	}
 
+	/**
+	 * Returns true if there's an issue with the parameters that would disrupt an animation
+	 * @param obj
+	 * @param targetPos
+	 * @returns {boolean}
+	 * @private
+	 */
 	static _checkParams(obj, targetPos){
 		return (
 			typeof obj.x === 'undefined' ||
@@ -41,6 +48,16 @@ class Easing {
 		);
 	}
 
+	/**
+	 *
+	 * @param obj
+	 * @param targetPos
+	 * @param [speed]
+	 * @param [duration]
+	 * @param [onComplete]
+	 * @returns {Object}
+	 * @private
+	 */
 	static _generateGenericAnim(obj, targetPos, speed, duration, onComplete){
 		return {
 			origX: obj ? obj.x : 0,
@@ -59,10 +76,11 @@ class Easing {
 	static _cleanupAnim(anim){
 		clearInterval(anim.interval);
 		Easing._removeAnim(anim.uid);
+		anim.onComplete();
 	}
 
     /**
-     *
+     * Behaves differently to other animations in that it does not possess a duration
      * @param {Object} obj
      * @param {Object} targetPos
      * @param {Number} [speed]
@@ -91,6 +109,8 @@ class Easing {
         }, _ANIMUPDATERATE);
 
         Easing._pushAnim(anim);
+
+		return anim;
     }
 
 	/**
@@ -114,6 +134,108 @@ class Easing {
 		anim.interval = setInterval(()=>{
 			anim.obj.x = jsAnim.easeInBounce( Date.now() - anim.startTime, anim.origX, anim.targetPos.x - anim.origX, anim.duration);
 			anim.obj.y = jsAnim.easeInBounce( Date.now() - anim.startTime, anim.origY, anim.targetPos.y - anim.origY, anim.duration);
+
+			if(Date.now() - anim.startTime >= anim.duration){
+				anim.obj.x = anim.targetPos.x;
+				anim.obj.y = anim.targetPos.y;
+				Easing._cleanupAnim(anim);
+			}
+		}, _ANIMUPDATERATE);
+
+		Easing._pushAnim(anim);
+
+		return anim;
+	}
+
+	/**
+	 *
+	 * @param {Object} obj
+	 * @param {Object} targetPos
+	 * @param {Number} [speed]
+	 * @param {Number} [duration]
+	 * @param {Function} [onComplete]
+	 * @returns {void}
+	 */
+	static async easeOutBounceAsync( obj, targetPos, speed, duration, onComplete ){
+		if(Easing._checkParams(obj, targetPos)){
+			throw new Error("Invalid object passed!");
+		}
+
+		let anim = Easing._generateGenericAnim(obj, targetPos, speed, duration, onComplete);
+		anim.type = "easeOutBounce";
+		anim.startTime = Date.now();
+
+		anim.interval = setInterval(()=>{
+			anim.obj.x = jsAnim.easeOutBounce( Date.now() - anim.startTime, anim.origX, anim.targetPos.x - anim.origX, anim.duration);
+			anim.obj.y = jsAnim.easeOutBounce( Date.now() - anim.startTime, anim.origY, anim.targetPos.y - anim.origY, anim.duration);
+
+			if(Date.now() - anim.startTime >= anim.duration){
+				anim.obj.x = anim.targetPos.x;
+				anim.obj.y = anim.targetPos.y;
+				Easing._cleanupAnim(anim);
+			}
+		}, _ANIMUPDATERATE);
+
+		Easing._pushAnim(anim);
+
+		return anim;
+	}
+
+	/**
+	 *
+	 * @param {Object} obj
+	 * @param {Object} targetPos
+	 * @param {Number} [speed]
+	 * @param {Number} [duration]
+	 * @param {Function} [onComplete]
+	 * @returns {void}
+	 */
+	static async easeInQuadAsync( obj, targetPos, speed, duration, onComplete ){
+		if(Easing._checkParams(obj, targetPos)){
+			throw new Error("Invalid object passed!");
+		}
+
+		let anim = Easing._generateGenericAnim(obj, targetPos, speed, duration, onComplete);
+		anim.type = "easeInQuad";
+		anim.startTime = Date.now();
+
+		anim.interval = setInterval(()=>{
+			anim.obj.x = jsAnim.easeInQuad( Date.now() - anim.startTime, anim.origX, anim.targetPos.x - anim.origX, anim.duration);
+			anim.obj.y = jsAnim.easeInQuad( Date.now() - anim.startTime, anim.origY, anim.targetPos.y - anim.origY, anim.duration);
+
+			if(Date.now() - anim.startTime >= anim.duration){
+				anim.obj.x = anim.targetPos.x;
+				anim.obj.y = anim.targetPos.y;
+				Easing._cleanupAnim(anim);
+			}
+		}, _ANIMUPDATERATE);
+
+		Easing._pushAnim(anim);
+
+		return anim;
+	}
+
+	/**
+	 *
+	 * @param {Object} obj
+	 * @param {Object} targetPos
+	 * @param {Number} [speed]
+	 * @param {Number} [duration]
+	 * @param {Function} [onComplete]
+	 * @returns {void}
+	 */
+	static async easeOutQuadAsync( obj, targetPos, speed, duration, onComplete ){
+		if(Easing._checkParams(obj, targetPos)){
+			throw new Error("Invalid object passed!");
+		}
+
+		let anim = Easing._generateGenericAnim(obj, targetPos, speed, duration, onComplete);
+		anim.type = "easeOutQuad";
+		anim.startTime = Date.now();
+
+		anim.interval = setInterval(()=>{
+			anim.obj.x = jsAnim.easeOutQuad( Date.now() - anim.startTime, anim.origX, anim.targetPos.x - anim.origX, anim.duration);
+			anim.obj.y = jsAnim.easeOutQuad( Date.now() - anim.startTime, anim.origY, anim.targetPos.y - anim.origY, anim.duration);
 
 			if(Date.now() - anim.startTime >= anim.duration){
 				anim.obj.x = anim.targetPos.x;
