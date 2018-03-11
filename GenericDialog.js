@@ -24,6 +24,7 @@ class GenericDialog extends ContainerObject {
     hide(){
         "use strict";
         this.alpha = 0;
+        this.interactiveChildren = false;
         this._isVisible = false;
     }
 
@@ -35,6 +36,7 @@ class GenericDialog extends ContainerObject {
     show(){
         "use strict";
         this.alpha = 1;
+        this.interactiveChildren = true;
         this._isVisible = this.isVisible;
     }
 
