@@ -4,35 +4,52 @@ class Button extends GameObject {
 	constructor(upstate, downstate, props){
 		super(upstate, props);
 
-		let self = this;
-
 		this.upstateTexture = upstate;
 		this.downstateTexture = downstate;
 
 		this._isInDownstate = false;
 
 		this.interactive = true;
-		this.on('pointerup', function(){
-			self._pointerUp();
-			self.onClick();
+
+		this.on('pointerup', ()=>{
+			if(!this._isInDownstate && !this._isToggleButton) return;
+			this._pointerUp(true);
 		});
-		this.on('pointerdown', function(){
-			self._pointerDown();
+		this.on('pointerdown', ()=>{
+            this._pointerDown();
 		});
+
+        this.on('pointerout', ()=>{
+            this._pointerUp(false);
+        });
 
 		if(props){
 			Object.assign(this, props);
 		}
 	}
 
+	isDown(){
+		return this._isInDownstate;
+	}
+
+    /**
+     * @private
+     */
 	_pointerDown(){
 		this.updateTexture(this.downstateTexture);
 		this._isInDownstate = true;
 	}
 
-	_pointerUp(){
+    /**
+	 * @param {Boolean} activate
+     * @private
+     */
+	_pointerUp(activate){
 		this.updateTexture(this.upstateTexture);
 		this._isInDownstate = false;
+
+		if(activate)
+        	this.onClick();
 	}
 
 	/**
