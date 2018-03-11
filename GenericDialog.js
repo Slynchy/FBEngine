@@ -1,6 +1,7 @@
 let PIXI = require("pixi.js");
+let ContainerObject = require('./ContainerObject.js');
 
-class GenericDialog extends PIXI.Container {
+class GenericDialog extends ContainerObject {
     constructor(props){
         "use strict";
         super(null);
@@ -23,6 +24,7 @@ class GenericDialog extends PIXI.Container {
     hide(){
         "use strict";
         this.alpha = 0;
+        this.interactiveChildren = false;
         this._isVisible = false;
     }
 
@@ -34,6 +36,7 @@ class GenericDialog extends PIXI.Container {
     show(){
         "use strict";
         this.alpha = 1;
+        this.interactiveChildren = true;
         this._isVisible = this.isVisible;
     }
 

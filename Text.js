@@ -44,6 +44,15 @@ class Text extends PIXI.Text {
         "use strict";
         return this.position.y;
     }
+
+    set x(val) {
+        this.position.x = val;
+    }
+
+    set y(val) {
+        "use strict";
+        this.position.y = val;
+    }
 }
 
 module.exports = Text;
