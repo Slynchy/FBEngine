@@ -48,6 +48,7 @@ class SaveDataHandler {
         catch(err){
             console.error('[SaveDataHandler] Failed to load save data for reason: ' + err);
             console.error(err.stack);
+            self.callback();
         }
     }
 
