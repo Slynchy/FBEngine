@@ -23,6 +23,18 @@ class GameObject extends PIXI.Sprite {
 		this.width = texture ? texture.width : 0;
 		this.height = texture ? texture.height : 0;
 
+        this._addChild = this.addChild;
+        this.addChild = (obj)=>{
+            if(obj.onAdd) obj.onAdd(this);
+            this._addChild(obj);
+        };
+
+        this._removeChild = this.removeChild;
+        this.removeChild = (obj)=>{
+            if(obj.onRemove) obj.onRemove();
+            this._removeChild(obj);
+        };
+
 		if(props)
 			Object.assign(this, props);
 	}
@@ -152,9 +164,14 @@ class GameObject extends PIXI.Sprite {
 		this.parentScene = scene;
 	}
 
-	onRemove(){
-		"use strict";
-		this.body = null;
+	onDestroy(){/* To be overridden*/}
+    onRemove(){/* To be overridden*/}
+
+	destroy(){
+		if(this.onDestroy)
+			this.onDestroy();
+		if(this.parentScene)
+			this.parentScene.removeChild(this);
 	}
 
 	endStep(){
