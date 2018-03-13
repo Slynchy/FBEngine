@@ -7,6 +7,8 @@ class GameObject extends PIXI.Sprite {
 
 		this.parentScene = null;
 
+		this.uid = parseInt(Math.random().toString().slice(2));
+
 		this._vX = 0;
 		this._vY = 0;
 

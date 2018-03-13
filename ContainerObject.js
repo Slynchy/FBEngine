@@ -8,6 +8,8 @@ class ContainerObject extends PIXI.Container {
 		//this.orientation = Math.random() < 0.5 ? 0 : 1; // 0 == down to up, 1 == up to down
 		this.tag = "ContainerObject";
 
+        this.uid = parseInt(Math.random().toString().slice(2));
+
         this._addChild = this.addChild;
         this.addChild = (obj)=>{
             if(obj.onAdd) obj.onAdd(this);
