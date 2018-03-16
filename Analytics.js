@@ -1,29 +1,37 @@
 /*
-	Google Analytics wrapper
-	Doesn't work with FB
+	Analytics wrapper
  */
 
 class Analytics {
 
-	constructor(tid,debuggingMode){
-		if(typeof(tid) === 'undefined'){
-			throw new Error("Analytics error - no tid provided!");
-		}
-
-		this.tid = tid;
-		this.cid = 'clientid';
-
-		this.mode = 'FBINSTANT';
-
+	constructor(){
+		this.cid = null;
+        this.tid = Settings.Analytics.tid;
+		this.mode = Settings.Analytics.mode;
 		this.enabled = Settings.Analytics.enabled;
+        this._debug = Settings.Analytics.debug;
 
-		if(typeof(debuggingMode) === "undefined"){
-			this._debug = false;
-		} else {
-			this._debug = debuggingMode;
+        if(this.mode === 'FBINSTANT'){
+            this.initialize();
 		}
 
-		this.log("Initialized analytics");
+	}
+
+	initialize(clientID){
+		if(this.mode === 'GOOGLE'){
+			if(!clientID){
+				throw new Error("Analytics error - no CID!");
+			} else {
+                this.cid = clientID;
+			}
+		}
+
+		if(this.mode === 'FBINSTANT' && typeof FBInstant === 'undefined'){
+			this.enabled = false;
+			console.warn("Analytics warning - FBInstant is undefined");
+		}
+
+        this.log("Initialized analytics");
 	}
 
 	EnableDebugging(){
@@ -129,4 +137,4 @@ class Analytics {
 	}
 }
 
-module.exports = Analytics;
+module.exports = new Analytics();

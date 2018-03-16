@@ -16,12 +16,15 @@ class SaveDataHandler {
         return this._hasLoaded;
     }
 
-    initialize(callback){
+    initialize(callback, onFail){
         "use strict";
         let self = this;
 
         if(!callback) this.callback = function(){};
         else this.callback = callback;
+
+        if(!onFail) this.onFail = function(){};
+        else this.onFail = onFail;
 
         this._data = {};
         this._data = Object.assign(this._data, Settings.SaveData.defaultSaveData);
@@ -48,11 +51,21 @@ class SaveDataHandler {
         catch(err){
             console.error('[SaveDataHandler] Failed to load save data for reason: ' + err);
             console.error(err.stack);
+            self.onFail();
         }
     }
 
     get data(){
         return this._data;
+    }
+
+    /**
+     * Symbolic function for semantics
+     * @param key
+     * @param value
+     */
+    saveKey(key, value){
+        this.saveData(key, value);
     }
 
     saveData(key, value){
@@ -66,7 +79,7 @@ class SaveDataHandler {
             FBInstant.player
                 .setDataAsync(this._data)
                 .then(function() {
-                    console.log('[SaveDataHandler] Save data saved');
+                    console.log('[SaveDataHandler] Save data key \'' + key + '\' saved with value: ' + value.toString());
                 });
         }
         catch(err){
