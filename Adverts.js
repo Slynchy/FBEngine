@@ -53,6 +53,8 @@ class Adverts {
     }
 
     _getAndLoadInterstitialAdInstance(callback, waitForLoad){
+        let self = this;
+
         if(this.interstitial_instance) return;
 
         FBInstant.getInterstitialAdAsync(this.interstitial_placementId)
@@ -96,6 +98,8 @@ class Adverts {
     }
 
     _getAndLoadRewardedAdInstance(callback, waitForLoad){
+        let self = this;
+
         if(this.rewarded_instance) return;
 
         FBInstant.getRewardedVideoAsync(this.rewarded_placementId)
