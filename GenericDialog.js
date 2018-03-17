@@ -37,7 +37,7 @@ class GenericDialog extends ContainerObject {
         "use strict";
         this.alpha = 1;
         this.interactiveChildren = true;
-        this._isVisible = this.isVisible;
+        this._isVisible = true;
     }
 
     endStep(){}
