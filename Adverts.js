@@ -2,7 +2,8 @@
 class Adverts {
 
     constructor(){
-        this.placementId = Settings.adverts.placementId;
+        this.rewarded_placementId = Settings.adverts.rewarded_placementId;
+        this.interstitial_placementId = Settings.adverts.interstitial_placementId;
 
         this.rewarded_instance = null;
         this.interstitial_instance = null;
@@ -54,9 +55,9 @@ class Adverts {
     _getAndLoadInterstitialAdInstance(callback, waitForLoad){
         if(this.interstitial_instance) return;
 
-        FBInstant.getInterstitialAdAsync(this.placementId)
+        FBInstant.getInterstitialAdAsync(this.interstitial_placementId)
             .then((interstitial) => {
-                console.log("[Adverts] Loaded ad rewarded_instance");
+                console.log("[Adverts] Loaded ad interstitial_instance");
                 self.interstitial_instance = interstitial;
                 self.interstitial_instance.loadAsync()
                     .then( (retVal) => {
@@ -97,7 +98,7 @@ class Adverts {
     _getAndLoadRewardedAdInstance(callback, waitForLoad){
         if(this.rewarded_instance) return;
 
-        FBInstant.getRewardedVideoAsync(this.placementId)
+        FBInstant.getRewardedVideoAsync(this.rewarded_placementId)
             .then((rewardedVideo) => {
                 console.log("[Adverts] Loaded ad rewarded_instance");
                 self.rewarded_instance = rewardedVideo;
