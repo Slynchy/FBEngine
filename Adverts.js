@@ -148,7 +148,7 @@ class Adverts {
             return;
         }
 
-        if(this._loaded === false){
+        if(!this.rewarded_instance){
             console.error("[Adverts] showAd failed! Ad not loaded!");
             if(callback)
                 callback();
@@ -189,7 +189,7 @@ class Adverts {
             return;
         }
 
-        if(this._loaded === false){
+        if(!this.interstitial_instance){
             console.error("[Adverts] showAd failed! Ad not loaded!");
             if(callback)
                 callback();
