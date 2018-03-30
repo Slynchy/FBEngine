@@ -37,6 +37,13 @@ class Button extends GameObject {
      */
 	_pointerDown(){
 		this.updateTexture(this.downstateTexture);
+		this.y += this.height / 55;
+
+		if(this.text)
+		{
+			this.text.y += this.height / 55;
+		}
+
 		this._isInDownstate = true;
 	}
 
@@ -45,11 +52,22 @@ class Button extends GameObject {
      * @private
      */
 	_pointerUp(activate){
-		this.updateTexture(this.upstateTexture);
-		this._isInDownstate = false;
 
-		if(activate)
-        	this.onClick();
+		if(this._isInDownstate)
+		{
+			this.updateTexture(this.upstateTexture);
+			this.y -= this.height / 55;
+
+			if(this.text)
+			{
+				this.text.y -= this.height / 55;
+			}
+
+			this._isInDownstate = false;
+
+			if(activate)
+				this.onClick();
+		}
 	}
 
 	/**
