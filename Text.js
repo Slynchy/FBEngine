@@ -29,7 +29,7 @@ class Text extends PIXI.Text {
     show(){
         "use strict";
         this.alpha = 1;
-        this._isVisible = this.isVisible;
+        this._isVisible = true;
     }
 
     endStep(){}
