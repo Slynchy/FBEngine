@@ -7,7 +7,7 @@ class GameObject extends PIXI.Sprite {
 
 		this.parentScene = null;
 
-		this.filters = [new PIXI.filters.FXAAFilter()];
+		// this.filters = [new PIXI.filters.FXAAFilter()];
 
 		this.uid = parseInt(Math.random().toString().slice(2));
 
