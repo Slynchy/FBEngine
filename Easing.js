@@ -100,7 +100,7 @@ class Easing {
 			      anim.obj.y = Easing.lerp(anim.origY, anim.targetPos.y, anim.counter);
 
             anim.counter += _COUNTERSTEP * anim.speed;
-            anim.counter += 0.06 * anim.speed;
+        
             if(anim.counter >= 1.0) anim.counter = 1.0;
             obj.x = lerp(anim.origX, anim.targetPos.x, anim.counter);
             obj.y = lerp(anim.origY, anim.targetPos.y, anim.counter);
