@@ -12,7 +12,6 @@ class AssetLoader {
 	static LoadAssetsFromAssetList(assetList) {
 		let self = this;
 		let length = Object.keys(assetList).length;
-		this.loadingProgress = 0;
 
 		if (typeof PIXI === 'undefined') {
 			throw new Error('PIXI is undefined!');
@@ -35,16 +34,16 @@ class AssetLoader {
 
 			let firstPromise;
 			let currPromise;
-			for (let k in Settings.resources) {
-				if (!Settings.resources.hasOwnProperty(k)) continue;
+			for (let k in assetList) {
+				if (!assetList.hasOwnProperty(k)) continue;
 
 				if (!firstPromise) {
-					firstPromise = PIXI.loader.add(k, 'assets/' + Settings.resources[k]);
+					firstPromise = PIXI.loader.add(k, 'assets/' + assetList[k]);
 					currPromise = firstPromise;
 					continue;
 				}
 
-				currPromise = currPromise.add(k, 'assets/' + Settings.resources[k]);
+				currPromise = currPromise.add(k, 'assets/' + assetList[k]);
 			}
 
 			PIXI.loader.load(function(loader, resources) {
@@ -65,6 +64,7 @@ class AssetLoader {
 							) {
 								// audio is handled seperately
 								resources[k].sound.fileKey = k;
+								resources[k].sound.__PARENT = resources[k];
 								global[k] = resources[k].sound;
 							} else {
 								global[k] = resources[k];
@@ -75,7 +75,7 @@ class AssetLoader {
 						}
 					}
 				}
-				resolve();
+				resolve(resources);
 			});
 		});
 	}
