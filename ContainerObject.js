@@ -67,7 +67,7 @@ class ContainerObject extends PIXI.Container {
 		/* To be overridden*/
 	}
 
-	_forceSort(){
+	_forceSort() {
 		this.children.sort(function(a, b) {
 			if (!a.zOrder) a.zOrder = 0;
 			if (!b.zOrder) b.zOrder = 0;
@@ -83,6 +83,12 @@ class ContainerObject extends PIXI.Container {
 
 	endStep(dt) {
 		'use strict';
+
+		for (let k in this.children) {
+			if (this.children.hasOwnProperty(k)) {
+				this.children[k].endStep(dt);
+			}
+		}
 	}
 }
 
