@@ -23,6 +23,17 @@ class FBLeaderboards {
         }
     }
 
+    GetLeaderboard(name){
+		return new Promise((resolve,reject)=> {
+			FBInstant
+				.getLeaderboardAsync(name).then((leaderboard)=>{
+				self._leaderboards[leaderboard.getName()] = leaderboard;
+				resolve(self._leaderboards[leaderboard.getName()]);
+			})
+            .catch(reject);
+		});
+    }
+
     /**
      *
      * @param {Function} callback
