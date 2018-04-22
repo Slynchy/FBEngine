@@ -24,6 +24,7 @@ class FBLeaderboards {
     }
 
     GetLeaderboard(name){
+        let self = this;
 		return new Promise((resolve,reject)=> {
 			FBInstant
 				.getLeaderboardAsync(name).then((leaderboard)=>{
