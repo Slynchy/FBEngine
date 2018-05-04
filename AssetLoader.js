@@ -60,6 +60,10 @@ class AssetLoader {
 								resources[k].url.includes(
 									'.mp3',
 									Math.floor(resources[k].url.length * 0.5)
+								) ||
+								resources[k].url.includes(
+									'.wav',
+									Math.floor(resources[k].url.length * 0.5)
 								)
 							) {
 								// audio is handled seperately
