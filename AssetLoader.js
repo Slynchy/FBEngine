@@ -48,6 +48,7 @@ class AssetLoader {
 
 			PIXI.loader.load(function(loader, resources) {
 				if (!global._TEXTURES) global._TEXTURES = {};
+				if (!global._OSUFILECACHE) global._OSUFILECACHE = {};
 
 				for (let k in resources) {
 					if (resources.hasOwnProperty(k)) {
@@ -70,7 +71,15 @@ class AssetLoader {
 								resources[k].sound.fileKey = k;
 								resources[k].sound.__PARENT = resources[k];
 								global[k] = resources[k].sound;
+							} else if (
+								resources[k].url.includes(
+									'.osu',
+									Math.floor(resources[k].url.length * 0.5)
+								)
+							) {
+								global._OSUFILECACHE[k] = resources[k].data;
 							} else {
+								console.warn('Asset %s is unhandled', k);
 								global[k] = resources[k];
 							}
 						} else {
