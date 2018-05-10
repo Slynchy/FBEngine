@@ -61,7 +61,7 @@ class FBLeaderboards {
                     self._leaderboards[leaderboard.getName()] = leaderboard;
                     if(self.isInit){
                         self._isInit = true;
-                        self._initCallback();
+                        self._initCallback(self);
                     }
                 })
                 .catch(err => {
