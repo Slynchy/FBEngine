@@ -23,6 +23,13 @@ class AssetLoader {
 				return;
 			}
 
+			if (PIXI.loader.loading) {
+				console.error('PIXI loader is still loading!');
+				reject();
+			} else {
+				PIXI.loader.reset();
+			}
+
 			PIXI.loader.onLoad.add((file, res) => {
 				if (!Settings.DEBUG.suppressLoadingLogs)
 					console.log('[flowController] Loaded resource: ' + res.url);
