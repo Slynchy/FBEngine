@@ -3,15 +3,30 @@ class AssetLoader {
 		console.warn('Instance of AssetLoader created; it is intended to be static!');
 	}
 
+	static get DefaultConfig(){
+		return {
+			'global': true,
+			'safe': true,
+			'verbose': false
+		};
+	}
+
 	/**
 	 *
 	 * @param {Object} assetList
+	 * @param {Object} [config]
 	 * @returns {Promise<any>}
 	 * @static
 	 */
-	static LoadAssetsFromAssetList(assetList) {
+	static LoadAssetsFromAssetList(assetList, config) {
 		let self = this;
 		let length = Object.keys(assetList).length;
+
+		if(!config){
+			config = AssetLoader.DefaultConfig;
+		} else {
+			config = Object.assign((AssetLoader.DefaultConfig), config);
+		}
 
 		if (typeof PIXI === 'undefined') {
 			throw new Error('PIXI is undefined!');
@@ -36,7 +51,11 @@ class AssetLoader {
 			});
 
 			PIXI.loader.onError.add(err => {
-				reject('[flowController] Failed to load file! ' + err.stack);
+				if(config.safe){
+					if(config.verbose)
+						console.error('[flowController] Failed to load file! ' + err.stack)
+				} else
+					reject('[flowController] Failed to load file! ' + err.stack);
 			});
 
 			let firstPromise;
@@ -59,6 +78,8 @@ class AssetLoader {
 
 				for (let k in resources) {
 					if (resources.hasOwnProperty(k)) {
+						if(resources[k].error) continue;
+						
 						if (!resources[k].texture) {
 							if (
 								resources[k].url.includes(
