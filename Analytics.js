@@ -3,92 +3,77 @@
  */
 
 class Analytics {
-
-	constructor(){
+	constructor() {
 		this.cid = null;
-        this.tid = Settings.Analytics.tid;
+		this.tid = Settings.Analytics.tid;
 		this.mode = Settings.Analytics.mode;
 		this.enabled = Settings.Analytics.enabled;
-        this._debug = Settings.Analytics.debug;
+		this._debug = Settings.Analytics.debug;
 
-        if(this.mode === 'FBINSTANT'){
-            this.initialize();
+		if (this.mode === 'FBINSTANT') {
+			this.initialize();
 		}
-
 	}
 
-	initialize(clientID){
-		if(this.mode === 'GOOGLE'){
-			if(!clientID){
-				throw new Error("Analytics error - no CID!");
+	initialize(clientID) {
+		if (this.mode === 'GOOGLE') {
+			if (!clientID) {
+				throw new Error('Analytics error - no CID!');
 			} else {
-                this.cid = clientID;
+				this.cid = clientID;
 			}
 		}
 
-		if(this.mode === 'FBINSTANT' && typeof FBInstant === 'undefined'){
+		if (this.mode === 'FBINSTANT' && typeof FBInstant === 'undefined') {
 			this.enabled = false;
-			console.warn("Analytics warning - FBInstant is undefined");
+			console.warn('Analytics warning - FBInstant is undefined');
 		}
 
-        this.log("Initialized analytics");
+		this.log('Initialized analytics');
 	}
 
-	EnableDebugging(){
+	EnableDebugging() {
 		this._debug = true;
 	}
 
-	log(data){
-		if(this._debug) console.log(data);
+	log(data) {
+		if (this._debug) console.log(data);
 	}
 
-	SendEvent(category, action, label, value){
-		"use strict";
+	SendEvent(category, action, label, value) {
+		'use strict';
 		let self = this;
 
-		if(this.enabled === false) return;
+		if (this.enabled === false) return;
 
-		if(typeof(value) === "undefined") value = 1;
+		if (typeof value === 'undefined') value = 1;
 
-		if(this.mode === 'FBINSTANT'){
-
-			try{
-				let result = FBInstant.logEvent(
-					category,
-					value,
-					{
-						action: action,
-						label: label
-					},
-				);
-				if(result){
+		if (this.mode === 'FBINSTANT') {
+			try {
+				let result = FBInstant.logEvent(category, value, {
+					action: action,
+					label: label
+				});
+				if (result) {
 					// We could throw an error here but analytics are not that important -Sam
-					console.error("Send event " + category + " unsuccessfully");
+					console.error('Send event ' + category + ' unsuccessfully');
 				} else {
-					console.log("Send event " + category + " successfully");
+					console.log('Send event ' + category + ' successfully');
 				}
-			}
-			catch(err){
+			} catch (err) {
 				console.error(err);
 			}
-
-		} else if(this.mode === 'GOOGLE') {
-
+		} else if (this.mode === 'GOOGLE') {
 			let genData = this._generateData('event', category, action, label, value);
-			this._postAjax(
-				Settings.Analytics.url,
-				genData,
-				function(da){
-					self.log("Sent event of category \"" + category + "\" " + genData);
-				}
-			);
-
+			this._postAjax(Settings.Analytics.url, genData, function(da) {
+				self.log('Sent event of category "' + category + '" ' + genData);
+			});
 		}
 	}
 
-	_generateData(type, category, action, label, value){
-		"use strict";
-		let result = "";
+	_generateData(type, category, action, label, value) {
+		'use strict';
+		let result = '';
 
 		result += 'v=1';
 		result += '&';
@@ -98,19 +83,19 @@ class Analytics {
 		result += '&';
 		result += 't=' + type;
 
-		if(category){
+		if (category) {
 			result += '&';
 			result += 'ec=' + category;
 		}
-		if(action){
+		if (action) {
 			result += '&';
 			result += 'ea=' + action;
 		}
-		if(label){
+		if (label) {
 			result += '&';
 			result += 'el=' + label;
 		}
-		if(value){
+		if (value) {
 			result += '&';
 			result += 'ev=' + value;
 		}
@@ -119,18 +104,17 @@ class Analytics {
 	}
 
 	_postAjax(url, data, success) {
-		try{
+		try {
 			let xhttp = new XMLHttpRequest();
-			xhttp.onreadystatechange = function(retVal){
+			xhttp.onreadystatechange = function(retVal) {
 				//console.log(retVal);
 			};
-			xhttp.onload = function(da){
-				if(success) success(da);
+			xhttp.onload = function(da) {
+				if (success) success(da);
 			};
-			xhttp.open("GET", url + data, true);
+			xhttp.open('GET', url + data, true);
 			xhttp.send();
-		}
-		catch(err){
+		} catch (err) {
 			console.error(err);
 			return null;
 		}
