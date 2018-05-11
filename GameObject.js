@@ -1,20 +1,24 @@
-let PIXI = require("pixi.js");
+let PIXI = require('pixi.js');
 
 class GameObject extends PIXI.Sprite {
-	constructor(texture, props){
-		"use strict";
+	constructor(texture, props) {
+		'use strict';
 		super(texture);
 
 		this.parentScene = null;
 
 		// this.filters = [new PIXI.filters.FXAAFilter()];
 
-		this.uid = parseInt(Math.random().toString().slice(2));
+		this.uid = parseInt(
+			Math.random()
+				.toString()
+				.slice(2)
+		);
 
 		this._vX = 0;
 		this._vY = 0;
 
-		this.tag = "GameObject";
+		this.tag = 'GameObject';
 
 		this._isVisible = false;
 
@@ -27,44 +31,43 @@ class GameObject extends PIXI.Sprite {
 		this.width = texture ? texture.width : 0;
 		this.height = texture ? texture.height : 0;
 
-        this._addChild = this.addChild;
-        this.addChild = (obj)=>{
-            if(obj.onAdd) obj.onAdd(this);
-            this._addChild(obj);
-        };
+		this._addChild = this.addChild;
+		this.addChild = obj => {
+			if (obj.onAdd) obj.onAdd(this);
+			this._addChild(obj);
+		};
 
-        this._removeChild = this.removeChild;
-        this.removeChild = (obj)=>{
-            if(obj.onRemove) obj.onRemove();
-            this._removeChild(obj);
-        };
+		this._removeChild = this.removeChild;
+		this.removeChild = obj => {
+			if (obj.onRemove) obj.onRemove();
+			this._removeChild(obj);
+		};
 
-		if(props)
-			Object.assign(this, props);
+		if (props) Object.assign(this, props);
 	}
 
-	static smartScale(x,y){
-		"use strict";
-		if(this.width === 0 || this.height === 0) {
+	static smartScale(x, y) {
+		'use strict';
+		if (this.width === 0 || this.height === 0) {
 			console.error('divide by zero!');
 			return;
 		}
 
-		if(x) {
-            this.scale.x = x / this.width;
-            if(!y){
-                this.scale.y = this.scale.x;
+		if (x) {
+			this.scale.x = x / this.width;
+			if (!y) {
+				this.scale.y = this.scale.x;
 			}
-        }
-        if(y) {
-            this.scale.y = y / this.height;
-            if(!x){
-                this.scale.x = this.scale.y;
-            }
-        }
+		}
+		if (y) {
+			this.scale.y = y / this.height;
+			if (!x) {
+				this.scale.x = this.scale.y;
+			}
+		}
 	}
 
-	get isFrozen(){
+	get isFrozen() {
 		return this._isFrozen;
 	}
 
@@ -84,13 +87,13 @@ class GameObject extends PIXI.Sprite {
 		this._vY = val;
 	}
 
-    freeze(){
-        this._isFrozen = true;
-    }
+	freeze() {
+		this._isFrozen = true;
+	}
 
-    unfreeze(){
-        this._isFrozen = false;
-    }
+	unfreeze() {
+		this._isFrozen = false;
+	}
 
 	set x(val) {
 		this.position.x = val;
@@ -105,31 +108,31 @@ class GameObject extends PIXI.Sprite {
 	}
 
 	get y() {
-		"use strict";
+		'use strict';
 		return this.position.y;
 	}
 
-    set z(val) {
-        this.zOrder = val;
-    }
+	set z(val) {
+		this.zOrder = val;
+	}
 
-    get z() {
-        return this.zOrder;
-    }
+	get z() {
+		return this.zOrder;
+	}
 
-	hide(){
-		"use strict";
+	hide() {
+		'use strict';
 		this.alpha = 0;
 		this._isVisible = false;
 	}
 
-	show(){
-		"use strict";
+	show() {
+		'use strict';
 		this.alpha = 1;
 		this._isVisible = this.isVisible;
 	}
 
-	updateTexture(texture){
+	updateTexture(texture) {
 		let storedXscale = this.scale.x;
 		let storedYscale = this.scale.y;
 		this.texture = texture;
@@ -137,25 +140,24 @@ class GameObject extends PIXI.Sprite {
 		this.scale.y = storedYscale;
 	}
 
-	get isVisible(){
-		"use strict";
+	get isVisible() {
+		'use strict';
 		let result;
 
-		if(this.parentScene){
-			if(
+		if (this.parentScene) {
+			if (
 				this.x < this.parentScene.position.x + Settings.PIXI.applicationSettings.width &&
 				this.x + this.texture.width > this.parentScene.position.x &&
 				this.y < this.parentScene.position.y + Settings.PIXI.applicationSettings.height &&
 				this.y + this.texture.height > this.parentScene.position.y
-			){
+			) {
 				result = true;
-			}
-			else result = false;
-		} else if(this.alpha > 0){
+			} else result = false;
+		} else if (this.alpha > 0) {
 			result = true;
 		}
 
-		if(this.alpha <= 0){
+		if (this.alpha <= 0) {
 			result = false;
 		}
 
@@ -163,32 +165,30 @@ class GameObject extends PIXI.Sprite {
 		return result;
 	}
 
-	onAdd(scene){
-		"use strict";
+	onAdd(scene) {
+		'use strict';
 		this.parentScene = scene;
 	}
 
-	onDestroy(){/* To be overridden*/}
-    onRemove(){/* To be overridden*/}
-
-	destroy(){
-		if(this.onDestroy)
-			this.onDestroy();
-		if(this.parentScene)
-			this.parentScene.removeChild(this);
+	onDestroy() {
+		/* To be overridden*/
+	}
+	onRemove() {
+		/* To be overridden*/
 	}
 
-	endStep(){
-        if(this.isFrozen) return;
+	destroy() {
+		if (this.onDestroy) this.onDestroy();
+		if (this.parentScene) this.parentScene.removeChild(this);
 	}
 
-	onCollide(){
-
+	endStep() {
+		if (this.isFrozen) return;
 	}
 
-	physicsStep(){
+	onCollide() {}
 
-	}
+	physicsStep() {}
 }
 
 module.exports = GameObject;
