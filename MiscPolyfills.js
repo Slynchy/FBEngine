@@ -25,9 +25,13 @@ let __miscPolyFillInit = () => {
 		return v0 * (1 - t) + v1 * t;
 	};
 
-	global.SetRendererProperties = rendererView => {
+	global.SetRendererProperties = (rendererView, style) => {
 		'use strict';
-		rendererView.style = Object.assign(rendererView.style, Settings.styleSettings);
+		if(!style){
+			rendererView.style = Object.assign(rendererView.style, window.Settings ? Settings.styleSettings : {});
+		} else {
+			rendererView.style = Object.assign(rendererView.style, style);
+		}
 	};
 
 	global.Tokens = [];
