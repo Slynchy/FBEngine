@@ -1,15 +1,18 @@
 {
-  "name": "fbengine",
-  "version": "1.0.0",
-  "description": "",
+  "name": "FBEngine",
+  "version": "0.6.0",
+  "description": "A lightweight JS game engine/framework in ES6+ for Facebook Instant",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "TotallyNotAPseudonym",
-  "license": "UNLICENSED",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/Slynchy/FBEngine.git"
+  },
+  "author": "Sam Lynch",
+  "license": "MIT",
   "dependencies": {
-    "browserify": "^15.2.0",
     "js-easing-functions": "^1.0.2",
     "pixi-sound": "^2.0.1",
     "pixi.js": "^4.6.2"

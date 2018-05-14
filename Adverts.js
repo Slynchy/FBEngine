@@ -1,14 +1,29 @@
 class Adverts {
-	constructor() {
-		this.rewarded_placementId = Settings.adverts.rewarded_placementId;
-		this.interstitial_placementId = Settings.adverts.interstitial_placementId;
+	constructor(enabled, rewarded_placementId, interstitial_placementId) {
+
+		if(typeof(rewarded_placementId) !== 'undefined'){
+			this.rewarded_placementId = rewarded_placementId;
+		} else {
+			this.rewarded_placementId = (typeof(Settings) !== 'undefined') ? Settings.adverts.rewarded_placementId : false;
+		}
+
+		if(typeof(interstitial_placementId) !== 'undefined'){
+			this.interstitial_placementId = interstitial_placementId;
+		} else {
+			this.interstitial_placementId = (typeof(Settings) !== 'undefined') ? Settings.adverts.interstitial_placementId : false;
+		}
 
 		this.rewarded_instance = null;
 		this.interstitial_instance = null;
 
 		this._loaded = false;
 
-		this.enabled = Settings.adverts.enabled;
+		if(typeof(enabled) !== 'undefined'){
+			this.enabled = enabled;
+		} else {
+			// backward compat
+			this.enabled = (typeof(Settings) !== 'undefined') ? Settings.adverts.enabled : false;
+		}
 	}
 
 	/*

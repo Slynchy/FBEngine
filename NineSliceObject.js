@@ -124,15 +124,22 @@ class NineSliceObject extends PIXI.mesh.NineSlicePlane {
 		this._isVisible = this.isVisible;
 	}
 
+	/**
+	 * @deprecated Does not work without app width/height
+	 * @returns {boolean}
+	 */
 	get isVisible() {
 		'use strict';
 		let result;
 
+		let w = (typeof Settings !== 'undefined') ? Settings.PIXI.applicationSettings.width : 720;
+		let h = (typeof Settings !== 'undefined') ? Settings.PIXI.applicationSettings.height : 1280;
+
 		if (this.parentScene) {
 			if (
-				this.x < this.parentScene.position.x + Settings.PIXI.applicationSettings.width &&
+				this.x < this.parentScene.position.x + w &&
 				this.x + this.texture.width > this.parentScene.position.x &&
-				this.y < this.parentScene.position.y + Settings.PIXI.applicationSettings.height &&
+				this.y < this.parentScene.position.y + h &&
 				this.y + this.texture.height > this.parentScene.position.y
 			) {
 				result = true;

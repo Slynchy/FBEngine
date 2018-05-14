@@ -3,12 +3,28 @@
  */
 
 class Analytics {
-	constructor() {
-		this.cid = null;
-		this.tid = Settings.Analytics.tid;
-		this.mode = Settings.Analytics.mode;
-		this.enabled = Settings.Analytics.enabled;
-		this._debug = Settings.Analytics.debug;
+	constructor(enabled, debug) {
+		// this.cid = null;
+		// this.tid = Settings.Analytics.tid;
+		// this.mode = Settings.Analytics.mode;
+		// this.enabled = Settings.Analytics.enabled;
+		// this._debug = Settings.Analytics.debug;
+
+		this.mode = 'FBINSTANT';
+
+		if(typeof(enabled) !== 'undefined'){
+			this.enabled = enabled;
+		} else {
+			// backward compat
+			this.enabled = (typeof(Settings) !== 'undefined') ? Settings.Analytics.enabled : false;
+		}
+
+		if(typeof(debug) !== 'undefined'){
+			this._debug = debug;
+		} else {
+			// backward compat
+			this._debug = (typeof(Settings) !== 'undefined') ? Settings.Analytics.debug : false;
+		}
 
 		if (this.mode === 'FBINSTANT') {
 			this.initialize();

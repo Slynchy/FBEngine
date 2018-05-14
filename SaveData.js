@@ -6,6 +6,14 @@ class SaveDataHandler {
 
 		this._data = null;
 		this._hasLoaded = false;
+		this.defaultSaveData = (
+			(typeof(Settings) !== 'undefined' &&
+			Settings.SaveData &&
+			Settings.SaveData.defaultSaveData) ?
+				Settings.SaveData.defaultSaveData
+				:
+				{'testVal':1}
+		);
 
 		if (props) Object.assign(this, props);
 	}
@@ -24,8 +32,7 @@ class SaveDataHandler {
 		if (!onFail) this.onFail = function() {};
 		else this.onFail = onFail;
 
-		this._data = {};
-		this._data = Object.assign(this._data, Settings.SaveData.defaultSaveData);
+		this._data = this.defaultSaveData;
 
 		let keys = [];
 		for (let k in this._data) {

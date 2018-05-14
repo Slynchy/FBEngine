@@ -4,7 +4,12 @@ let api = require('pixi-sound');
  * The main engine audio handler
  */
 class Audio {
-	constructor() {
+
+	/**
+	 *
+	 * @param {Object} config Refer to Audio.defaultConfig
+	 */
+	constructor(config) {
 		this.audioInstances = [];
 
 		this._isMuted = false;
@@ -18,7 +23,21 @@ class Audio {
 			throw new Error('LEGACY SOUND NOT SUPPORTED');
 		}
 
-		PIXI.sound.volumeAll = Settings.audioSettings.globalVolume;
+		if(config){
+			Object.assign(this, config);
+		} else {
+			if(typeof(Settings) !== 'undefined' && Settings.audioSettings){
+				Object.assign(this, Settings.audioSettings);
+			}
+		}
+
+		PIXI.sound.volumeAll = this.globalVolume;
+	}
+
+	static get defaultConfig(){
+		return {
+			globalVolume: 1
+		};
 	}
 
 	/**
