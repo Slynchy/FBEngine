@@ -1,52 +1,44 @@
 let PIXI = require('pixi.js');
 
-class GameObject extends PIXI.Sprite {
-	constructor(texture, props) {
-		'use strict';
-		super(texture);
+class NineSliceObject extends PIXI.mesh.NineSlicePlane {
+	/**
+	 *
+	 * @param {PIXI.Texture} texture
+	 * @param {object} props
+	 * @param {number} [leftWidth]
+	 * @param {number} [topHeight]
+	 * @param {number} [rightWidth]
+	 * @param {number} [bottomHeight]
+	 */
+	constructor(texture, props, leftWidth, topHeight, rightWidth, bottomHeight) {
+		if (typeof props === 'undefined') {
+			throw new Error('No properties passed to NineSlice!');
+		}
 
-		this.parentScene = null;
+		if (typeof leftWidth === 'undefined') {
+			if (
+				!props.hasOwnProperty('leftWidth') ||
+				!props.hasOwnProperty('topHeight') ||
+				!props.hasOwnProperty('rightWidth') ||
+				!props.hasOwnProperty('bottomHeight')
+			) {
+				throw new Error('Missing required nineslice properties! (refer to documentation)');
+			} else {
+				leftWidth = props.leftWidth;
+				topHeight = props.topHeight;
+				rightWidth = props.rightWidth;
+				bottomHeight = props.bottomHeight;
+			}
+		}
 
-		// this.filters = [new PIXI.filters.FXAAFilter()];
+		super(texture, leftWidth, topHeight, rightWidth, bottomHeight);
 
-		this.uid = parseInt(
-			Math.random()
-				.toString()
-				.slice(2)
-		);
-
-		this._vX = 0;
-		this._vY = 0;
-
-		this.tag = 'GameObject';
-
-		this._isVisible = false;
-
-		this.checkCollisions = true;
-
-		this.collisions = [];
-
-		this._isFrozen = false;
-
-		this.width = texture ? texture.width : 0;
-		this.height = texture ? texture.height : 0;
-
-		this._addChild = this.addChild;
-		this.addChild = obj => {
-			if (obj.onAdd) obj.onAdd(this);
-			this._addChild(obj);
-		};
-
-		this._removeChild = this.removeChild;
-		this.removeChild = obj => {
-			if (obj.onRemove) obj.onRemove();
-			this._removeChild(obj);
-		};
-
-		if (props) Object.assign(this, props);
+		if (props) {
+			Object.assign(this, props);
+		}
 	}
 
-	static smartScale(x, y) {
+	smartScale(x, y) {
 		'use strict';
 		if (this.width === 0 || this.height === 0) {
 			console.error('divide by zero!');
@@ -132,14 +124,6 @@ class GameObject extends PIXI.Sprite {
 		this._isVisible = this.isVisible;
 	}
 
-	updateTexture(texture) {
-		let storedXscale = this.scale.x;
-		let storedYscale = this.scale.y;
-		this.texture = texture;
-		this.scale.x = storedXscale;
-		this.scale.y = storedYscale;
-	}
-
 	get isVisible() {
 		'use strict';
 		let result;
@@ -170,25 +154,26 @@ class GameObject extends PIXI.Sprite {
 		this.parentScene = scene;
 	}
 
+	destroy() {
+		if (this.onDestroy) this.onDestroy();
+		if (this.parentScene) this.parentScene.removeChild(this);
+	}
+
 	onDestroy() {
 		/* To be overridden*/
 	}
 	onRemove() {
 		/* To be overridden*/
 	}
-
-	destroy() {
-		if (this.onDestroy) this.onDestroy();
-		if (this.parentScene) this.parentScene.removeChild(this);
-	}
-
 	endStep() {
-		if (this.isFrozen) return;
+		/* To be overridden*/
 	}
-
-	onCollide() {}
-
-	physicsStep() {}
+	onCollide() {
+		/* To be overridden*/
+	}
+	physicsStep() {
+		/* To be overridden*/
+	}
 }
 
-module.exports = GameObject;
+module.exports = NineSliceObject;

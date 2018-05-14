@@ -1,12 +1,13 @@
 let PIXI = require('pixi.js');
 
-class ContainerObject extends PIXI.Container {
-	constructor(props) {
+class AnimatedGameObject extends PIXI.extras.AnimatedSprite {
+	constructor(textures, props) {
 		'use strict';
-		super();
+		super(textures);
 
-		//this.orientation = Math.random() < 0.5 ? 0 : 1; // 0 == down to up, 1 == up to down
-		this.tag = 'ContainerObject';
+		this._isAnimated = true;
+
+		//this.filters = [new PIXI.filters.FXAAFilter()];
 
 		this.uid = parseInt(
 			Math.random()
@@ -14,21 +15,49 @@ class ContainerObject extends PIXI.Container {
 				.slice(2)
 		);
 
+		this.zOrder = 0;
+
 		this._addChild = this.addChild;
 		this.addChild = obj => {
 			if (obj.onAdd) obj.onAdd(this);
 			this._addChild(obj);
-			this._forceSort();
 		};
 
 		this._removeChild = this.removeChild;
 		this.removeChild = obj => {
 			if (obj.onRemove) obj.onRemove();
 			this._removeChild(obj);
-			this._forceSort();
 		};
 
 		if (props) Object.assign(this, props);
+	}
+
+	get isFrozen() {
+		return this._isFrozen;
+	}
+
+	get vX() {
+		return this._vX;
+	}
+
+	set vX(val) {
+		this._vX = val;
+	}
+
+	get vY() {
+		return this._vY;
+	}
+
+	set vY(val) {
+		this._vY = val;
+	}
+
+	freeze() {
+		this._isFrozen = true;
+	}
+
+	unfreeze() {
+		this._isFrozen = false;
 	}
 
 	set x(val) {
@@ -44,6 +73,7 @@ class ContainerObject extends PIXI.Container {
 	}
 
 	get y() {
+		'use strict';
 		return this.position.y;
 	}
 
@@ -55,9 +85,16 @@ class ContainerObject extends PIXI.Container {
 		return this.zOrder;
 	}
 
-	onAdd(scene) {
+	hide() {
 		'use strict';
-		this.parentScene = scene;
+		this.alpha = 0;
+		this._isVisible = false;
+	}
+
+	show() {
+		'use strict';
+		this.alpha = 1;
+		this._isVisible = this.isVisible;
 	}
 
 	onDestroy() {
@@ -67,29 +104,31 @@ class ContainerObject extends PIXI.Container {
 		/* To be overridden*/
 	}
 
-	_forceSort() {
-		this.children.sort(function(a, b) {
-			if (!a.zOrder) a.zOrder = 0;
-			if (!b.zOrder) b.zOrder = 0;
-			if (a.zOrder === b.zOrder) return 0;
-			else return a.zOrder < b.zOrder ? -1 : 1;
-		});
+	onAdd(scene) {
+		'use strict';
+		this.parentScene = scene;
 	}
+
+	endStep() {
+		if (this.isFrozen) return;
+	}
+
+	onCollide() {}
+
+	physicsStep() {}
 
 	destroy() {
 		if (this.onDestroy) this.onDestroy();
 		if (this.parentScene) this.parentScene.removeChild(this);
 	}
 
-	endStep(dt) {
-		'use strict';
+	set z(val) {
+		this.zOrder = val;
+	}
 
-		for (let k in this.children) {
-			if (this.children.hasOwnProperty(k)) {
-				this.children[k].endStep(dt);
-			}
-		}
+	get z() {
+		return this.zOrder;
 	}
 }
 
-module.exports = ContainerObject;
+module.exports = AnimatedGameObject;
