@@ -1,11 +1,24 @@
 class GSModule {
-	constructor() {
+	constructor(config) {
 		'use strict';
 		this['debug'] = false;
 		this['secret'] = null;
 		this['key'] = null;
 		this['offlineMode'] = null;
-		Object.assign(this, Settings.GameSparks);
+
+		if(config) {
+			Object.assign(this, config);
+		} else if(window.Settings && window.Settings.GameSparks) {
+			Object.assign(this, Settings.GameSparks);
+		} else {
+			Object.assign(this, {
+				key: '',
+				secret: '',
+				logger: console.log,
+				debug: false,
+				offlineMode: true
+			});
+		}
 
 		this._signedIn = false;
 		this._isInit = false;
@@ -142,4 +155,4 @@ class GSModule {
 	}
 }
 
-module.exports = new GSModule();
+module.exports = GSModule;
