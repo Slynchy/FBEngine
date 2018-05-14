@@ -147,6 +147,23 @@ class FBLeaderboards {
 
 		return this._leaderboards[boardName].getEntriesAsync(count, offset);
 	}
+
+	/**
+	 * Gets all friends/connected players on the specified leaderboard
+	 * @param {string} boardName
+	 * @returns {Promise | null}
+	 * @constructor
+	 */
+	GetFriendsLeaderboardEntries(boardName) {
+		'use strict';
+
+		if (!this._leaderboards[boardName]) {
+			console.error("[FBLeaderboards] Board doesn't exist!");
+			return;
+		}
+
+		return this._leaderboards[boardName].getConnectedPlayerEntriesAsync();
+	}
 }
 
 module.exports = new FBLeaderboards();
