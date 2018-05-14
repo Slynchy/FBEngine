@@ -91,4 +91,4 @@ class SaveDataHandler {
 	}
 }
 
-module.exports = new SaveDataHandler();
+module.exports = SaveDataHandler;

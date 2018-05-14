@@ -160,4 +160,4 @@ class Audio {
 	}
 }
 
-module.exports = new Audio();
+module.exports = Audio;

@@ -183,4 +183,4 @@ class FBLeaderboards {
 	}
 }
 
-module.exports = new FBLeaderboards();
+module.exports = FBLeaderboards;

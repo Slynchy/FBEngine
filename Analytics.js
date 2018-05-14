@@ -137,4 +137,4 @@ class Analytics {
 	}
 }
 
-module.exports = new Analytics();
+module.exports = Analytics;

@@ -232,4 +232,4 @@ class Adverts {
 	}
 }
 
-module.exports = new Adverts();
+module.exports = Adverts;

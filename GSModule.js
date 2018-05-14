@@ -155,4 +155,4 @@ class GSModule {
 	}
 }
 
-module.exports = new GSModule();
+module.exports = GSModule;
