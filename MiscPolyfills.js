@@ -29,16 +29,16 @@ let __miscPolyFillInit = () => {
 	};
 
 	global.AddToken = token => {
-		tokens.push(token);
+		Tokens.push(token);
 		if (token.onAdd) token.onAdd();
-		return tokens[tokens.length - 1];
+		return Tokens[Tokens.length - 1];
 	};
 
 	global.RemoveToken = token => {
-		for (let i = 0; i < tokens.length; i++) {
-			if (tokens[i].uid === token.uid) {
-				tokens[i]._queuedForDestruction = true;
-				if (tokens[i].onRemove) tokens[i].onRemove();
+		for (let i = 0; i < Tokens.length; i++) {
+			if (Tokens[i].uid === token.uid) {
+				Tokens[i]._queuedForDestruction = true;
+				if (Tokens[i].onRemove) Tokens[i].onRemove();
 				return;
 			}
 		}
