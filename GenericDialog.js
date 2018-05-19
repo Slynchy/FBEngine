@@ -39,10 +39,6 @@ class GenericDialog extends ContainerObject {
 		this._isVisible = true;
 	}
 
-	endStep() {}
-
-	onRemove() {}
-
 	set x(val) {
 		let offset = -(this.width * this.anchor.x);
 
