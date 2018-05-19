@@ -1,6 +1,6 @@
 {
   "name": "fbengine",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "A lightweight JS game engine/framework in ES6+ for Facebook Instant",
   "main": "index.js",
   "scripts": {
