@@ -84,10 +84,9 @@ class ContainerObject extends PIXI.Container {
 	endStep(dt) {
 		'use strict';
 
-		for (let k in this.children) {
-			if (this.children.hasOwnProperty(k)) {
+		for (let k = 0; k < this.children.length; i++) {
+			if(this.children[k].endStep)
 				this.children[k].endStep(dt);
-			}
 		}
 	}
 }
