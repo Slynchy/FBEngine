@@ -23,7 +23,7 @@ class EventObject {
 		this._timer += dt;
 		if (this._timer >= this._timerThreshold) {
 			this._isComplete = !this._loop;
-			this._func();
+			this._func(dt);
 		}
 	}
 
