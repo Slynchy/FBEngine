@@ -1,6 +1,8 @@
 let __miscPolyFillInit = () => {
 	if (global.__hasInitPolyfills) return;
 
+	global._ATLAVER = '1.0.0';
+
 	// https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript-jquery
 	String.prototype.generateUID = () => {
 		let hash = 0,
@@ -23,10 +25,16 @@ let __miscPolyFillInit = () => {
 		return v0 * (1 - t) + v1 * t;
 	};
 
-	global.SetRendererProperties = rendererView => {
+	global.SetRendererProperties = (rendererView, style) => {
 		'use strict';
-		rendererView.style = Object.assign(rendererView.style, Settings.styleSettings);
+		if(!style){
+			rendererView.style = Object.assign(rendererView.style, window.Settings ? Settings.styleSettings : {});
+		} else {
+			rendererView.style = Object.assign(rendererView.style, style);
+		}
 	};
+
+	global.Tokens = [];
 
 	global.AddToken = token => {
 		Tokens.push(token);
@@ -40,6 +48,25 @@ let __miscPolyFillInit = () => {
 				Tokens[i]._queuedForDestruction = true;
 				if (Tokens[i].onRemove) Tokens[i].onRemove();
 				return;
+			}
+		}
+	};
+
+	global.UpdateTokens = (deltaTime) => {
+		for(let i = 0; i < Tokens.length; i++){
+			if(!Tokens[i]._queuedForDestruction && Tokens[i].startStep){
+				Tokens[i].startStep(deltaTime);
+			}
+		}
+		for(let i = 0; i < Tokens.length; i++){
+			if(!Tokens[i]._queuedForDestruction && Tokens[i].endStep){
+				Tokens[i].endStep(deltaTime);
+			}
+		}
+		for(let i = (Tokens.length-1); i >= 0; i--){
+			if(Tokens[i]._queuedForDestruction){
+				Tokens[i] = null;
+				Tokens.splice(i,1);
 			}
 		}
 	};

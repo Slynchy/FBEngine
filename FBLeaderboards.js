@@ -1,10 +1,27 @@
 class FBLeaderboards {
-	constructor() {
+	constructor(leaderboard_names, offlineMode) {
 		'use strict';
 		this['debug'] = false;
-		this['offlineMode'] = null;
+		this['offlineMode'] = true;
 		this['leaderboard_names'] = [];
-		Object.assign(this, Settings.Leaderboards);
+
+		if(leaderboard_names){
+			if(!Array.isArray(leaderboard_names)){
+				this['leaderboard_names'] = [leaderboard_names];
+			} else {
+				this['leaderboard_names'] = leaderboard_names;
+			}
+
+			if(typeof(offlineMode) !== 'undefined' && typeof(offlineMode) === 'boolean'){
+				this['offlineMode'] = offlineMode;
+			} else if(window.Settings) {
+				this['offlineMode'] = Settings.Leaderboards['offlineMode'];
+			}
+
+
+		} else if(window.Settings){
+			Object.assign(this, Settings.Leaderboards);
+		}
 
 		this._signedIn = false;
 		this._isInit = false;
@@ -147,6 +164,23 @@ class FBLeaderboards {
 
 		return this._leaderboards[boardName].getEntriesAsync(count, offset);
 	}
+
+	/**
+	 * Gets all friends/connected players on the specified leaderboard
+	 * @param {string} boardName
+	 * @returns {Promise | null}
+	 * @constructor
+	 */
+	GetFriendsLeaderboardEntries(boardName) {
+		'use strict';
+
+		if (!this._leaderboards[boardName]) {
+			console.error("[FBLeaderboards] Board doesn't exist!");
+			return;
+		}
+
+		return this._leaderboards[boardName].getConnectedPlayerEntriesAsync();
+	}
 }
 
-module.exports = new FBLeaderboards();
+module.exports = FBLeaderboards;
